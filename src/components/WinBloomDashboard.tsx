@@ -22,12 +22,11 @@ const formSchema = z.object({
   gratitude: z.string().min(3, "Please share a little more about your gratitude."),
 });
 
-const flowerPositions = [
-  { top: '25%', left: '20%', size: 28 }, { top: '30%', right: '15%', size: 32 },
-  { top: '55%', left: '10%', size: 36 }, { top: '65%', right: '25%', size: 24 },
-  { top: '80%', left: '35%', size: 40 }, { top: '15%', left: '50%', size: 26 },
-  { top: '45%', right: '40%', size: 30 }, { top: '75%', right: '5%', size: 34 },
-  { top: '10%', right: '25%', size: 28 }, { top: '90%', left: '5%', size: 38 },
+const flowerColors = [
+  "text-pink-500", "text-rose-500", "text-red-500", "text-orange-500",
+  "text-yellow-400", "text-lime-400", "text-green-500", "text-emerald-500",
+  "text-teal-500", "text-cyan-500", "text-sky-500", "text-blue-500",
+  "text-indigo-500", "text-violet-500", "text-purple-500", "text-fuchsia-500",
 ];
 
 export function WinBloomDashboard() {
@@ -79,7 +78,7 @@ export function WinBloomDashboard() {
     }
   }, [logs, isClient]);
   
-  const flowerCount = useMemo(() => isClient ? Math.min(Math.floor(dewdrops / 50), flowerPositions.length) : 0, [dewdrops, isClient]);
+  const flowerCount = useMemo(() => isClient ? Math.floor(dewdrops / 50) : 0, [dewdrops, isClient]);
   const dewdropsForNextFlower = useMemo(() => 50 - (dewdrops % 50), [dewdrops]);
 
   const handleShuffle = () => {
@@ -120,7 +119,7 @@ export function WinBloomDashboard() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-       <div className="lg:col-span-2 space-y-6">
+      <div className="lg:col-span-2 space-y-6">
         <Card>
           <CardHeader className="flex-row items-center justify-between">
             <div className="space-y-1.5">
@@ -220,36 +219,41 @@ export function WinBloomDashboard() {
           <CardTitle className="font-headline">Your Digital Garden</CardTitle>
           <CardDescription>Watch your garden grow with every win you log.</CardDescription>
         </CardHeader>
-        <CardContent className="flex-1 flex items-center justify-center relative bg-muted/30 rounded-lg overflow-hidden">
+        <CardContent className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 bg-muted/30 rounded-lg overflow-hidden">
           {isClient ? (
-            <div className="flex flex-col items-center justify-center gap-4 text-center">
-              <div className="relative">
-                <Sprout className="text-primary/70" size={64} style={{ zIndex: flowerPositions.length + 1 }}/>
-                {Array.from({ length: flowerCount }).map((_, i) => {
-                  const pos = flowerPositions[i % flowerPositions.length];
-                  return (
-                    <Flower2
-                      key={i}
-                      className="text-primary absolute animate-bloom"
-                      size={pos.size}
-                      style={{ ...pos, animationDelay: `${i * 100}ms` }}
-                    />
-                  )
-                })}
+            <>
+              <div className="w-full flex-grow grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-5 xl:grid-cols-6 gap-4 items-center justify-center p-4">
+                {Array.from({ length: flowerCount }).map((_, i) => (
+                  <Flower2
+                    key={i}
+                    className={cn("animate-bloom", flowerColors[i % flowerColors.length])}
+                    style={{ animationDelay: `${i * 100}ms` }}
+                    size={48}
+                  />
+                ))}
+                {flowerCount === 0 && (
+                  <div className="col-span-full flex flex-col items-center justify-center gap-4 text-center">
+                     <Sprout className="text-primary/70" size={64} />
+                  </div>
+                )}
               </div>
-               {logs.length > 0 ? (
-                <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
-                  Just {dewdropsForNextFlower} more Dewdrops to go until your next flower!
-                </p>
-              ) : (
-                <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
-                  Existing is a full-time job. Rest is productive, too.
-                </p>
-              )}
-            </div>
+              <div className="mt-auto pt-4">
+                {logs.length > 0 && flowerCount > 0 ? (
+                  <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
+                    Just {dewdropsForNextFlower} more Dewdrops to go until your next flower!
+                  </p>
+                ) : (
+                  <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
+                    Existing is a full-time job. Rest is productive, too.
+                  </p>
+                )}
+              </div>
+            </>
           ) : <Loader2 className="animate-spin text-primary" />}
         </CardContent>
       </Card>
     </div>
   );
 }
+
+    
