@@ -163,9 +163,6 @@ export function WinBloomDashboard() {
             <CardContent>
               {isClient ? (
                 <div className="space-y-2 pt-2">
-                    <p className="text-sm font-medium text-muted-foreground">
-                        Your progress to the next flower:
-                    </p>
                     <div className="relative w-full h-8 flex items-center">
                         <Progress value={progressToNextFlower} className="h-2" indicatorClassName={theme === 'light' ? 'bg-[#3D8E73]' : ''} />
                         <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between">
@@ -190,9 +187,12 @@ export function WinBloomDashboard() {
                             ))}
                         </div>
                     </div>
+                     <p className="text-sm font-medium text-muted-foreground pt-2">
+                        Your progress to the next flower!
+                    </p>
                 </div>
               ) : (
-                <div className="h-[60px] flex items-center justify-center">
+                <div className="h-[84px] flex items-center justify-center">
                   <Loader2 className="animate-spin text-primary" />
                 </div>
               )}
