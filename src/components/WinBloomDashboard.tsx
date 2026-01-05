@@ -35,6 +35,7 @@ export function WinBloomDashboard() {
   const [isClient, setIsClient] = useState(false);
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
+  const [lastFlowerToast, setLastFlowerToast] = useState(0);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,7 +47,11 @@ export function WinBloomDashboard() {
     try {
       const savedDewdrops = localStorage.getItem('winbloom-dewdrops');
       const savedLogs = localStorage.getItem('winbloom-logs');
-      if (savedDewdrops) setDewdrops(JSON.parse(savedDewdrops));
+      if (savedDewdrops) {
+        const parsedDewdrops = JSON.parse(savedDewdrops);
+        setDewdrops(parsedDewdrops);
+        setLastFlowerToast(Math.floor(parsedDewdrops / 50) * 50);
+      }
       if (savedLogs) setLogs(JSON.parse(savedLogs));
     } catch (error) {
       console.error("Failed to parse from localStorage", error);
@@ -56,8 +61,16 @@ export function WinBloomDashboard() {
   useEffect(() => {
     if (isClient) {
       localStorage.setItem('winbloom-dewdrops', JSON.stringify(dewdrops));
+      const newFlowerMilestone = Math.floor(dewdrops / 50) * 50;
+      if (dewdrops > 0 && newFlowerMilestone > lastFlowerToast && newFlowerMilestone > 0) {
+        toast({
+            title: 'A new flower has bloomed!',
+            description: 'Your garden is flourishing!',
+        });
+        setLastFlowerToast(newFlowerMilestone);
+      }
     }
-  }, [dewdrops, isClient]);
+  }, [dewdrops, isClient, toast, lastFlowerToast]);
 
   useEffect(() => {
     if (isClient) {
@@ -71,7 +84,12 @@ export function WinBloomDashboard() {
     startTransition(async () => {
       const result = await getWinSuggestion();
       if (result.suggestion) {
-        form.setValue('win', result.suggestion, { shouldValidate: true });
+        // Decide randomly to fill 'win' or 'gratitude' field
+        if (Math.random() > 0.5) {
+            form.setValue('win', result.suggestion, { shouldValidate: true });
+        } else {
+            form.setValue('gratitude', result.suggestion, { shouldValidate: true });
+        }
       } else {
         toast({
           variant: 'destructive',
@@ -93,7 +111,7 @@ export function WinBloomDashboard() {
     setDewdrops(prevDewdrops => prevDewdrops + 10);
     form.reset();
     toast({
-      title: 'Growth Recorded!',
+      title: 'Look at you adulting like a pro!',
       description: 'You\'ve earned 10 dewdrops!',
     });
   }
@@ -114,85 +132,85 @@ export function WinBloomDashboard() {
       </Card>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-headline">Cultivate Your Day</CardTitle>
-                <CardDescription>Log a win and something you're grateful for.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <FormField
-                      control={form.control}
-                      name="win"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div className="flex justify-between items-center">
-                            <FormLabel>Today's Win</FormLabel>
-                            <Button type="button" variant="ghost" size="sm" onClick={handleShuffle} disabled={isPending} aria-label="Suggest a win">
-                              {isPending ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                              ) : (
-                                <Shuffle className="h-4 w-4" />
-                              )}
-                              <span className="ml-2 hidden sm:inline">Suggest</span>
-                            </Button>
-                          </div>
-                          <FormControl>
-                            <Textarea placeholder="Found matching socks..." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="gratitude"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Today's Gratitude</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder="Grateful for the morning coffee..." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <Button type="submit" className="w-full" disabled={!form.formState.isValid}>Log Your Growth</Button>
-                  </form>
-                </Form>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-headline">Growth History</CardTitle>
-                <CardDescription>A log of your recent wins and gratitudes.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ScrollArea className="h-64">
-                  <div className="space-y-4 pr-4">
-                    {isClient && logs.length > 0 ? (
-                      logs.map(log => (
-                        <div key={log.id} className="p-3 rounded-md border bg-muted/50">
-                          <p className="text-sm font-semibold flex items-center gap-2">
-                            <Sparkles className="size-4 text-accent" /> Win: <span className="font-normal text-muted-foreground">{log.win}</span>
-                          </p>
-                           <p className="text-sm font-semibold flex items-center gap-2 mt-1">
-                            <Flower2 className="size-4 text-primary" /> Gratitude: <span className="font-normal text-muted-foreground">{log.gratitude}</span>
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-2">{format(new Date(log.date), "PPP")}</p>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Cultivate Your Day</CardTitle>
+              <CardDescription>Log a win and something you're grateful for.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="win"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex justify-between items-center">
+                          <FormLabel>Today's Win</FormLabel>
+                          <Button type="button" variant="ghost" size="sm" onClick={handleShuffle} disabled={isPending} aria-label="Suggest a win">
+                            {isPending ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Shuffle className="h-4 w-4" />
+                            )}
+                            <span className="ml-2 hidden sm:inline">Suggest</span>
+                          </Button>
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-sm text-muted-foreground text-center py-10">
-                        Your history will appear here once you start logging.
-                      </p>
+                        <FormControl>
+                          <Textarea placeholder="Found matching socks..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                  </div>
-                </ScrollArea>
-              </CardContent>
-            </Card>
+                  />
+                  <FormField
+                    control={form.control}
+                    name="gratitude"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Today's Gratitude</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Grateful for the morning coffee..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full" disabled={!form.formState.isValid}>Log Your Growth</Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Growth History</CardTitle>
+              <CardDescription>A log of your recent wins and gratitudes.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-64">
+                <div className="space-y-4 pr-4">
+                  {isClient && logs.length > 0 ? (
+                    logs.map(log => (
+                      <div key={log.id} className="p-3 rounded-md border bg-muted/50">
+                        <p className="text-sm font-semibold flex items-center gap-2">
+                          <Sparkles className="size-4 text-accent" /> Win: <span className="font-normal text-muted-foreground">{log.win}</span>
+                        </p>
+                         <p className="text-sm font-semibold flex items-center gap-2 mt-1">
+                          <Flower2 className="size-4 text-primary" /> Gratitude: <span className="font-normal text-muted-foreground">{log.gratitude}</span>
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">{format(new Date(log.date), "PPP")}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-sm text-muted-foreground text-center py-10">
+                      Your history will appear here once you start logging.
+                    </p>
+                  )}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
         </div>
         <Card className="lg:col-span-3 aspect-square lg:aspect-auto flex flex-col">
           <CardHeader>
@@ -214,6 +232,13 @@ export function WinBloomDashboard() {
                     />
                   )
                 })}
+                 {logs.length === 0 && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded-lg">
+                    <p className="text-center text-lg font-medium text-background/80 p-4 bg-black/20 rounded-lg">
+                      Existing is a full-time job. <br /> Your garden is waiting whenever you are ready.
+                    </p>
+                  </div>
+                )}
               </>
             ) : <Loader2 className="animate-spin text-primary" />}
           </CardContent>
