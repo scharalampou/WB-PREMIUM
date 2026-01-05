@@ -148,6 +148,14 @@ export function WinBloomDashboard() {
                     <FormItem>
                       <div className="flex justify-between items-center">
                         <FormLabel className="font-bold">Today's Win</FormLabel>
+                        <Button type="button" variant="ghost" size="sm" onClick={handleShuffle} disabled={isPending} aria-label="Suggest a win">
+                          {isPending ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Wand2 className="h-4 w-4" />
+                          )}
+                          <span className="ml-2 hidden sm:inline">Suggestions...</span>
+                        </Button>
                       </div>
                       <FormControl>
                         <Textarea placeholder="Found matching socks..." {...field} />
@@ -170,15 +178,7 @@ export function WinBloomDashboard() {
                   )}
                 />
                 <div className="flex flex-col sm:flex-row gap-2">
-                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-bold" disabled={!form.formState.isValid}>Log Your Growth</Button>
-                <Button type="button" size="sm" onClick={handleShuffle} disabled={isPending} aria-label="Suggest a win" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  {isPending ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Wand2 className="h-4 w-4" />
-                  )}
-                  <span className="ml-2">Suggestions...</span>
-                </Button>
+                  <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-bold" disabled={!form.formState.isValid}>Log Your Growth</Button>
                 </div>
               </form>
             </Form>
