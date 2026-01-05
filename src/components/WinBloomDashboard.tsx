@@ -251,15 +251,7 @@ export function WinBloomDashboard() {
                     </>
                   ) : (
                     <>
-                      <div className="relative">
-                        <Sprout className="text-primary/30" size={80} />
-                        <div 
-                          className="absolute bottom-0 left-0 right-0 overflow-hidden"
-                          style={{ height: `${progressToNextFlower}%`}}
-                        >
-                          <Sprout className="text-primary" size={80} />
-                        </div>
-                      </div>
+                      <Sprout className="text-primary" size={80} />
                        <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
                         Just {dewdropsForNextFlower} more Dewdrops to go until your next flower!
                       </p>
@@ -295,4 +287,5 @@ export function WinBloomDashboard() {
     </div>
   );
 
+    
     
