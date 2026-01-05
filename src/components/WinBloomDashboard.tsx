@@ -26,6 +26,17 @@ const formSchema = z.object({
 
 type SuggestionField = 'win' | 'gratitude';
 
+const wittyHeadlines = [
+  "Adulting level: Expert. 🏆",
+  "You’re winning at life today! ✨",
+  "Basically an Olympic Legend now. 🥇",
+  "Making moves and taking names! 🪴",
+  "Achievement unlocked: Absolute Legend. 🙌",
+  "Not saying you're a hero, but... 🦸‍♂️",
+  "That win was elite. Seriously. 🔥",
+  "You're doing the thing! Keep going. 🚀",
+];
+
 export function WinBloomDashboard() {
   const [dewdrops, setDewdrops] = useState<number>(0);
   const [logs, setLogs] = useState<WinLog[]>([]);
@@ -64,7 +75,7 @@ export function WinBloomDashboard() {
         toast({
             title: (
               <div className="flex items-center gap-2">
-                <Sprout className="text-primary" />
+                <Sprout className="text-primary-foreground" />
                 <span>A new flower has bloomed!</span>
               </div>
             ),
@@ -112,14 +123,13 @@ export function WinBloomDashboard() {
     setLogs(prevLogs => [newLog, ...prevLogs]);
     setDewdrops(prevDewdrops => prevDewdrops + 10);
     form.reset();
+    
+    const randomHeadline = wittyHeadlines[Math.floor(Math.random() * wittyHeadlines.length)];
+
     toast({
-      title: (
-        <div className="flex items-center gap-2">
-          <Sparkles className="text-accent" />
-          <span>Look at you adulting like a pro!</span>
-        </div>
-      ),
-      description: 'You\'ve earned 10 dewdrops!',
+      className: "bg-primary text-primary-foreground border-none",
+      title: <span className="font-bold">{randomHeadline}</span>,
+      description: "Success! +10 Dewdrops added to your balance.",
     });
   }
 
@@ -300,3 +310,5 @@ export function WinBloomDashboard() {
     </div>
   );
 }
+
+    
