@@ -172,10 +172,11 @@ export function WinBloomDashboard() {
                           </FormLabel>
                           <Button 
                             type="button" 
+                            variant="secondary"
                             onClick={() => handleShuffle('win')} 
                             disabled={isPending} 
                             aria-label="Suggest a win"
-                            className="h-9 px-3 rounded-md border-none bg-accent/20 text-accent-foreground hover:bg-accent/40"
+                            className="h-9 px-3 rounded-md border-none"
                           >
                             {isPending && suggestionTarget === 'win' ? (
                               <Loader2 className="h-4 w-4 animate-spin" />
@@ -204,10 +205,11 @@ export function WinBloomDashboard() {
                           </FormLabel>
                           <Button 
                             type="button" 
+                            variant="secondary"
                             onClick={() => handleShuffle('gratitude')} 
                             disabled={isPending} 
                             aria-label="Suggest a gratitude"
-                             className="h-9 px-3 rounded-md border-none bg-accent/20 text-accent-foreground hover:bg-accent/40"
+                             className="h-9 px-3 rounded-md border-none"
                           >
                             {isPending && suggestionTarget === 'gratitude' ? (
                               <Loader2 className="h-4 w-4 animate-spin" />
@@ -225,7 +227,7 @@ export function WinBloomDashboard() {
                     )}
                   />
                   <div className="flex flex-col sm:flex-row gap-2">
-                    <Button type="submit" className={cn("w-full font-bold text-white", !form.formState.isValid && "bg-primary/50 text-white/80")} disabled={!form.formState.isValid}>Log Your Growth</Button>
+                    <Button type="submit" className={cn("w-full font-bold", !form.formState.isValid && "bg-primary/50 text-white/80")} disabled={!form.formState.isValid}>Log Your Growth</Button>
                   </div>
                 </form>
               </Form>
