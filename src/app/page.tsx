@@ -16,15 +16,15 @@ export default function Home() {
         </div>
         <Tabs defaultValue="garden" className="w-full">
           <TabsList className="grid w-full max-w-lg mx-auto grid-cols-3">
-            <TabsTrigger value="garden" className="font-bold">
+            <TabsTrigger value="garden">
               <Sprout className="mr-2 h-4 w-4" />
               My Garden
             </TabsTrigger>
-            <TabsTrigger value="history" className="font-bold">
+            <TabsTrigger value="history">
               <History className="mr-2 h-4 w-4" />
               Growth History
             </TabsTrigger>
-            <TabsTrigger value="global" className="font-bold">
+            <TabsTrigger value="global">
               <Globe className="mr-2 h-4 w-4" />
               Global Bloom Feed
             </TabsTrigger>
