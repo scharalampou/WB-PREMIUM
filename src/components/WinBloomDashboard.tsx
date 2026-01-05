@@ -73,13 +73,14 @@ export function WinBloomDashboard() {
       const newFlowerMilestone = Math.floor(dewdrops / 50) * 50;
       if (dewdrops > 0 && newFlowerMilestone > lastFlowerToast && newFlowerMilestone > 0) {
         toast({
-            title: (
-              <div className="flex items-center gap-2">
-                <Sprout className="text-primary-foreground" />
-                <span>A new flower has bloomed!</span>
-              </div>
-            ),
-            description: 'Your garden is flourishing!',
+          className: "bg-primary text-primary-foreground border-none",
+          title: (
+            <div className="flex items-center gap-2 font-bold">
+              <Sprout className="text-primary-foreground" />
+              <span>A new flower has bloomed! 🌸</span>
+            </div>
+          ),
+          description: "Your garden is flourishing!",
         });
         setLastFlowerToast(newFlowerMilestone);
       }
