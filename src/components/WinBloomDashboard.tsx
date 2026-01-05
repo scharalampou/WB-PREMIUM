@@ -17,6 +17,7 @@ import type { WinLog } from '@/app/lib/types';
 import { cn, format } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
 import { DailyInspiration } from './DailyInspiration';
+import { Progress } from './ui/progress';
 
 const formSchema = z.object({
   win: z.string().min(3, "Your win needs a bit more detail!"),
@@ -81,6 +82,7 @@ export function WinBloomDashboard() {
   
   const flowerCount = useMemo(() => isClient ? Math.floor(dewdrops / 50) : 0, [dewdrops, isClient]);
   const dewdropsForNextFlower = useMemo(() => 50 - (dewdrops % 50), [dewdrops]);
+  const progressToNextFlower = useMemo(() => (50 - dewdropsForNextFlower) / 50 * 100, [dewdropsForNextFlower]);
 
   const handleShuffle = () => {
     startTransition(async () => {
@@ -216,47 +218,67 @@ export function WinBloomDashboard() {
             </CardContent>
           </Card>
         </div>
-        <Card className="lg:col-span-3 aspect-square lg:aspect-auto flex flex-col">
+        <Card className="lg:col-span-3 flex flex-col">
           <CardHeader>
             <CardTitle className="font-headline">Your Digital Garden</CardTitle>
             <CardDescription>Watch your garden grow with every win you log.</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 bg-muted/30 rounded-lg overflow-hidden">
-            {isClient ? (
-              <>
-                <div className="w-full flex-grow grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-5 xl:grid-cols-6 gap-4 items-center justify-center p-4">
-                  {Array.from({ length: flowerCount }).map((_, i) => (
-                    <Flower2
-                      key={i}
-                      className={cn("animate-bloom", flowerColors[i % flowerColors.length])}
-                      style={{ animationDelay: `${i * 100}ms` }}
-                      size={48}
-                    />
-                  ))}
-                  {flowerCount === 0 && (
-                    <div className="col-span-full flex flex-col items-center justify-center gap-4 text-center">
+          <CardContent className="flex flex-col items-center justify-start p-4 md:p-6 bg-muted/30 rounded-b-lg flex-grow">
+            {!isClient ? (
+              <div className="flex items-center justify-center flex-grow">
+                <Loader2 className="animate-spin text-primary" />
+              </div>
+            ) : (
+              <div className="w-full flex flex-col items-center">
+                
+                {/* Currently Growing Section */}
+                <div className="flex flex-col items-center justify-center gap-4 text-center mb-8">
+                  {logs.length === 0 ? (
+                    <>
                       <Sprout className="text-primary/70" size={64} />
-                       <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
-                         Existing is a full-time job. Rest is productive, too.
-                       </p>
-                    </div>
-                  )}
-                </div>
-                <div className="mt-auto pt-4">
-                  {logs.length > 0 && flowerCount >= 0 && dewdropsForNextFlower !== 50 ? (
-                    <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
-                      Just {dewdropsForNextFlower} more Dewdrops to go until your next flower!
-                    </p>
-                  ) : (
-                    logs.length > 0 && (
                       <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
-                        Your garden is ready to grow!
+                        Existing is a full-time job. Rest is productive, too.
                       </p>
-                    )
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative">
+                        <Sprout className="text-primary/30" size={80} />
+                        <div 
+                          className="absolute bottom-0 left-0 right-0 overflow-hidden"
+                          style={{ height: `${progressToNextFlower}%`}}
+                        >
+                          <Sprout className="text-primary" size={80} />
+                        </div>
+                      </div>
+                       <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
+                        Just {dewdropsForNextFlower} more Dewdrops to go until your next flower!
+                      </p>
+                      <Progress value={progressToNextFlower} className="w-48 h-2 mt-2" />
+                    </>
                   )}
                 </div>
-              </>
-            ) : <Loader2 className="animate-spin text-primary" />}
+
+                {/* Separator and Bloomed Flowers Grid */}
+                {flowerCount > 0 && (
+                  <>
+                    <div className="w-full border-t border-border my-4"></div>
+                    <p className="text-muted-foreground mb-4 font-headline text-lg">Your bloomed flowers</p>
+                    <div className="w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-y-4 gap-x-2 items-center justify-center">
+                      {Array.from({ length: flowerCount }).map((_, i) => (
+                        <div key={i} className="flex justify-center">
+                          <Flower2
+                            className={cn("animate-bloom", flowerColors[i % flowerColors.length])}
+                            style={{ animationDelay: `${i * 100}ms` }}
+                            size={40}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -264,3 +286,5 @@ export function WinBloomDashboard() {
     </div>
   );
 }
+
+    
