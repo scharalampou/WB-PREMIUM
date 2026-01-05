@@ -147,7 +147,7 @@ export function WinBloomDashboard() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card>
+          <Card className="dark:border-[#485971]">
             <CardHeader className="flex-row items-center justify-between">
               <div className="space-y-1.5">
                 <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
@@ -159,7 +159,7 @@ export function WinBloomDashboard() {
               </div>
             </CardHeader>
           </Card>
-          <Card>
+          <Card className="dark:border-[#485971]">
             <CardHeader>
               <CardTitle className="font-headline">Cultivate Your Day</CardTitle>
               <CardDescription>Log a win and something you're grateful for.</CardDescription>
@@ -269,12 +269,12 @@ export function WinBloomDashboard() {
             </CardContent>
           </Card>
         </div>
-        <Card className="lg:col-span-3 flex flex-col">
+        <Card className="lg:col-span-3 flex flex-col dark:border-[#485971]">
           <CardHeader>
             <CardTitle className="font-headline">Your Digital Garden</CardTitle>
             <CardDescription>Watch your garden grow with every win you log.</CardDescription>
           </CardHeader>
-          <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-[#1F2937]">
+          <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-[#1F2937] dark:border-t-[#485971]">
             {!isClient ? (
               <div className="flex items-center justify-center flex-grow">
                 <Loader2 className="animate-spin text-primary" />
@@ -327,5 +327,3 @@ export function WinBloomDashboard() {
     </div>
   );
 }
-
-  
