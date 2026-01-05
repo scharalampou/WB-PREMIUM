@@ -5,7 +5,7 @@ import { useState, useEffect, useTransition, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Droplets, Flower2, Loader2, Sparkles, Sprout, Wand2 } from 'lucide-react';
+import { Award, Droplets, Flower2, Loader2, Sparkles, Sprout, Wand2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -85,11 +85,12 @@ export function WinBloomDashboard() {
     startTransition(async () => {
       const result = await getWinSuggestion();
       if (result.suggestion) {
-        // Decide randomly to fill 'win' or 'gratitude' field
         if (Math.random() > 0.5) {
             form.setValue('win', result.suggestion, { shouldValidate: true });
+            form.setValue('gratitude', '', { shouldValidate: false });
         } else {
             form.setValue('gratitude', result.suggestion, { shouldValidate: true });
+            form.setValue('win', '', { shouldValidate: false });
         }
       } else {
         toast({
@@ -118,138 +119,168 @@ export function WinBloomDashboard() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-      <div className="lg:col-span-2 space-y-6">
-        <Card>
-          <CardHeader className="flex-row items-center justify-between">
-            <div className="space-y-1.5">
-              <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
-              <CardDescription>Earn 10 for each entry.</CardDescription>
-            </div>
-            <div className="flex items-center gap-2 text-4xl font-bold text-primary">
-              <Droplets className="size-8" />
-              <span>{isClient ? dewdrops : 0}</span>
-            </div>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-headline">Cultivate Your Day</CardTitle>
-            <CardDescription>Log a win and something you're grateful for.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="win"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex justify-between items-center">
-                        <FormLabel className="font-bold">Today's Win</FormLabel>
-                        <Button type="button" variant="ghost" size="sm" onClick={handleShuffle} disabled={isPending} aria-label="Suggest a win">
-                          {isPending ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <Wand2 className="h-4 w-4" />
-                          )}
-                          <span className="ml-2 hidden sm:inline">Suggestions...</span>
-                        </Button>
-                      </div>
-                      <FormControl>
-                        <Textarea placeholder="Found matching socks..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="gratitude"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-bold">Today's Gratitude</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Grateful for the morning coffee..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-bold" disabled={!form.formState.isValid}>Log Your Growth</Button>
-                </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-headline">Growth History</CardTitle>
-            <CardDescription>A log of your recent wins and gratitudes.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-64">
-              <div className="space-y-4 pr-4">
-                {isClient && logs.length > 0 ? (
-                  logs.map(log => (
-                    <div key={log.id} className="p-3 rounded-md border bg-muted/50">
-                      <p className="text-sm font-semibold flex items-center gap-2">
-                        <Sparkles className="size-4 text-accent" /> Win: <span className="font-normal text-muted-foreground">{log.win}</span>
-                      </p>
-                       <p className="text-sm font-semibold flex items-center gap-2 mt-1">
-                        <Flower2 className="size-4 text-primary" /> Gratitude: <span className="font-normal text-muted-foreground">{log.gratitude}</span>
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-2">{format(new Date(log.date), "PPP")}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground text-center py-10">
-                    Your history will appear here once you start logging.
-                  </p>
-                )}
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <Card>
+            <CardHeader className="flex-row items-center justify-between">
+              <div className="space-y-1.5">
+                <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
+                <CardDescription>Earn 10 for each entry.</CardDescription>
               </div>
-            </ScrollArea>
+              <div className="flex items-center gap-2 text-4xl font-bold text-primary">
+                <Droplets className="size-8" />
+                <span>{isClient ? dewdrops : 0}</span>
+              </div>
+            </CardHeader>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Cultivate Your Day</CardTitle>
+              <CardDescription>Log a win and something you're grateful for.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="win"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex justify-between items-center">
+                          <FormLabel className="font-bold">Today's Win</FormLabel>
+                          <Button type="button" variant="ghost" size="sm" onClick={handleShuffle} disabled={isPending} aria-label="Suggest a win">
+                            {isPending ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Wand2 className="h-4 w-4 text-accent" />
+                            )}
+                            <span className="ml-2 hidden sm:inline">Suggestions...</span>
+                          </Button>
+                        </div>
+                        <FormControl>
+                          <Textarea placeholder="Found matching socks..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="gratitude"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-bold">Today's Gratitude</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Grateful for the morning coffee..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-bold" disabled={!form.formState.isValid}>Log Your Growth</Button>
+                  </div>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Growth History</CardTitle>
+              <CardDescription>A log of your recent wins and gratitudes.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-64">
+                <div className="space-y-4 pr-4">
+                  {isClient && logs.length > 0 ? (
+                    logs.map(log => (
+                      <div key={log.id} className="p-3 rounded-md border bg-muted/50">
+                        <p className="text-sm font-semibold flex items-center gap-2">
+                          <Sparkles className="size-4 text-accent" /> Win: <span className="font-normal text-muted-foreground">{log.win}</span>
+                        </p>
+                        <p className="text-sm font-semibold flex items-center gap-2 mt-1">
+                          <Flower2 className="size-4 text-primary" /> Gratitude: <span className="font-normal text-muted-foreground">{log.gratitude}</span>
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">{format(new Date(log.date), "PPP")}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-sm text-muted-foreground text-center py-10">
+                      Your history will appear here once you start logging.
+                    </p>
+                  )}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
+        <Card className="lg:col-span-3 aspect-square lg:aspect-auto flex flex-col">
+          <CardHeader>
+            <CardTitle className="font-headline">Your Digital Garden</CardTitle>
+            <CardDescription>Watch your garden grow with every win you log.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 bg-muted/30 rounded-lg overflow-hidden">
+            {isClient ? (
+              <>
+                <div className="w-full flex-grow grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-5 xl:grid-cols-6 gap-4 items-center justify-center p-4">
+                  {Array.from({ length: flowerCount }).map((_, i) => (
+                    <Flower2
+                      key={i}
+                      className={cn("animate-bloom", flowerColors[i % flowerColors.length])}
+                      style={{ animationDelay: `${i * 100}ms` }}
+                      size={48}
+                    />
+                  ))}
+                  {flowerCount === 0 && (
+                    <div className="col-span-full flex flex-col items-center justify-center gap-4 text-center">
+                      <Sprout className="text-primary/70" size={64} />
+                       <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
+                         Existing is a full-time job. Rest is productive, too.
+                       </p>
+                    </div>
+                  )}
+                </div>
+                <div className="mt-auto pt-4">
+                  {logs.length > 0 && flowerCount >= 0 && dewdropsForNextFlower !== 50 ? (
+                    <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
+                      Just {dewdropsForNextFlower} more Dewdrops to go until your next flower!
+                    </p>
+                  ) : (
+                    logs.length > 0 && (
+                      <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
+                        Your garden is ready to grow!
+                      </p>
+                    )
+                  )}
+                </div>
+              </>
+            ) : <Loader2 className="animate-spin text-primary" />}
           </CardContent>
         </Card>
       </div>
-      <Card className="lg:col-span-3 aspect-square lg:aspect-auto flex flex-col">
+
+       <Card>
         <CardHeader>
-          <CardTitle className="font-headline">Your Digital Garden</CardTitle>
-          <CardDescription>Watch your garden grow with every win you log.</CardDescription>
+          <CardTitle className="font-headline flex items-center gap-3">
+            <Award className="size-6 text-yellow-500" />
+            All-Time Dewdrops
+          </CardTitle>
         </CardHeader>
-        <CardContent className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 bg-muted/30 rounded-lg overflow-hidden">
+        <CardContent className="text-center">
           {isClient ? (
-            <>
-              <div className="w-full flex-grow grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-5 xl:grid-cols-6 gap-4 items-center justify-center p-4">
-                {Array.from({ length: flowerCount }).map((_, i) => (
-                  <Flower2
-                    key={i}
-                    className={cn("animate-bloom", flowerColors[i % flowerColors.length])}
-                    style={{ animationDelay: `${i * 100}ms` }}
-                    size={48}
-                  />
-                ))}
-                {flowerCount === 0 && (
-                  <div className="col-span-full flex flex-col items-center justify-center gap-4 text-center">
-                     <Sprout className="text-primary/70" size={64} />
-                  </div>
-                )}
-              </div>
-              <div className="mt-auto pt-4">
-                {logs.length > 0 && flowerCount > 0 ? (
-                  <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
-                    Just {dewdropsForNextFlower} more Dewdrops to go until your next flower!
-                  </p>
-                ) : (
-                  <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
-                    Existing is a full-time job. Rest is productive, too.
-                  </p>
-                )}
-              </div>
-            </>
-          ) : <Loader2 className="animate-spin text-primary" />}
+            dewdrops > 0 ? (
+              <p className="text-2xl font-bold text-primary">
+                You've collected a grand total of {dewdrops} dewdrops. Look at you go!
+              </p>
+            ) : (
+              <p className="text-muted-foreground italic">
+                Your dewdrops journey starts here. Every big garden starts with a single drop.
+              </p>
+            )
+          ) : (
+            <Loader2 className="mx-auto animate-spin text-primary" />
+          )}
         </CardContent>
       </Card>
     </div>
