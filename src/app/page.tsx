@@ -12,9 +12,6 @@ export default function Home() {
     <div className="min-h-screen bg-background font-body text-foreground">
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <DailyInspiration />
-        </div>
         <Tabs defaultValue="garden" className="w-full">
           <TabsList className="grid w-full max-w-lg mx-auto grid-cols-3">
             <TabsTrigger value="garden">
@@ -30,14 +27,17 @@ export default function Home() {
               Community
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="garden" className="mt-6">
+          <TabsContent value="garden" className="mt-6 space-y-6">
+            <DailyInspiration />
             <WinBloomDashboard />
           </TabsContent>
-          <TabsContent value="history" className="mt-6">
+          <TabsContent value="history" className="mt-6 space-y-6">
             <GrowthHistory />
+            <DailyInspiration />
           </TabsContent>
-          <TabsContent value="global" className="mt-6">
+          <TabsContent value="global" className="mt-6 space-y-6">
             <GlobalFeed />
+            <DailyInspiration />
           </TabsContent>
         </Tabs>
       </main>
