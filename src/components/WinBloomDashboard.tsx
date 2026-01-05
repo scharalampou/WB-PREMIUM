@@ -17,7 +17,7 @@ import type { WinLog } from '@/app/lib/types';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
 import { Progress } from './ui/progress';
-import { DailyInspiration } from './DailyInspiration';
+import { useTheme } from 'next-themes';
 
 const formSchema = z.object({
   win: z.string().min(3, "Your win needs at least 3 characters.").max(100, "Keep your win concise!"),
@@ -45,6 +45,7 @@ export function WinBloomDashboard() {
   const { toast } = useToast();
   const [lastFlowerToast, setLastFlowerToast] = useState(0);
   const [suggestionTarget, setSuggestionTarget] = useState<SuggestionField | null>(null);
+  const { theme } = useTheme();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -148,7 +149,7 @@ export function WinBloomDashboard() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="dark:border-[#485971]">
+          <Card>
             <CardHeader className="flex-row items-center justify-between pb-4">
               <div className="space-y-1.5">
                 <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
@@ -165,14 +166,14 @@ export function WinBloomDashboard() {
                         Your progress to the next flower:
                     </p>
                     <div className="relative w-full h-8 flex items-center">
-                        <Progress value={progressToNextFlower} className="h-2" />
+                        <Progress value={progressToNextFlower} className="h-2" indicatorClassName={theme === 'light' ? 'bg-[#3D8E73]' : ''} />
                         <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between">
                             {Array.from({ length: 7 }).map((_, i) => (
                                 <div
                                     key={i}
                                     className={cn(
                                         "h-8 w-8 rounded-full flex items-center justify-center bg-secondary transition-colors duration-500",
-                                        i < currentProgressSteps ? 'bg-primary' : 'bg-muted'
+                                        i < currentProgressSteps ? (theme === 'light' ? 'bg-[#3D8E73]' : 'bg-primary') : 'bg-muted'
                                     )}
                                     style={{
                                         transform: 'translateX(-50%)',
@@ -191,7 +192,7 @@ export function WinBloomDashboard() {
                 </div>
             </CardContent>
           </Card>
-          <Card className="dark:border-[#485971]">
+          <Card>
             <CardHeader>
               <CardTitle className="font-headline">Cultivate Your Day</CardTitle>
               <CardDescription>Log a win and something you're grateful for.</CardDescription>
@@ -301,12 +302,12 @@ export function WinBloomDashboard() {
             </CardContent>
           </Card>
         </div>
-        <Card className="lg:col-span-3 flex flex-col dark:border-[#485971]">
+        <Card className="lg:col-span-3 flex flex-col">
           <CardHeader>
             <CardTitle className="font-headline">Your Digital Garden</CardTitle>
             <CardDescription>Watch your garden grow with every win you log.</CardDescription>
           </CardHeader>
-          <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-[#1F2937] dark:border-t-[#485971]">
+          <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-card">
             {!isClient ? (
               <div className="flex items-center justify-center flex-grow">
                 <Loader2 className="animate-spin text-primary" />
@@ -328,7 +329,7 @@ export function WinBloomDashboard() {
                        <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
                         Just {dewdropsForNextFlower} more Dewdrops to go until your next flower!
                       </p>
-                      <Progress value={progressToNextFlower} className="w-48 h-2 mt-2" />
+                      <Progress value={progressToNextFlower} className="w-48 h-2 mt-2" indicatorClassName={theme === 'light' ? 'bg-[#3D8E73]' : ''}/>
                     </>
                   )}
                 </div>
@@ -359,3 +360,5 @@ export function WinBloomDashboard() {
     </div>
   );
 }
+
+  
