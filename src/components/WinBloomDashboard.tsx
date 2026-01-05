@@ -159,7 +159,7 @@ export function WinBloomDashboard() {
               </div>
             </CardHeader>
           </Card>
-          <Card>
+          <Card className="dark:border-[#51637C]">
             <CardHeader>
               <CardTitle className="font-headline">Cultivate Your Day</CardTitle>
               <CardDescription>Log a win and something you're grateful for.</CardDescription>
