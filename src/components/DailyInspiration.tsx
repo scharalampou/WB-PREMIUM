@@ -21,7 +21,7 @@ export function DailyInspiration() {
   }, []);
 
   return (
-    <Card className="bg-violet-500 text-white">
+    <Card className="bg-primary text-primary-foreground">
       <CardContent className="p-4 relative">
         <div className="text-center">
           <p className="font-headline text-lg mb-2">Daily Inspiration</p>
@@ -30,7 +30,7 @@ export function DailyInspiration() {
               <blockquote className="italic text-base">
                 “{quote.quote}”
               </blockquote>
-              <figcaption className="text-center text-sm mt-2 font-medium">— {quote.source}</figcaption>
+              <figcaption className="text-center text-sm mt-2 font-medium opacity-90">— {quote.source}</figcaption>
             </figure>
           ) : (
             <blockquote className="italic text-base">
@@ -42,7 +42,7 @@ export function DailyInspiration() {
           variant="ghost"
           size="icon"
           onClick={getRandomQuote}
-          className="absolute top-4 right-4 text-white hover:bg-white/20 hover:text-white shrink-0"
+          className="absolute top-4 right-4 text-primary-foreground hover:bg-white/20 hover:text-white shrink-0"
           aria-label="Refresh Quote"
         >
           <RefreshCw className="h-5 w-5" />
