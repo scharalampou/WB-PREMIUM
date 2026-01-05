@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import type { WinLog } from '@/app/lib/types';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Loader2, Leaf } from 'lucide-react';
 import {
   format,
@@ -15,6 +15,7 @@ import {
   startOfToday,
   startOfWeek,
 } from 'date-fns';
+import { Badge } from './ui/badge';
 
 const encouragingMessages = [
   "Even the earth needs a day of rest to bloom. See you tomorrow!",
@@ -55,25 +56,43 @@ const generateMockLogs = (count: number): WinLog[] => {
   const logs: WinLog[] = [];
   const today = new Date(); // Use the actual current date
   let logCounter = 0;
+  let dewdrops = 0;
+  let lastFlowerBloomDewdrops = 0;
 
-  for (let i = 0; i < count; i++) {
-    const date = subDays(today, i);
-    const dateString = format(date, 'yyyy-MM-dd');
+  // We are generating logs in reverse chronological order (from today backwards)
+  // To correctly calculate flower bloom milestones, we should think as if we are adding them chronologically.
+  // So we'll build the array from oldest to newest, then reverse it.
+  const tempLogs: WinLog[] = [];
 
-    // Skip creating logs for Dec 25th and 26th of the current year for demonstration
-    if (dateString.endsWith('-12-25') || dateString.endsWith('-12-26')) {
-      continue;
-    }
+  for (let i = count - 1; i >= 0; i--) {
+      const date = subDays(today, i);
+      const dateString = format(date, 'yyyy-MM-dd');
 
-    logs.push({
-      id: `${i}`,
-      win: mockWins[logCounter % mockWins.length],
-      gratitude: mockGratitudes[logCounter % mockGratitudes.length],
-      date: date.toISOString(),
-    });
-    logCounter++;
+      // Skip creating logs for Dec 25th and 26th of the current year for demonstration
+      if (dateString.endsWith('-12-25') || dateString.endsWith('-12-26')) {
+        continue;
+      }
+
+      dewdrops += 10;
+      let flowerBloomed = false;
+      // 70 dewdrops to bloom a flower (i.e., every 7 logs)
+      if (dewdrops > lastFlowerBloomDewdrops && dewdrops % 70 === 0) {
+        flowerBloomed = true;
+        lastFlowerBloomDewdrops = dewdrops;
+      }
+
+      tempLogs.push({
+        id: `${i}`,
+        win: mockWins[logCounter % mockWins.length],
+        gratitude: mockGratitudes[logCounter % mockGratitudes.length],
+        date: date.toISOString(),
+        flowerBloomed,
+      });
+      logCounter++;
   }
-  return logs;
+  
+  // Reverse the array to have the newest logs first
+  return tempLogs.reverse();
 };
 
 
@@ -83,8 +102,8 @@ export function GrowthHistory() {
 
   useEffect(() => {
     setIsClient(true);
-    // Use mock data for demonstration, generating data for the last 10 days
-    const mockLogs = generateMockLogs(10);
+    // Use mock data for demonstration, generating data for the last 14 days to show a flower bloom
+    const mockLogs = generateMockLogs(14);
     setLogs(mockLogs.sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()));
     
     // Previous localStorage logic:
@@ -112,13 +131,12 @@ export function GrowthHistory() {
     });
 
     const today = startOfToday();
-    const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 });
 
     const filledGroups: Record<string, WinLog[] | { empty: true; messageIndex: number; }> = {};
     if (logs.length > 0 || isClient) { // Ensure this runs even if logs are initially empty to show today's empty state
       let currentDate = today;
       // Go back a certain number of days to ensure we cover the test range
-      const oldestDate = subDays(today, 12); 
+      const oldestDate = logs.length > 0 ? parseISO(logs[logs.length-1].date) : subDays(today, 12); 
       
       let emptyCounter = 0;
       while (currentDate >= oldestDate) {
@@ -132,7 +150,7 @@ export function GrowthHistory() {
         currentDate = subDays(currentDate, 1);
       }
       
-      // Add any remaining older groups that might be outside the 12-day window
+      // Add any remaining older groups that might be outside the window
       Object.keys(groups).forEach(dateKey => {
         if (!filledGroups[dateKey]) {
           filledGroups[dateKey] = groups[dateKey];
@@ -192,7 +210,7 @@ export function GrowthHistory() {
                 <div className="space-y-4">
                   {entries.map(log => (
                     <Card key={log.id} className="dark:border-[#485971] dark:bg-card/80">
-                      <CardContent className="p-4">
+                      <CardContent className="p-4 pb-2">
                         <div className="space-y-2">
                             <p>
                                 <span className="font-bold text-card-foreground">🏆 Win of the Day:</span> {log.win}
@@ -201,10 +219,19 @@ export function GrowthHistory() {
                                 <span className="font-bold italic text-muted-foreground">Grateful for...</span> <span className="italic text-muted-foreground">{log.gratitude}</span>
                             </p>
                         </div>
-                        <p className="text-xs text-right mt-2 font-medium text-muted-foreground/80">
+                      </CardContent>
+                      <CardFooter className="flex justify-between items-end p-4 pt-0">
+                        {log.flowerBloomed ? (
+                            <Badge variant="secondary" className="bg-accent/20 text-accent-foreground dark:text-accent border-accent/30 font-bold">
+                                🌸 A flower bloomed today!
+                            </Badge>
+                        ) : (
+                          <div></div> // Empty div to keep alignment
+                        )}
+                        <p className="text-xs text-right font-medium text-muted-foreground/80">
                           {format(new Date(log.date), "h:mm a")}
                         </p>
-                      </CardContent>
+                      </CardFooter>
                     </Card>
                   ))}
                 </div>
@@ -230,3 +257,5 @@ export function GrowthHistory() {
     </div>
   );
 }
+
+    
