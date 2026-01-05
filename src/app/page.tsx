@@ -17,7 +17,7 @@ export default function Home() {
             </TabsTrigger>
             <TabsTrigger value="global">
               <Globe className="mr-2 h-4 w-4" />
-              Global Feed
+              Global Bloom-Stream
             </TabsTrigger>
           </TabsList>
           <TabsContent value="garden" className="mt-6">
