@@ -165,7 +165,7 @@ export function WinBloomDashboard() {
                     render={({ field }) => (
                       <FormItem>
                         <div className="flex justify-between items-center">
-                          <FormLabel className="font-bold">Today's Win</FormLabel>
+                          <FormLabel className="font-bold text-sm md:text-base">Today's Win</FormLabel>
                           <Button 
                             type="button" 
                             onClick={() => handleShuffle('win')} 
@@ -194,7 +194,7 @@ export function WinBloomDashboard() {
                     render={({ field }) => (
                       <FormItem>
                          <div className="flex justify-between items-center">
-                          <FormLabel className="font-bold">Today's Gratitude</FormLabel>
+                          <FormLabel className="font-bold text-sm md:text-base">Today's Gratitude</FormLabel>
                           <Button 
                             type="button" 
                             onClick={() => handleShuffle('gratitude')} 
