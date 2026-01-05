@@ -146,7 +146,7 @@ export function WinBloomDashboard() {
                 <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
                 <CardDescription>Earn 10 Dewdrops every time you Log your Growth!</CardDescription>
               </div>
-              <div className="flex items-center gap-2 text-4xl font-bold text-accent">
+              <div className="flex items-center gap-2 text-4xl font-bold text-primary">
                 <Droplets className="size-8" />
                 <span>{isClient ? dewdrops : 0}</span>
               </div>
@@ -225,7 +225,7 @@ export function WinBloomDashboard() {
                     )}
                   />
                   <div className="flex flex-col sm:flex-row gap-2">
-                    <Button type="submit" className={cn("w-full font-bold text-white", !form.formState.isValid && "bg-primary/50 text-primary-foreground/70")} disabled={!form.formState.isValid}>Log Your Growth</Button>
+                    <Button type="submit" className={cn("w-full font-bold text-white", !form.formState.isValid && "bg-primary/50 text-white")} disabled={!form.formState.isValid}>Log Your Growth</Button>
                   </div>
                 </form>
               </Form>
