@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import * as SwitchPrimitives from "@radix-ui/react-switch"
-import { Sun, Moon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type SwitchProps = React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & {
@@ -24,10 +23,10 @@ const Switch = React.forwardRef<
     {...props}
     ref={ref}
   >
-    <div className="absolute left-2.5 z-0 text-primary/60 transition-colors group-data-[state=checked]:text-primary-foreground">
+    <div className="absolute left-2.5 z-0 text-accent-foreground/80 opacity-0 transition-opacity group-data-[state=checked]:opacity-100">
       {uncheckedIcon}
     </div>
-    <div className="absolute right-2.5 z-0 text-primary/60 transition-colors group-data-[state=unchecked]:text-primary-foreground">
+    <div className="absolute right-2.5 z-0 text-primary-foreground/80 opacity-100 transition-opacity group-data-[state=checked]:opacity-0">
       {checkedIcon}
     </div>
     <SwitchPrimitives.Thumb
