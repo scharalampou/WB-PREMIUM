@@ -161,6 +161,7 @@ export function WinBloomDashboard() {
               </div>
             </CardHeader>
             <CardContent>
+              {isClient ? (
                 <div className="space-y-2 pt-2">
                     <p className="text-sm font-medium text-muted-foreground">
                         Your progress to the next flower:
@@ -190,6 +191,11 @@ export function WinBloomDashboard() {
                         </div>
                     </div>
                 </div>
+              ) : (
+                <div className="h-[60px] flex items-center justify-center">
+                  <Loader2 className="animate-spin text-primary" />
+                </div>
+              )}
             </CardContent>
           </Card>
           <Card>
@@ -362,3 +368,5 @@ export function WinBloomDashboard() {
 }
 
   
+
+    
