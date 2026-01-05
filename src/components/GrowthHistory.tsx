@@ -53,15 +53,25 @@ const mockGratitudes = [
 
 const generateMockLogs = (count: number): WinLog[] => {
   const logs: WinLog[] = [];
-  const today = new Date();
+  const today = new Date(); // Use the actual current date
+  let logCounter = 0;
+
   for (let i = 0; i < count; i++) {
     const date = subDays(today, i);
+    const dateString = format(date, 'yyyy-MM-dd');
+
+    // Skip creating logs for Dec 25th and 26th of the current year for demonstration
+    if (dateString.endsWith('-12-25') || dateString.endsWith('-12-26')) {
+      continue;
+    }
+
     logs.push({
       id: `${i}`,
-      win: mockWins[i % mockWins.length],
-      gratitude: mockGratitudes[i % mockGratitudes.length],
+      win: mockWins[logCounter % mockWins.length],
+      gratitude: mockGratitudes[logCounter % mockGratitudes.length],
       date: date.toISOString(),
     });
+    logCounter++;
   }
   return logs;
 };
@@ -73,7 +83,7 @@ export function GrowthHistory() {
 
   useEffect(() => {
     setIsClient(true);
-    // Use mock data for demonstration
+    // Use mock data for demonstration, generating data for the last 10 days
     const mockLogs = generateMockLogs(10);
     setLogs(mockLogs.sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()));
     
@@ -104,11 +114,11 @@ export function GrowthHistory() {
     const today = startOfToday();
     const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 });
 
-    const filledGroups: Record<string, WinLog[] | { empty: true }> = {};
-    if (logs.length > 0) {
+    const filledGroups: Record<string, WinLog[] | { empty: true; messageIndex: number; }> = {};
+    if (logs.length > 0 || isClient) { // Ensure this runs even if logs are initially empty to show today's empty state
       let currentDate = today;
-      // Go back 10 days for the mock view
-      const oldestDate = subDays(today, 9);
+      // Go back a certain number of days to ensure we cover the test range
+      const oldestDate = subDays(today, 12); 
       
       let emptyCounter = 0;
       while (currentDate >= oldestDate) {
@@ -116,15 +126,13 @@ export function GrowthHistory() {
         if (groups[dateKey]) {
           filledGroups[dateKey] = groups[dateKey];
         } else {
-           // Only show empty states for recent dates to avoid clutter
-           if (isToday(currentDate) || isYesterday(currentDate) || currentDate >= startOfCurrentWeek) {
+            // Fill empty days within the range
             filledGroups[dateKey] = { empty: true, messageIndex: emptyCounter++ };
-           }
         }
         currentDate = subDays(currentDate, 1);
       }
       
-      // Add any remaining older groups that might be outside the 10-day window
+      // Add any remaining older groups that might be outside the 12-day window
       Object.keys(groups).forEach(dateKey => {
         if (!filledGroups[dateKey]) {
           filledGroups[dateKey] = groups[dateKey];
@@ -184,11 +192,13 @@ export function GrowthHistory() {
                   {entries.map(log => (
                     <Card key={log.id} className="dark:border-[#485971] dark:bg-card/80">
                       <CardContent className="p-4">
-                        <div className="space-y-1">
-                          <p className="font-bold text-card-foreground">{log.win}</p>
-                          <p className="text-sm italic text-muted-foreground">
-                            {log.gratitude}
-                          </p>
+                        <div className="space-y-2">
+                            <p>
+                                <span className="font-bold text-card-foreground">Win of the Day:</span> {log.win}
+                            </p>
+                            <p className="text-sm">
+                                <span className="font-bold italic text-muted-foreground">Grateful for...</span> <span className="italic text-muted-foreground">{log.gratitude}</span>
+                            </p>
                         </div>
                         <p className="text-xs text-right mt-2 font-medium text-muted-foreground/80">
                           {format(new Date(log.date), "h:mm a")}
