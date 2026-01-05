@@ -234,14 +234,14 @@ export function WinBloomDashboard() {
                 <div className="space-y-4 pr-4">
                   {isClient && logs.length > 0 ? (
                     logs.map(log => (
-                      <div key={log.id} className="p-3 rounded-md border bg-muted/50">
+                      <div key={log.id} className="p-3 rounded-md border bg-[#F7F4E6]">
                         <p className="text-sm font-semibold flex items-start gap-2">
                           <Sparkles className="size-4 text-accent mt-0.5 shrink-0" /> 
-                          <span>Win: <span className="font-normal text-muted-foreground">{log.win}</span></span>
+                          <span className="flex-1">Win: <span className="font-normal text-muted-foreground">{log.win}</span></span>
                         </p>
                         <p className="text-sm font-semibold flex items-start gap-2 mt-1">
                           <Flower2 className="size-4 text-primary mt-0.5 shrink-0" />
-                          <span>Gratitude: <span className="font-normal text-muted-foreground">{log.gratitude}</span></span>
+                          <span className="flex-1">Gratitude: <span className="font-normal text-muted-foreground">{log.gratitude}</span></span>
                         </p>
                         <p className="text-xs text-muted-foreground mt-2">{format(new Date(log.date), "PPP")}</p>
                       </div>
