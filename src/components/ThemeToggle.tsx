@@ -7,6 +7,16 @@ import { Switch } from "@/components/ui/switch"
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+  
+  if (!mounted) {
+    // Render a placeholder or null on the server and initial client render
+    return <div className="h-7 w-12" />; 
+  }
 
   const isDarkMode = theme === 'dark';
 
