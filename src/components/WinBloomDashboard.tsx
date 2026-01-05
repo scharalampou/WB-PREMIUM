@@ -259,32 +259,6 @@ export function WinBloomDashboard() {
           </CardContent>
         </Card>
       </div>
-
-       <Card>
-        <CardHeader>
-          <CardTitle className="font-headline flex items-center gap-3">
-            <Award className="size-6 text-yellow-500" />
-            All-Time Dewdrops
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="text-center">
-          {isClient ? (
-            dewdrops > 0 ? (
-              <p className="text-2xl font-bold text-primary">
-                You've collected a grand total of {dewdrops} dewdrops. Look at you go!
-              </p>
-            ) : (
-              <p className="text-muted-foreground italic">
-                Your dewdrops journey starts here. Every big garden starts with a single drop.
-              </p>
-            )
-          ) : (
-            <Loader2 className="mx-auto animate-spin text-primary" />
-          )}
-        </CardContent>
-      </Card>
     </div>
   );
 }
-
-    
