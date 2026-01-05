@@ -118,7 +118,7 @@ export function WinBloomDashboard() {
 
   return (
     <div className="space-y-6">
-      <Card>
+       <Card>
         <CardHeader className="flex-row items-center justify-between">
           <div className="space-y-1.5">
             <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
@@ -219,27 +219,27 @@ export function WinBloomDashboard() {
           </CardHeader>
           <CardContent className="flex-1 flex items-center justify-center relative bg-muted/30 rounded-lg overflow-hidden">
             {isClient ? (
-              <>
-                <Sprout className="text-primary/70" size={64} style={{ zIndex: flowerPositions.length + 1 }}/>
-                {Array.from({ length: flowerCount }).map((_, i) => {
-                  const pos = flowerPositions[i % flowerPositions.length];
-                  return (
-                    <Flower2
-                      key={i}
-                      className="text-primary absolute animate-bloom"
-                      size={pos.size}
-                      style={{ ...pos, animationDelay: `${i * 100}ms` }}
-                    />
-                  )
-                })}
+              <div className="flex flex-col items-center justify-center gap-4 text-center">
+                <div className="relative">
+                  <Sprout className="text-primary/70" size={64} style={{ zIndex: flowerPositions.length + 1 }}/>
+                  {Array.from({ length: flowerCount }).map((_, i) => {
+                    const pos = flowerPositions[i % flowerPositions.length];
+                    return (
+                      <Flower2
+                        key={i}
+                        className="text-primary absolute animate-bloom"
+                        size={pos.size}
+                        style={{ ...pos, animationDelay: `${i * 100}ms` }}
+                      />
+                    )
+                  })}
+                </div>
                  {logs.length === 0 && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded-lg">
-                    <p className="text-center text-lg font-medium text-background/80 p-4 bg-black/20 rounded-lg">
-                      Existing is a full-time job. <br /> Your garden is waiting whenever you are ready.
-                    </p>
-                  </div>
+                  <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
+                    Existing is a full-time job. <br /> Your garden is waiting whenever you are ready.
+                  </p>
                 )}
-              </>
+              </div>
             ) : <Loader2 className="animate-spin text-primary" />}
           </CardContent>
         </Card>
