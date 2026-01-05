@@ -15,7 +15,7 @@ export function ThemeToggle() {
   
   if (!mounted) {
     // Render a placeholder or null on the server and initial client render
-    return <div className="h-7 w-14" />; 
+    return <div className="h-9 w-16" />; 
   }
 
   const isDarkMode = theme === 'dark';
@@ -30,8 +30,8 @@ export function ThemeToggle() {
         checked={isDarkMode}
         onCheckedChange={toggleTheme}
         aria-label="Toggle theme"
-        checkedIcon={<Moon className="h-4 w-4 text-background" />}
-        uncheckedIcon={<Sun className="h-4 w-4 text-background" />}
+        checkedIcon={<Moon className="h-6 w-6 text-primary-foreground" />}
+        uncheckedIcon={<Sun className="h-6 w-6 text-accent-foreground" />}
       />
     </div>
   )
