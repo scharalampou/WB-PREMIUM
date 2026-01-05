@@ -227,7 +227,7 @@ export function WinBloomDashboard() {
                     )}
                   />
                   <div className="flex flex-col sm:flex-row gap-2">
-                    <Button type="submit" className={cn("w-full font-bold", !form.formState.isValid && "bg-primary/50 text-white/80")} disabled={!form.formState.isValid}>Log Your Growth</Button>
+                    <Button type="submit" className="w-full font-bold" disabled={!form.formState.isValid}>Log Your Growth</Button>
                   </div>
                 </form>
               </Form>
