@@ -236,7 +236,7 @@ export function WinBloomDashboard() {
                 </div>
                  {logs.length === 0 && (
                   <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
-                    Existing is a full-time job. <br /> Your garden is waiting whenever you are ready.
+                    Existing is a full-time job. Rest is productive, too.
                   </p>
                 )}
               </div>
