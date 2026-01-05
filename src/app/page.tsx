@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WinBloomDashboard } from '@/components/WinBloomDashboard';
 import { GlobalFeed } from '@/components/GlobalFeed';
 import { Sprout, Users, History } from 'lucide-react';
-import { DailyInspiration } from '@/components/DailyInspiration';
 import { GrowthHistory } from '@/components/GrowthHistory';
 
 export default function Home() {
@@ -22,7 +21,6 @@ export default function Home() {
             </TabsContent>
             <TabsContent value="global" className="mt-6 space-y-6">
               <GlobalFeed />
-              <DailyInspiration />
             </TabsContent>
         </main>
       </Tabs>
