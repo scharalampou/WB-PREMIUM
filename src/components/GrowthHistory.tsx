@@ -4,7 +4,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { WinLog } from '@/app/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, History } from 'lucide-react';
+import { Loader2, History, Leaf } from 'lucide-react';
 import {
   format,
   isToday,
@@ -180,8 +180,9 @@ export function GrowthHistory() {
               </h3>
               
               {'empty' in entries ? (
-                 <Card className="dark:border-border/20 border-dashed dark:bg-card/50">
-                    <CardContent className="p-6 text-center">
+                 <Card className="dark:border-border/20 border-dashed dark:bg-card/50 dark:border-[#485971]">
+                    <CardContent className="p-6 text-center flex flex-col items-center gap-4">
+                        <Leaf className="size-8 text-primary/50" />
                         <p className="text-muted-foreground italic">
                             {encouragingMessages[entries.messageIndex % encouragingMessages.length]}
                         </p>
@@ -213,7 +214,7 @@ export function GrowthHistory() {
         ) : (
           isClient && (
             <div className="flex flex-col items-center justify-center h-64 text-center">
-              <History className="size-16 text-muted-foreground/50 mb-4" />
+              <Leaf className="size-16 text-muted-foreground/50 mb-4" />
               <p className="text-lg font-medium text-muted-foreground">No entries yet.</p>
               <p className="text-sm text-muted-foreground">Your history will appear here once you start logging.</p>
             </div>
