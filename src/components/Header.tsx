@@ -9,23 +9,23 @@ export function Header() {
     <header className="border-b sticky top-0 bg-background z-10 border-border">
       <div className={cn("container mx-auto px-4 flex items-center justify-between", "py-6")}>
         {/* Mobile Nav */}
-        <div className="md:hidden">
+        <div className="xs:hidden">
           <MobileNav />
         </div>
 
         {/* Desktop Logo (Left) */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden xs:flex items-center gap-2">
           <Leaf className="text-primary size-7" />
-          <h1 className="text-2xl font-headline font-bold text-primary dark:text-primary">
+          <h1 className="text-2xl font-headline font-bold text-[#121212] dark:text-primary">
             WinBloom
           </h1>
         </div>
 
         {/* Mobile Logo (Center) */}
-        <div className="md:hidden absolute left-1/2 -translate-x-1/2">
+        <div className="xs:hidden absolute left-1/2 -translate-x-1/2">
           <div className="flex items-center gap-2">
             <Leaf className="text-primary size-7" />
-            <h1 className="text-2xl font-headline font-bold text-primary dark:text-primary">
+            <h1 className="text-2xl font-headline font-bold text-[#121212] dark:text-primary">
               WinBloom
             </h1>
           </div>

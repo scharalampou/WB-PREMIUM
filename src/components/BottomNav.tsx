@@ -1,0 +1,104 @@
+
+"use client";
+
+import { useState } from 'react';
+import { Sprout, History, Users, Plus } from 'lucide-react';
+import { TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { WinForm } from './WinForm';
+import { useToast } from '@/hooks/use-toast';
+import type { WinLog } from '@/app/lib/types';
+
+
+const wittyHeadlines = [
+  "Adulting level: Expert. 🏆",
+  "You’re winning at life today! ✨",
+  "Basically an Olympic Legend now. 🥇",
+  "Making moves and taking names! 🪴",
+  "Achievement unlocked: Absolute Legend. 🙌",
+];
+
+export function BottomNav() {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const { toast } = useToast();
+
+  const handleWinLog = (win: string, gratitude: string) => {
+    try {
+      const savedLogs = localStorage.getItem('winbloom-logs') || '[]';
+      const logs: WinLog[] = JSON.parse(savedLogs);
+      const newLog: WinLog = { id: new Date().toISOString(), win, gratitude, date: new Date().toISOString() };
+      const updatedLogs = [newLog, ...logs];
+      localStorage.setItem('winbloom-logs', JSON.stringify(updatedLogs));
+
+      const savedDewdrops = localStorage.getItem('winbloom-dewdrops') || '0';
+      const dewdrops = JSON.parse(savedDewdrops);
+      const newDewdrops = dewdrops + 10;
+      localStorage.setItem('winbloom-dewdrops', JSON.stringify(newDewdrops));
+
+      const randomHeadline = wittyHeadlines[Math.floor(Math.random() * wittyHeadlines.length)];
+      toast({
+        className: "bg-primary text-primary-foreground border-none",
+        title: <span className="font-bold">{randomHeadline}</span>,
+        description: "Success! +10 Dewdrops added. Refresh to see your garden grow!",
+        duration: 10000,
+      });
+
+    } catch (error) {
+       console.error("Failed to save to localStorage", error);
+       toast({ variant: 'destructive', title: 'Oh no!', description: 'Could not save your win.' });
+    }
+    
+    setIsFormOpen(false);
+  };
+
+
+  return (
+    <>
+      <div className={cn(
+        "xs:hidden fixed bottom-0 left-0 right-0 h-[calc(4.5rem+env(safe-area-inset-bottom))] bg-background/95 backdrop-blur-sm border-t",
+        "flex items-start justify-around pt-2 text-muted-foreground",
+        "pb-[env(safe-area-inset-bottom)]"
+      )}>
+        <TabsList className="grid grid-cols-4 w-full h-full bg-transparent p-0">
+          <TabsTrigger value="garden" className="flex-col h-full gap-1 data-[state=active]:text-primary bg-transparent shadow-none">
+            <Sprout className="size-6" />
+            <span className="text-xs font-semibold">My Garden</span>
+          </TabsTrigger>
+          <TabsTrigger value="history" className="flex-col h-full gap-1 data-[state=active]:text-primary bg-transparent shadow-none">
+            <History className="size-6" />
+            <span className="text-xs font-semibold">My Growth</span>
+          </TabsTrigger>
+
+          <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+            <DialogTrigger asChild>
+              <button className="flex flex-col items-center justify-center gap-1 text-primary -translate-y-4">
+                <div className="flex items-center justify-center size-14 rounded-full bg-primary text-primary-foreground shadow-lg">
+                  <Plus className="size-8" />
+                </div>
+                <span className="text-xs font-semibold">Log +</span>
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-[420px]">
+              <DialogHeader>
+                <DialogTitle>Cultivate Your Day</DialogTitle>
+              </DialogHeader>
+              <WinForm onWinLog={handleWinLog} />
+            </DialogContent>
+          </Dialog>
+          
+          <TabsTrigger value="global" className="flex-col h-full gap-1 data-[state=active]:text-primary bg-transparent shadow-none">
+            <Users className="size-6" />
+            <span className="text-xs font-semibold">Feed</span>
+          </TabsTrigger>
+        </TabsList>
+      </div>
+    </>
+  );
+}
