@@ -147,7 +147,7 @@ export function WinBloomDashboard() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card>
+          <Card className="dark:border-[#51637C]">
             <CardHeader className="flex-row items-center justify-between">
               <div className="space-y-1.5">
                 <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
