@@ -75,12 +75,13 @@ export function WinBloomDashboard() {
         toast({
           className: "bg-primary text-primary-foreground border-none",
           title: (
-            <div className="flex items-center gap-2 font-bold">
-              <Sprout className="text-primary-foreground" />
+            <div className="flex items-center gap-2 font-bold text-primary-foreground">
+              <Sprout className="text-white" />
               <span>A new flower has bloomed! 🌸</span>
             </div>
           ),
           description: "Your garden is flourishing!",
+          duration: 10000,
         });
         setLastFlowerToast(newFlowerMilestone);
       }
@@ -131,6 +132,7 @@ export function WinBloomDashboard() {
       className: "bg-primary text-primary-foreground border-none",
       title: <span className="font-bold">{randomHeadline}</span>,
       description: "Success! +10 Dewdrops added to your balance.",
+      duration: 10000,
     });
   }
 
@@ -142,7 +144,7 @@ export function WinBloomDashboard() {
             <CardHeader className="flex-row items-center justify-between">
               <div className="space-y-1.5">
                 <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
-                <CardDescription>Earn 10 for each entry.</CardDescription>
+                <CardDescription>Earn 10 Dewdrops every time you Log your Growth!</CardDescription>
               </div>
               <div className="flex items-center gap-2 text-4xl font-bold text-primary">
                 <Droplets className="size-8" />
