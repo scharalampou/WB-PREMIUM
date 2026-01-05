@@ -10,7 +10,7 @@ import { Droplets, Loader2, Sparkles, Sprout } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { getWinSuggestion } from '@/app/lib/actions';
 import type { WinLog } from '@/app/lib/types';
@@ -20,8 +20,8 @@ import { Progress } from './ui/progress';
 import { DailyInspiration } from './DailyInspiration';
 
 const formSchema = z.object({
-  win: z.string().min(3, "Your win needs a bit more detail!"),
-  gratitude: z.string().min(3, "Please share a little more about your gratitude."),
+  win: z.string().min(3, "Your win needs at least 3 characters.").max(100, "Keep your win concise!"),
+  gratitude: z.string().min(3, "Gratitude needs at least 3 characters.").max(100, "Keep your gratitude concise!"),
 });
 
 type SuggestionField = 'win' | 'gratitude';
@@ -186,7 +186,7 @@ export function WinBloomDashboard() {
                           </Button>
                         </div>
                         <FormControl>
-                          <Textarea placeholder="Found matching socks..." {...field} />
+                          <Input placeholder="Found matching socks..." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -218,7 +218,7 @@ export function WinBloomDashboard() {
                           </Button>
                         </div>
                         <FormControl>
-                          <Textarea placeholder="Grateful for the morning coffee..." {...field} />
+                          <Input placeholder="Grateful for the morning coffee..." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -290,3 +290,5 @@ export function WinBloomDashboard() {
     </div>
   );
 }
+
+    
