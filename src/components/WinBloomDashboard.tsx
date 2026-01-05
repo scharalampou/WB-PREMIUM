@@ -16,6 +16,7 @@ import { getWinSuggestion } from '@/app/lib/actions';
 import type { WinLog } from '@/app/lib/types';
 import { cn, format } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
+import { DailyInspiration } from './DailyInspiration';
 
 const formSchema = z.object({
   win: z.string().min(3, "Your win needs a bit more detail!"),
@@ -259,6 +260,7 @@ export function WinBloomDashboard() {
           </CardContent>
         </Card>
       </div>
+      <DailyInspiration />
     </div>
   );
 }
