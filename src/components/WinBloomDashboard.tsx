@@ -160,18 +160,18 @@ export function WinBloomDashboard() {
               </div>
             </CardHeader>
             <CardContent>
-                <div className="space-y-2">
+                <div className="space-y-2 pt-2">
                     <p className="text-sm font-medium text-muted-foreground">
                         Your progress to the next flower:
                     </p>
-                    <div className="relative w-full">
+                    <div className="relative w-full h-8 flex items-center">
                         <Progress value={progressToNextFlower} className="h-2" />
                         <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between">
                             {Array.from({ length: 7 }).map((_, i) => (
                                 <div
                                     key={i}
                                     className={cn(
-                                        "h-4 w-4 rounded-full flex items-center justify-center bg-secondary transition-colors duration-500",
+                                        "h-6 w-6 rounded-full flex items-center justify-center bg-secondary transition-colors duration-500",
                                         i < currentProgressSteps ? 'bg-primary' : 'bg-muted'
                                     )}
                                     style={{
@@ -180,9 +180,9 @@ export function WinBloomDashboard() {
                                     }}
                                 >
                                     {i < 6 ? (
-                                        <Droplets className={cn("size-2.5", i < currentProgressSteps ? 'text-primary-foreground' : 'text-muted-foreground')} />
+                                        <Droplets className={cn("size-3.5", i < currentProgressSteps ? 'text-primary-foreground' : 'text-muted-foreground')} />
                                     ) : (
-                                      <span className={cn("text-xs", i < currentProgressSteps ? '' : 'opacity-40')}>🌸</span>
+                                      <span className={cn("text-lg", i < currentProgressSteps ? '' : 'opacity-40')}>🌸</span>
                                     )}
                                 </div>
                             ))}
