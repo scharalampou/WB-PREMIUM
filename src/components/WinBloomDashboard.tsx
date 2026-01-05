@@ -99,125 +99,126 @@ export function WinBloomDashboard() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-      <Card className="lg:col-span-3 aspect-square lg:aspect-auto flex flex-col">
-        <CardHeader>
-          <CardTitle className="font-headline">Your Digital Garden</CardTitle>
-          <CardDescription>Watch your garden grow with every win you log.</CardDescription>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader className="flex-row items-center justify-between">
+          <div className="space-y-1.5">
+            <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
+            <CardDescription>Earn 10 for each entry.</CardDescription>
+          </div>
+          <div className="flex items-center gap-2 text-4xl font-bold text-primary">
+            <Droplets className="size-8" />
+            <span>{isClient ? dewdrops : 0}</span>
+          </div>
         </CardHeader>
-        <CardContent className="flex-1 flex items-center justify-center relative bg-muted/30 rounded-lg overflow-hidden">
-          {isClient ? (
-            <>
-              <Sprout className="text-primary/70" size={64} style={{ zIndex: flowerPositions.length + 1 }}/>
-              {Array.from({ length: flowerCount }).map((_, i) => {
-                const pos = flowerPositions[i % flowerPositions.length];
-                return (
-                  <Flower2
-                    key={i}
-                    className="text-primary absolute animate-bloom"
-                    size={pos.size}
-                    style={{ ...pos, animationDelay: `${i * 100}ms` }}
-                  />
-                )
-              })}
-            </>
-          ) : <Loader2 className="animate-spin text-primary" />}
-        </CardContent>
       </Card>
-
-      <div className="lg:col-span-2 space-y-6">
-        <Card>
-          <CardHeader className="flex-row items-center justify-between">
-            <div className="space-y-1.5">
-              <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
-              <CardDescription>Earn 10 for each entry.</CardDescription>
-            </div>
-            <div className="flex items-center gap-2 text-4xl font-bold text-primary">
-              <Droplets className="size-8" />
-              <span>{isClient ? dewdrops : 0}</span>
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <Card className="lg:col-span-3 aspect-square lg:aspect-auto flex flex-col">
+          <CardHeader>
+            <CardTitle className="font-headline">Your Digital Garden</CardTitle>
+            <CardDescription>Watch your garden grow with every win you log.</CardDescription>
           </CardHeader>
+          <CardContent className="flex-1 flex items-center justify-center relative bg-muted/30 rounded-lg overflow-hidden">
+            {isClient ? (
+              <>
+                <Sprout className="text-primary/70" size={64} style={{ zIndex: flowerPositions.length + 1 }}/>
+                {Array.from({ length: flowerCount }).map((_, i) => {
+                  const pos = flowerPositions[i % flowerPositions.length];
+                  return (
+                    <Flower2
+                      key={i}
+                      className="text-primary absolute animate-bloom"
+                      size={pos.size}
+                      style={{ ...pos, animationDelay: `${i * 100}ms` }}
+                    />
+                  )
+                })}
+              </>
+            ) : <Loader2 className="animate-spin text-primary" />}
+          </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-headline">Cultivate Your Day</CardTitle>
-            <CardDescription>Log a win and something you're grateful for.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="win"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex justify-between items-center">
-                        <FormLabel>Today's Win</FormLabel>
-                        <Button type="button" variant="ghost" size="sm" onClick={handleShuffle} disabled={isPending} aria-label="Suggest a win">
-                          {isPending ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <Shuffle className="h-4 w-4" />
-                          )}
-                          <span className="ml-2 hidden sm:inline">Suggest</span>
-                        </Button>
+        <div className="lg:col-span-2 space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Cultivate Your Day</CardTitle>
+              <CardDescription>Log a win and something you're grateful for.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="win"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex justify-between items-center">
+                          <FormLabel>Today's Win</FormLabel>
+                          <Button type="button" variant="ghost" size="sm" onClick={handleShuffle} disabled={isPending} aria-label="Suggest a win">
+                            {isPending ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Shuffle className="h-4 w-4" />
+                            )}
+                            <span className="ml-2 hidden sm:inline">Suggest</span>
+                          </Button>
+                        </div>
+                        <FormControl>
+                          <Textarea placeholder="Found matching socks..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="gratitude"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Today's Gratitude</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Grateful for the morning coffee..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full" disabled={!form.formState.isValid}>Log Your Growth</Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Growth History</CardTitle>
+              <CardDescription>A log of your recent wins and gratitudes.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-64">
+                <div className="space-y-4 pr-4">
+                  {isClient && logs.length > 0 ? (
+                    logs.map(log => (
+                      <div key={log.id} className="p-3 rounded-md border bg-muted/50">
+                        <p className="text-sm font-semibold flex items-center gap-2">
+                          <Sparkles className="size-4 text-accent" /> Win: <span className="font-normal text-muted-foreground">{log.win}</span>
+                        </p>
+                         <p className="text-sm font-semibold flex items-center gap-2 mt-1">
+                          <Flower2 className="size-4 text-primary" /> Gratitude: <span className="font-normal text-muted-foreground">{log.gratitude}</span>
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">{format(new Date(log.date), "PPP")}</p>
                       </div>
-                      <FormControl>
-                        <Textarea placeholder="Found matching socks..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                    ))
+                  ) : (
+                    <p className="text-sm text-muted-foreground text-center py-10">
+                      Your history will appear here once you start logging.
+                    </p>
                   )}
-                />
-                <FormField
-                  control={form.control}
-                  name="gratitude"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Today's Gratitude</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Grateful for the morning coffee..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full" disabled={!form.formState.isValid}>Log Your Growth</Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-headline">Growth History</CardTitle>
-            <CardDescription>A log of your recent wins and gratitudes.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-64">
-              <div className="space-y-4 pr-4">
-                {isClient && logs.length > 0 ? (
-                  logs.map(log => (
-                    <div key={log.id} className="p-3 rounded-md border bg-muted/50">
-                      <p className="text-sm font-semibold flex items-center gap-2">
-                        <Sparkles className="size-4 text-accent" /> Win: <span className="font-normal text-muted-foreground">{log.win}</span>
-                      </p>
-                       <p className="text-sm font-semibold flex items-center gap-2 mt-1">
-                        <Flower2 className="size-4 text-primary" /> Gratitude: <span className="font-normal text-muted-foreground">{log.gratitude}</span>
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-2">{format(new Date(log.date), "PPP")}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground text-center py-10">
-                    Your history will appear here once you start logging.
-                  </p>
-                )}
-              </div>
-            </ScrollArea>
-          </CardContent>
-        </Card>
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
