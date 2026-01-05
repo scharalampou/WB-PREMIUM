@@ -4,7 +4,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { WinLog } from '@/app/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, History, Leaf } from 'lucide-react';
+import { Loader2, Leaf } from 'lucide-react';
 import {
   format,
   isToday,
@@ -85,7 +85,7 @@ export function GrowthHistory() {
     setIsClient(true);
     // Use mock data for demonstration, generating data for the last 10 days
     const mockLogs = generateMockLogs(10);
-    setLogs(mockLogs.sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()));
+    setLogs(mockLogs.sort((a, b) => parseISO(b.date).getTime() - parseISO(a).date.getTime()));
     
     // Previous localStorage logic:
     // try {
@@ -195,7 +195,7 @@ export function GrowthHistory() {
                       <CardContent className="p-4">
                         <div className="space-y-2">
                             <p>
-                                <span className="font-bold text-card-foreground">Win of the Day:</span> {log.win}
+                                <span className="font-bold text-card-foreground">🏆 Win of the Day:</span> {log.win}
                             </p>
                             <p className="text-sm">
                                 <span className="font-bold italic text-muted-foreground">Grateful for...</span> <span className="italic text-muted-foreground">{log.gratitude}</span>
