@@ -274,7 +274,7 @@ export function WinBloomDashboard() {
             <CardTitle className="font-headline">Your Digital Garden</CardTitle>
             <CardDescription>Watch your garden grow with every win you log.</CardDescription>
           </CardHeader>
-          <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30">
+          <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-[#1F2937]">
             {!isClient ? (
               <div className="flex items-center justify-center flex-grow">
                 <Loader2 className="animate-spin text-primary" />
@@ -327,6 +327,3 @@ export function WinBloomDashboard() {
     </div>
   );
 }
-
-    
-    
