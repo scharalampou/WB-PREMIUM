@@ -11,23 +11,23 @@ import { GrowthHistory } from '@/components/GrowthHistory';
 export default function Home() {
   return (
     <div className="min-h-screen bg-background font-body text-foreground">
-      <main className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="garden" className="w-full">
-          <Header />
-          <TabsContent value="garden" className="mt-6 space-y-6">
-            <DailyInspiration />
-            <WinBloomDashboard />
-          </TabsContent>
-          <TabsContent value="history" className="mt-6 space-y-6">
-            <GrowthHistory />
-            <DailyInspiration />
-          </TabsContent>
-          <TabsContent value="global" className="mt-6 space-y-6">
-            <GlobalFeed />
-            <DailyInspiration />
-          </TabsContent>
-        </Tabs>
-      </main>
+      <Tabs defaultValue="garden" className="w-full">
+        <Header />
+        <main className="container mx-auto px-4 pt-6 pb-8">
+            <TabsContent value="garden" className="mt-6 space-y-6">
+              <DailyInspiration />
+              <WinBloomDashboard />
+            </TabsContent>
+            <TabsContent value="history" className="mt-6 space-y-6">
+              <GrowthHistory />
+              <DailyInspiration />
+            </TabsContent>
+            <TabsContent value="global" className="mt-6 space-y-6">
+              <GlobalFeed />
+              <DailyInspiration />
+            </TabsContent>
+        </main>
+      </Tabs>
     </div>
   );
 }
