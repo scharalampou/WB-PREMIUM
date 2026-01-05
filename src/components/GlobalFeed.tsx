@@ -16,7 +16,7 @@ export function GlobalFeed() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2 max-w-2xl mx-auto">
-        <h2 className="text-3xl font-headline text-primary">Community Garden</h2>
+        <h2 className="text-3xl font-headline text-primary font-bold">Community Garden</h2>
         <p className="text-muted-foreground">
           Get inspired by small and big wins from the WinBloom community around the world.
         </p>
@@ -26,7 +26,7 @@ export function GlobalFeed() {
           <Card key={index} className="flex flex-col transition-transform duration-300 hover:-translate-y-1">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
-                <span className="bg-secondary p-2 rounded-full">
+                <span className="bg-secondary p-2 rounded-full text-xl">
                   <Sparkles className="text-primary" />
                 </span>
                 <span className="text-base font-body pt-1 font-medium text-muted-foreground">{item.user}</span>

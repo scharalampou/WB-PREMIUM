@@ -43,7 +43,7 @@ export function GrowthHistory() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-headline text-primary">Your Growth History</h2>
+        <h2 className="text-3xl font-headline text-primary font-bold">Your Growth History</h2>
         <p className="text-muted-foreground">
           A log of your recent wins and gratitudes. You have a total of <span className="font-bold text-primary">{logs.length}</span> entries.
         </p>
