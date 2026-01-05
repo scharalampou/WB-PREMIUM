@@ -71,7 +71,12 @@ export function WinBloomDashboard() {
       const newFlowerMilestone = Math.floor(dewdrops / 50) * 50;
       if (dewdrops > 0 && newFlowerMilestone > lastFlowerToast && newFlowerMilestone > 0) {
         toast({
-            title: 'A new flower has bloomed!',
+            title: (
+              <div className="flex items-center gap-2">
+                <Sprout className="text-primary" />
+                <span>A new flower has bloomed!</span>
+              </div>
+            ),
             description: 'Your garden is flourishing!',
         });
         setLastFlowerToast(newFlowerMilestone);
@@ -125,10 +130,13 @@ export function WinBloomDashboard() {
       ),
       description: 'You\'ve earned 10 dewdrops!',
     });
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 4000);
   }
 
   return (
     <div className="space-y-6">
+      {showConfetti && <ConfettiBurst />}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <Card>
@@ -251,16 +259,15 @@ export function WinBloomDashboard() {
             <CardTitle className="font-headline">Your Digital Garden</CardTitle>
             <CardDescription>Watch your garden grow with every win you log.</CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col items-center justify-start p-4 md:p-6 bg-muted/30 rounded-b-lg flex-grow">
+          <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-muted/30 rounded-b-lg">
             {!isClient ? (
               <div className="flex items-center justify-center flex-grow">
                 <Loader2 className="animate-spin text-primary" />
               </div>
             ) : (
-              <div className="w-full flex flex-col items-center">
+              <div className="w-full flex flex-col items-center flex-grow">
                 
-                {/* Currently Growing Section */}
-                <div className="flex flex-col items-center justify-center gap-4 text-center mb-8">
+                <div className="flex flex-col items-center justify-center gap-4 text-center flex-grow">
                   {logs.length === 0 ? (
                     <>
                       <Sprout className="text-primary/70" size={64} />
@@ -279,7 +286,6 @@ export function WinBloomDashboard() {
                   )}
                 </div>
 
-                {/* Separator and Bloomed Flowers Grid */}
                 {flowerCount > 0 && (
                   <>
                     <div className="w-full border-t border-border my-4"></div>
@@ -306,3 +312,4 @@ export function WinBloomDashboard() {
     </div>
   );
 }
+
