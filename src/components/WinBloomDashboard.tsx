@@ -177,7 +177,7 @@ export function WinBloomDashboard() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={!form.formState.isValid}>Log Your Growth</Button>
+                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-bold" disabled={!form.formState.isValid}>Log Your Growth</Button>
               </form>
             </Form>
           </CardContent>
