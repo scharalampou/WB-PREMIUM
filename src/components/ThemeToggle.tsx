@@ -16,13 +16,13 @@ export function ThemeToggle() {
 
   return (
     <div className="flex items-center space-x-2">
-      <Sun className="h-[1.2rem] w-[1.2rem]" />
       <Switch
         checked={isDarkMode}
         onCheckedChange={toggleTheme}
         aria-label="Toggle theme"
+        checkedIcon={<Moon className="h-3 w-3 text-primary-foreground" />}
+        uncheckedIcon={<Sun className="h-3 w-3 text-accent-foreground" />}
       />
-      <Moon className="h-[1.2rem] w-[1.2rem]" />
     </div>
   )
 }
