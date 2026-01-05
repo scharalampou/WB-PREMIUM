@@ -22,33 +22,31 @@ export function DailyInspiration() {
 
   return (
     <Card className="bg-violet-500 text-white">
-      <CardContent className="p-4">
-        <div className="flex items-start gap-4">
-          <div className="flex-grow">
-            <p className="font-headline text-lg mb-2">Daily Inspiration</p>
-            {quote ? (
-              <figure>
-                <blockquote className="italic text-base">
-                  “{quote.quote}”
-                </blockquote>
-                <figcaption className="text-right text-sm mt-2 font-medium">— {quote.source}</figcaption>
-              </figure>
-            ) : (
+      <CardContent className="p-4 relative">
+        <div className="text-center">
+          <p className="font-headline text-lg mb-2">Daily Inspiration</p>
+          {quote ? (
+            <figure>
               <blockquote className="italic text-base">
-                Loading your daily dose of inspiration...
+                “{quote.quote}”
               </blockquote>
-            )}
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={getRandomQuote}
-            className="text-white hover:bg-white/20 hover:text-white shrink-0"
-            aria-label="Refresh Quote"
-          >
-            <RefreshCw className="h-5 w-5" />
-          </Button>
+              <figcaption className="text-center text-sm mt-2 font-medium">— {quote.source}</figcaption>
+            </figure>
+          ) : (
+            <blockquote className="italic text-base">
+              Loading your daily dose of inspiration...
+            </blockquote>
+          )}
         </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={getRandomQuote}
+          className="absolute top-4 right-4 text-white hover:bg-white/20 hover:text-white shrink-0"
+          aria-label="Refresh Quote"
+        >
+          <RefreshCw className="h-5 w-5" />
+        </Button>
       </CardContent>
     </Card>
   );
