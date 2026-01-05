@@ -15,30 +15,34 @@ export function ThemeToggle() {
   }, [])
   
   if (!mounted) {
-    // Render a placeholder or null on the server and initial client render
-    return <div className="flex items-center space-x-2 h-11 w-24" />;
+    // Render a placeholder to prevent layout shift
+    return <Button variant="ghost" size="icon" className="btn-touch rounded-full h-11 w-11" disabled />;
   }
 
+  const isLight = theme === 'light';
+
+  const toggleTheme = () => {
+    setTheme(isLight ? 'dark' : 'light');
+  };
+
   return (
-    <div className="flex items-center space-x-2 bg-secondary rounded-full p-1">
-      <Button
-        variant={theme === 'light' ? 'primary' : 'ghost'}
-        size="icon"
-        onClick={() => setTheme('light')}
-        aria-label="Switch to light mode"
-        className={cn("btn-touch rounded-full", theme === 'light' && 'bg-primary text-primary-foreground')}
-      >
-        <Sun className="h-6 w-6" />
-      </Button>
-      <Button
-        variant={theme === 'dark' ? 'primary' : 'ghost'}
-        size="icon"
-        onClick={() => setTheme('dark')}
-        aria-label="Switch to dark mode"
-        className={cn("btn-touch rounded-full", theme === 'dark' && 'bg-primary/80 text-primary-foreground')}
-      >
-        <Moon className="h-6 w-6" />
-      </Button>
-    </div>
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+      aria-label={`Switch to ${isLight ? 'dark' : 'light'} mode`}
+      className={cn(
+        "btn-touch rounded-full h-11 w-11 transition-colors duration-300",
+        isLight 
+          ? "bg-black text-white hover:bg-gray-800" 
+          : "bg-yellow-400 text-black hover:bg-yellow-500"
+      )}
+    >
+      {isLight ? (
+        <Sun className="h-6 w-6 transform transition-transform duration-500 rotate-0 scale-100" />
+      ) : (
+        <Moon className="h-6 w-6 transform transition-transform duration-500 rotate-90 scale-100" />
+      )}
+    </Button>
   )
 }
