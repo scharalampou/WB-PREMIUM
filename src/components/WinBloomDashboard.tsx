@@ -195,13 +195,13 @@ export function WinBloomDashboard() {
                         </div>
                         <FormControl>
                           <div className="relative">
-                            <Input placeholder="Found matching socks..." {...field} />
+                            <Input placeholder="Found matching socks..." {...field} className={cn(winValue && "pr-10")} />
                              {winValue && (
                               <Button
                                 type="button"
-                                variant="ghost"
+                                variant="default"
                                 size="icon"
-                                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:bg-muted"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 rounded-full bg-primary text-primary-foreground hover:bg-primary/80"
                                 onClick={() => handleClear("win")}
                                 aria-label="Clear win input"
                               >
@@ -242,13 +242,13 @@ export function WinBloomDashboard() {
                         </div>
                         <FormControl>
                           <div className="relative">
-                            <Input placeholder="Grateful for the morning coffee..." {...field} />
+                            <Input placeholder="Grateful for the morning coffee..." {...field} className={cn(gratitudeValue && "pr-10")} />
                             {gratitudeValue && (
                               <Button
                                 type="button"
-                                variant="ghost"
+                                variant="default"
                                 size="icon"
-                                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:bg-muted"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 rounded-full bg-primary text-primary-foreground hover:bg-primary/80"
                                 onClick={() => handleClear("gratitude")}
                                 aria-label="Clear gratitude input"
                               >
