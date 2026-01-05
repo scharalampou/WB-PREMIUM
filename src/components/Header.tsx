@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 export function Header() {
   return (
-    <header className="border-b sticky top-0 bg-background z-10 border-border dark:border-[#485971]">
+    <header className="border-b sticky top-0 bg-background z-10 border-border">
       <div className={cn("container mx-auto px-4 flex items-center justify-between", "py-6")}>
         {/* Mobile Nav */}
         <div className="md:hidden">
@@ -16,7 +16,7 @@ export function Header() {
         {/* Desktop Logo (Left) */}
         <div className="hidden md:flex items-center gap-2">
           <Leaf className="text-primary size-7" />
-          <h1 className="text-2xl font-headline font-bold text-primary">
+          <h1 className="text-2xl font-headline font-bold text-primary dark:text-primary">
             WinBloom
           </h1>
         </div>
@@ -25,7 +25,7 @@ export function Header() {
         <div className="md:hidden absolute left-1/2 -translate-x-1/2">
           <div className="flex items-center gap-2">
             <Leaf className="text-primary size-7" />
-            <h1 className="text-2xl font-headline font-bold text-primary">
+            <h1 className="text-2xl font-headline font-bold text-primary dark:text-primary">
               WinBloom
             </h1>
           </div>
