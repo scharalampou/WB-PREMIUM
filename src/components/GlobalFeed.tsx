@@ -23,7 +23,7 @@ export function GlobalFeed() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {isClient && exampleWins.map((item, index) => (
-          <Card key={index} className="flex flex-col transition-transform duration-300 hover:-translate-y-1">
+          <Card key={index} className="flex flex-col transition-transform duration-300 hover:-translate-y-1 dark:border-[#485971]">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <span className="bg-secondary p-2 rounded-full text-xl">

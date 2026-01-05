@@ -48,12 +48,12 @@ export function GrowthHistory() {
           A log of your recent wins and gratitudes. You have a total of <span className="font-bold text-primary">{logs.length}</span> entries.
         </p>
       </div>
-      <Card>
+      <Card className="dark:border-[#485971]">
         <CardContent className="p-4 md:p-6">
           <div className="space-y-4 pr-4">
             {isClient && logs.length > 0 ? (
               visibleLogs.map(log => (
-                <div key={log.id} className="p-4 rounded-lg border bg-slate-50 dark:bg-card text-card-foreground">
+                <div key={log.id} className="p-4 rounded-lg border bg-slate-50 dark:bg-card text-card-foreground dark:border-[#485971]">
                   <div className="space-y-2">
                     <p className="text-sm flex items-start gap-2">
                       <Trophy className="h-5 w-5 text-emerald-600 dark:text-primary mt-0.5 shrink-0" />
