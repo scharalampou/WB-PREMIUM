@@ -171,7 +171,7 @@ export function WinBloomDashboard() {
                                 <div
                                     key={i}
                                     className={cn(
-                                        "h-6 w-6 rounded-full flex items-center justify-center bg-secondary transition-colors duration-500",
+                                        "h-8 w-8 rounded-full flex items-center justify-center bg-secondary transition-colors duration-500",
                                         i < currentProgressSteps ? 'bg-primary' : 'bg-muted'
                                     )}
                                     style={{
@@ -180,9 +180,9 @@ export function WinBloomDashboard() {
                                     }}
                                 >
                                     {i < 6 ? (
-                                        <Droplets className={cn("size-3.5", i < currentProgressSteps ? 'text-primary-foreground' : 'text-muted-foreground')} />
+                                        <Droplets className={cn("size-4", i < currentProgressSteps ? 'text-primary-foreground' : 'text-muted-foreground')} />
                                     ) : (
-                                      <span className={cn("text-lg", i < currentProgressSteps ? '' : 'opacity-40')}>🌸</span>
+                                      <span className={cn("text-xl", i < currentProgressSteps ? '' : '')}>🌸</span>
                                     )}
                                 </div>
                             ))}
