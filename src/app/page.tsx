@@ -27,7 +27,7 @@ export default function Home() {
             </TabsTrigger>
             <TabsTrigger value="global">
               <Users className="mr-2 h-4 w-4" />
-              Community Feed
+              Community
             </TabsTrigger>
           </TabsList>
           <TabsContent value="garden" className="mt-6">
