@@ -13,7 +13,7 @@ type SwitchProps = React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   SwitchProps
->(({ className, ...props }, ref) => (
+>(({ className, checkedIcon, uncheckedIcon, ...props }, ref) => (
   <SwitchPrimitives.Root
     className={cn(
       "group",
@@ -25,17 +25,17 @@ const Switch = React.forwardRef<
     ref={ref}
   >
     <div className="absolute left-2.5 z-0 text-primary/60 transition-colors group-data-[state=checked]:text-primary-foreground">
-      {props.uncheckedIcon}
+      {uncheckedIcon}
     </div>
     <div className="absolute right-2.5 z-0 text-primary/60 transition-colors group-data-[state=unchecked]:text-primary-foreground">
-      {props.checkedIcon}
+      {checkedIcon}
     </div>
     <SwitchPrimitives.Thumb
       className={cn(
         "pointer-events-none z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-[1.85rem] data-[state=unchecked]:translate-x-0.5"
       )}
     >
-       {props.checked ? props.checkedIcon : props.uncheckedIcon}
+       {props.checked ? checkedIcon : uncheckedIcon}
     </SwitchPrimitives.Thumb>
   </SwitchPrimitives.Root>
 ))
