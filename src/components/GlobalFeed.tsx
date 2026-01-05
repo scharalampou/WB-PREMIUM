@@ -1,0 +1,33 @@
+import { exampleWins } from '@/app/lib/mock-data';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Sparkles } from 'lucide-react';
+
+export function GlobalFeed() {
+  return (
+    <div className="space-y-6">
+      <div className="text-center space-y-2 max-w-2xl mx-auto">
+        <h2 className="text-3xl font-headline text-primary">Community Garden</h2>
+        <p className="text-muted-foreground">
+          Get inspired by small and big wins from the WinBloom community around the world.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {exampleWins.map((win, index) => (
+          <Card key={index} className="flex flex-col transition-transform duration-300 hover:-translate-y-1">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <span className="bg-secondary p-2 rounded-full">
+                  <Sparkles className="text-primary/80" size={20} />
+                </span>
+                <span className="text-base font-body pt-1 font-medium text-muted-foreground">Anonymous User</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-grow">
+              <p className="text-card-foreground italic">"{win}"</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
