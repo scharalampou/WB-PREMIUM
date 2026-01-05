@@ -5,7 +5,7 @@ import { useState, useEffect, useTransition, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Droplets, Loader2, Sparkles, Sprout } from 'lucide-react';
+import { Droplets, Loader2, Sparkles, Sprout, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { getWinSuggestion } from '@/app/lib/actions';
 import type { WinLog } from '@/app/lib/types';
-import { cn, format } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
 import { Progress } from './ui/progress';
 import { DailyInspiration } from './DailyInspiration';
@@ -50,6 +50,9 @@ export function WinBloomDashboard() {
     resolver: zodResolver(formSchema),
     defaultValues: { win: "", gratitude: "" },
   });
+  
+  const winValue = form.watch('win');
+  const gratitudeValue = form.watch('gratitude');
 
   useEffect(() => {
     setIsClient(true);
@@ -113,6 +116,10 @@ export function WinBloomDashboard() {
       }
       setSuggestionTarget(null);
     });
+  };
+  
+  const handleClear = (field: "win" | "gratitude") => {
+    form.setValue(field, "", { shouldValidate: true });
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -187,7 +194,21 @@ export function WinBloomDashboard() {
                           </Button>
                         </div>
                         <FormControl>
-                          <Input placeholder="Found matching socks..." {...field} />
+                          <div className="relative">
+                            <Input placeholder="Found matching socks..." {...field} />
+                             {winValue && (
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:bg-muted"
+                                onClick={() => handleClear("win")}
+                                aria-label="Clear win input"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -220,7 +241,21 @@ export function WinBloomDashboard() {
                           </Button>
                         </div>
                         <FormControl>
-                          <Input placeholder="Grateful for the morning coffee..." {...field} />
+                          <div className="relative">
+                            <Input placeholder="Grateful for the morning coffee..." {...field} />
+                            {gratitudeValue && (
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:bg-muted"
+                                onClick={() => handleClear("gratitude")}
+                                aria-label="Clear gratitude input"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -292,3 +327,5 @@ export function WinBloomDashboard() {
     </div>
   );
 }
+
+    
