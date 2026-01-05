@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { History, Loader2 } from 'lucide-react';
+import { History, Loader2, Trophy, Heart } from 'lucide-react';
 import { format } from '@/lib/utils';
 import type { WinLog } from '@/app/lib/types';
 import { Button } from './ui/button';
@@ -53,16 +53,18 @@ export function GrowthHistory() {
           <div className="space-y-4 pr-4">
             {isClient && logs.length > 0 ? (
               visibleLogs.map(log => (
-                <div key={log.id} className="p-4 rounded-md border bg-[#F7F4E6] border-[#F0EDDE] text-[#555555]">
-                  <p className="text-sm font-semibold flex items-start gap-2">
-                    <span className="mt-0.5 shrink-0">🎉</span>
-                    <span className="flex-1">Win: <span className="font-normal">{log.win}</span></span>
-                  </p>
-                  <p className="text-sm font-semibold flex items-start gap-2 mt-2">
-                    <span className="text-primary mt-0.5 shrink-0">🌸</span>
-                    <span className="flex-1">Gratitude: <span className="font-normal">{log.gratitude}</span></span>
-                  </p>
-                  <p className="text-xs text-right mt-3 font-medium opacity-80">{format(new Date(log.date), "PPP")}</p>
+                <div key={log.id} className="p-4 rounded-lg border bg-card text-card-foreground">
+                  <div className="space-y-2">
+                    <p className="text-sm flex items-start gap-2">
+                      <Trophy className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                      <span className="flex-1"><span className="font-semibold text-primary">Win: </span>{log.win}</span>
+                    </p>
+                    <p className="text-sm flex items-start gap-2">
+                      <Heart className="h-5 w-5 text-accent mt-0.5 shrink-0" />
+                      <span className="flex-1"><span className="font-semibold text-accent">Gratitude: </span>{log.gratitude}</span>
+                    </p>
+                  </div>
+                  <p className="text-xs text-right mt-3 font-medium text-muted-foreground">{format(new Date(log.date), "PPP")}</p>
                 </div>
               ))
             ) : (
