@@ -163,7 +163,7 @@ export function WinBloomDashboard() {
                             ) : (
                               <Wand2 className="h-4 w-4 text-primary group-hover:text-primary-foreground" />
                             )}
-                            <span className="ml-2 hidden sm:inline">Suggest</span>
+                            <span className="ml-1 hidden sm:inline">Suggest</span>
                           </Button>
                         </div>
                         <FormControl>
@@ -192,7 +192,7 @@ export function WinBloomDashboard() {
                             ) : (
                               <Wand2 className="h-4 w-4 text-primary group-hover:text-primary-foreground" />
                             )}
-                            <span className="ml-2 hidden sm:inline">Suggest</span>
+                            <span className="ml-1 hidden sm:inline">Suggest</span>
                           </Button>
                         </div>
                         <FormControl>
@@ -298,9 +298,4 @@ export function WinBloomDashboard() {
       <DailyInspiration />
     </div>
   );
-
-    
-    
-    
-
-    
+}
