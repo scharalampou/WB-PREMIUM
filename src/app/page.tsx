@@ -3,12 +3,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WinBloomDashboard } from '@/components/WinBloomDashboard';
 import { GlobalFeed } from '@/components/GlobalFeed';
 import { Sprout, Globe } from 'lucide-react';
+import { DailyInspiration } from '@/components/DailyInspiration';
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background font-body text-foreground">
       <Header />
       <main className="container mx-auto px-4 py-8">
+        <div className="mb-6">
+          <DailyInspiration />
+        </div>
         <Tabs defaultValue="garden" className="w-full">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
             <TabsTrigger value="garden">
