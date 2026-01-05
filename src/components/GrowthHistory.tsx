@@ -4,7 +4,7 @@
 import { useState, useEffect, useMemo, useTransition } from 'react';
 import type { WinLog } from '@/app/lib/types';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, Leaf, Plus } from 'lucide-react';
+import { Loader2, Leaf, History } from 'lucide-react';
 import {
   format,
   isToday,
@@ -251,7 +251,7 @@ export function GrowthHistory() {
                 </>
               ) : (
                 <>
-                  <Plus className="mr-2 h-4 w-4" />
+                  <History className="mr-2 h-4 w-4" />
                   Load more entries
                 </>
               )}
