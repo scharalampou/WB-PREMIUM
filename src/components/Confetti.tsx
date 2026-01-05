@@ -1,6 +1,7 @@
+
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
 import { useWindowSize } from '@react-hook/window-size';
 
@@ -11,9 +12,18 @@ type ConfettiBurstProps = {
 
 export const ConfettiBurst: React.FC<ConfettiBurstProps> = ({
   recycle = false,
-  numberOfPieces = 500,
+  numberOfPieces = 200, // Reduced for a quicker burst
 }) => {
   const { width, height } = useWindowSize();
+  const [isRunning, setIsRunning] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsRunning(false);
+    }, 4000); // Stop confetti after 4 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!width || !height) {
     return null;
@@ -23,9 +33,11 @@ export const ConfettiBurst: React.FC<ConfettiBurstProps> = ({
     <Confetti
       width={width}
       height={height}
-      recycle={recycle}
+      recycle={isRunning}
       numberOfPieces={numberOfPieces}
       style={{ pointerEvents: 'none' }}
+      gravity={0.1}
+      run={isRunning}
     />
   );
 };

@@ -117,17 +117,18 @@ export function WinBloomDashboard() {
     setDewdrops(prevDewdrops => prevDewdrops + 10);
     form.reset();
     toast({
-      title: 'Look at you adulting like a pro!',
+      title: (
+        <div className="flex items-center gap-2">
+          <Sparkles className="text-accent" />
+          <span>Look at you adulting like a pro!</span>
+        </div>
+      ),
       description: 'You\'ve earned 10 dewdrops!',
     });
-    
-    setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 4000);
   }
 
   return (
     <div className="space-y-6">
-      {isClient && showConfetti && <ConfettiBurst />}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <Card>
