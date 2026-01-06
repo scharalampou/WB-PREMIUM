@@ -75,15 +75,19 @@ export function BottomNav() {
             <History className="size-6" />
             <span className="text-xs font-semibold">My Growth</span>
           </TabsTrigger>
+          <TabsTrigger value="global" className="flex-col h-full gap-1 data-[state=active]:text-primary bg-transparent shadow-none">
+            <Users className="size-6" />
+            <span className="text-xs font-semibold">Feed</span>
+          </TabsTrigger>
 
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
-              <button className="flex flex-col items-center justify-center gap-1 text-primary -translate-y-4">
-                <div className="flex items-center justify-center size-14 rounded-full bg-primary text-primary-foreground shadow-lg">
-                  <Plus className="size-8" />
+                <div className="flex flex-col items-center justify-start h-full gap-1 text-primary">
+                    <div className="flex items-center justify-center size-10 rounded-full bg-primary text-primary-foreground shadow-lg">
+                        <Plus className="size-8" />
+                    </div>
+                    <span className="text-xs font-semibold">Log +</span>
                 </div>
-                <span className="text-xs font-semibold">Log +</span>
-              </button>
             </DialogTrigger>
             <DialogContent className="max-w-[420px]">
               <DialogHeader>
@@ -92,11 +96,6 @@ export function BottomNav() {
               <WinForm onWinLog={handleWinLog} />
             </DialogContent>
           </Dialog>
-          
-          <TabsTrigger value="global" className="flex-col h-full gap-1 data-[state=active]:text-primary bg-transparent shadow-none">
-            <Users className="size-6" />
-            <span className="text-xs font-semibold">Feed</span>
-          </TabsTrigger>
         </TabsList>
       </div>
     </>
