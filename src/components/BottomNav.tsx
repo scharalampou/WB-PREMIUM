@@ -64,7 +64,7 @@ export function BottomNav() {
       <div className={cn(
         "fixed bottom-0 left-0 right-0 h-[calc(4.5rem+env(safe-area-inset-bottom))] bg-background/95 backdrop-blur-sm border-t",
         "flex items-start justify-around pt-2 text-muted-foreground",
-        "pb-[env(safe-area-inset-bottom)] xs:hidden"
+        "pb-[env(safe-area-inset-bottom)] sm:hidden"
       )}>
         <TabsList className="grid grid-cols-4 w-full h-full bg-transparent p-0">
           <TabsTrigger value="garden" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none border-none data-[state=active]:shadow-none">

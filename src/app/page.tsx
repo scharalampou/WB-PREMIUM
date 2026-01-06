@@ -11,7 +11,7 @@ export default function Home() {
     <div className="min-h-screen bg-background font-body text-foreground">
       <Tabs defaultValue="garden" className="w-full">
         <Header />
-        <main className="container mx-auto px-4 pt-6 pb-28 xs:pb-8">
+        <main className="container mx-auto px-4 pt-6 pb-28 sm:pb-8">
             <TabsContent value="garden" className="mt-6 space-y-6">
               <WinBloomDashboard />
             </TabsContent>
