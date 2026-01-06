@@ -67,23 +67,23 @@ export function BottomNav() {
         "pb-[env(safe-area-inset-bottom)] xs:hidden"
       )}>
         <TabsList className="grid grid-cols-4 w-full h-full bg-transparent p-0">
-          <TabsTrigger value="garden" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none">
+          <TabsTrigger value="garden" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none border-none data-[state=active]:shadow-none">
             <Sprout className="size-6" />
             <span className="text-xs font-semibold">My Garden</span>
           </TabsTrigger>
-          <TabsTrigger value="history" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none">
+          <TabsTrigger value="history" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none border-none data-[state=active]:shadow-none">
             <History className="size-6" />
             <span className="text-xs font-semibold">My Growth</span>
           </TabsTrigger>
-          <TabsTrigger value="global" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none">
+          <TabsTrigger value="global" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none border-none data-[state=active]:shadow-none">
             <Users className="size-6" />
             <span className="text-xs font-semibold">Feed</span>
           </TabsTrigger>
 
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
-                <div className="flex flex-col items-center justify-start h-full gap-1 text-primary">
-                    <div className="flex items-center justify-center size-10 rounded-full bg-primary text-primary-foreground shadow-lg">
+                <div className="flex flex-col items-center justify-start h-full gap-1 text-primary pt-1.5">
+                    <div className="flex items-center justify-center size-10 rounded-full bg-primary text-primary-foreground shadow-lg -translate-y-1.5">
                         <Plus className="size-8" />
                     </div>
                     <span className="text-xs font-semibold">Log +</span>
