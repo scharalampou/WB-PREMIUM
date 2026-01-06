@@ -63,7 +63,7 @@ export function BottomNav() {
     <>
       <div className={cn(
         "fixed bottom-0 left-0 right-0 h-[calc(4.5rem+env(safe-area-inset-bottom))] bg-background/95 backdrop-blur-sm border-t",
-        "flex sm:hidden", // visible on small screens, hidden on sm and up
+        "flex sm:hidden",
         "justify-around pt-2 text-muted-foreground",
         "pb-[env(safe-area-inset-bottom)]"
       )}>
@@ -83,7 +83,7 @@ export function BottomNav() {
 
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
-                <div className="flex flex-col items-center justify-center h-full gap-1 text-primary">
+                <div className="flex flex-col items-center justify-center h-full gap-1 text-[#EA3E7D] dark:text-primary">
                     <Plus className="size-6" />
                     <span className="text-xs font-semibold">Log +</span>
                 </div>
