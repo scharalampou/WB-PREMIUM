@@ -67,15 +67,15 @@ export function BottomNav() {
         "pb-[env(safe-area-inset-bottom)]"
       )}>
         <TabsList className="grid grid-cols-4 w-full h-full bg-transparent p-0">
-          <TabsTrigger value="garden" className="flex-col h-full gap-1 data-[state=active]:text-primary bg-transparent shadow-none">
+          <TabsTrigger value="garden" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none">
             <Sprout className="size-6" />
             <span className="text-xs font-semibold">My Garden</span>
           </TabsTrigger>
-          <TabsTrigger value="history" className="flex-col h-full gap-1 data-[state=active]:text-primary bg-transparent shadow-none">
+          <TabsTrigger value="history" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none">
             <History className="size-6" />
             <span className="text-xs font-semibold">My Growth</span>
           </TabsTrigger>
-          <TabsTrigger value="global" className="flex-col h-full gap-1 data-[state=active]:text-primary bg-transparent shadow-none">
+          <TabsTrigger value="global" className="flex-col h-full gap-1 data-[state=active]:text-white bg-transparent shadow-none">
             <Users className="size-6" />
             <span className="text-xs font-semibold">Feed</span>
           </TabsTrigger>
