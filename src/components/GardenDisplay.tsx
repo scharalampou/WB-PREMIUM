@@ -22,7 +22,7 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke="#DDDDDD"
+                stroke="#D6D8D5"
                 strokeWidth={strokeWidth}
                 fill="transparent"
             />
@@ -57,7 +57,7 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
     
     return (
         <div className="w-full mt-4">
-            <div className="relative w-full h-2 rounded-full" style={{ backgroundColor: '#DDDDDD' }}>
+            <div className="relative w-full h-2 rounded-full" style={{ backgroundColor: '#D6D8D5' }}>
                 <div
                     className="absolute h-2 rounded-full"
                     style={{ 
@@ -77,16 +77,16 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                             className={cn("absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center")}
                             style={{ 
                                 left: stepPosition,
-                                backgroundColor: isFilled ? '#6AC394' : '#dddddd',
+                                backgroundColor: isFilled ? '#6AC394' : '#D6D8D5',
                              }}
                         >
-                            <Droplets className={cn("size-5 text-white")} />
+                            <Droplets className={cn("size-5", isFilled ? "text-white" : "text-white")} />
                         </div>
                     );
                 })}
 
                 {/* Final Flower Step */}
-                <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center" style={{ left: '100%' }}>
+                <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center">
                      <span className="text-4xl">🌸</span>
                 </div>
             </div>
