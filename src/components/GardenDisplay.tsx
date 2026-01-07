@@ -5,6 +5,7 @@ import { Droplets, Sprout } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { ConfettiBurst } from './Confetti';
+import type { Flower } from '@/app/lib/flowers';
 
 // A new component for the circular progress bar
 const CircularProgressBar = ({ progress }: { progress: number }) => {
@@ -52,7 +53,6 @@ interface DewdropProgressBarProps {
 
 const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProps) => {
     const progressPercentage = totalSteps > 0 ? (currentSteps / totalSteps) * 100 : 0;
-    // We want to show a dewdrop for each 10-dewdrop increment, excluding the final flower.
     const intermediateStepCount = Math.max(0, totalSteps > 0 ? totalSteps -1 : 0);
     
     return (
@@ -104,22 +104,25 @@ interface GardenDisplayProps {
     dewdrops: number;
     progressToNextFlower: number;
     dewdropsForNextFlower: number;
-    flowerCount: number;
+    bloomedFlowers: string[];
     logCount: number;
     currentProgressSteps: number;
     totalProgressSteps: number;
+    currentTargetFlower: Flower | null;
 }
 
 export function GardenDisplay({
     dewdrops,
     progressToNextFlower,
     dewdropsForNextFlower,
-    flowerCount,
+    bloomedFlowers,
     logCount,
     currentProgressSteps,
     totalProgressSteps,
+    currentTargetFlower,
 }: GardenDisplayProps) {
     const showConfetti = dewdrops > 0 && totalProgressSteps > 0 && dewdrops % (totalProgressSteps * 10) === 0 && logCount > 0;
+    const flowerCount = bloomedFlowers.length;
 
     return (
         <>
@@ -165,7 +168,7 @@ export function GardenDisplay({
                                 <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
                                     {logCount === 0
                                         ? "Existing is a full-time job. Rest is productive, too."
-                                        : `Just ${dewdropsForNextFlower} more Dewdrops to go until your next flower!`}
+                                        : `Just ${dewdropsForNextFlower} more Dewdrops until your ${currentTargetFlower?.name || 'next flower'} blooms!`}
                                 </p>
                             </div>
                             {flowerCount > 0 && (
@@ -173,13 +176,13 @@ export function GardenDisplay({
                                     <div className="w-full border-t border-border my-4"></div>
                                     <p className="text-muted-foreground mb-4 font-headline text-lg">Your bloomed flowers</p>
                                     <div className="w-full flex flex-wrap justify-center gap-x-2 gap-y-4">
-                                        {Array.from({ length: flowerCount }).map((_, i) => (
+                                        {bloomedFlowers.map((icon, i) => (
                                             <div key={i} className="flex justify-center">
                                                 <span
                                                     className="text-4xl animate-bloom"
                                                     style={{ animationDelay: `${i * 100}ms` }}
                                                 >
-                                                    🌸
+                                                    {icon}
                                                 </span>
                                             </div>
                                         ))}

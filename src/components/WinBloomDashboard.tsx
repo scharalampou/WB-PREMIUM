@@ -8,6 +8,7 @@ import { WinForm } from './WinForm';
 import { GardenDisplay } from './GardenDisplay';
 import { useToast } from '@/hooks/use-toast';
 import { Sprout } from 'lucide-react';
+import { FLOWERS, type Flower } from '@/app/lib/flowers';
 
 const wittyHeadlines = [
   "Adulting level: Expert. 🏆",
@@ -66,25 +67,46 @@ const calculateFlowerGrowth = (dewdrops: number) => {
     };
 };
 
+const getRandomFlower = (exclude: Flower[] = []): Flower => {
+  const availableFlowers = FLOWERS.filter(
+    (f) => !exclude.some((e) => e.name === f.name)
+  );
+  const pool = availableFlowers.length > 0 ? availableFlowers : FLOWERS;
+  return pool[Math.floor(Math.random() * pool.length)];
+};
+
 export function WinBloomDashboard() {
   const [dewdrops, setDewdrops] = useState<number>(0);
   const [logs, setLogs] = useState<WinLog[]>([]);
   const [isClient, setIsClient] = useState(false);
   const { toast } = useToast();
-  const [lastFlowerToast, setLastFlowerToast] = useState(0);
+  
+  const [bloomedFlowers, setBloomedFlowers] = useState<string[]>([]);
+  const [currentTargetFlower, setCurrentTargetFlower] = useState<Flower | null>(null);
+  const [lastFlowerToastCount, setLastFlowerToastCount] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
     try {
       const savedDewdrops = localStorage.getItem('winbloom-dewdrops');
+      if (savedDewdrops) setDewdrops(JSON.parse(savedDewdrops));
+      
       const savedLogs = localStorage.getItem('winbloom-logs');
-      if (savedDewdrops) {
-        const parsedDewdrops = JSON.parse(savedDewdrops);
-        setDewdrops(parsedDewdrops);
-        const { flowerCount } = calculateFlowerGrowth(parsedDewdrops);
-        setLastFlowerToast(flowerCount);
-      }
       if (savedLogs) setLogs(JSON.parse(savedLogs));
+
+      const savedBloomed = localStorage.getItem('winbloom-bloomed-flowers');
+      const initialBloomed = savedBloomed ? JSON.parse(savedBloomed) : [];
+      setBloomedFlowers(initialBloomed);
+      setLastFlowerToastCount(initialBloomed.length);
+
+      const savedTarget = localStorage.getItem('winbloom-target-flower');
+      if (savedTarget) {
+        setCurrentTargetFlower(JSON.parse(savedTarget));
+      } else {
+        const initialTarget = getRandomFlower();
+        setCurrentTargetFlower(initialTarget);
+        localStorage.setItem('winbloom-target-flower', JSON.stringify(initialTarget));
+      }
     } catch (error) {
       console.error("Failed to parse from localStorage", error);
     }
@@ -102,22 +124,35 @@ export function WinBloomDashboard() {
   useEffect(() => {
     if (isClient) {
       localStorage.setItem('winbloom-dewdrops', JSON.stringify(dewdrops));
-      if (flowerCount > lastFlowerToast) {
-        toast({
-          className: "bg-primary text-primary-foreground border-none",
-          title: (
-            <div className="flex items-center gap-2 font-bold text-primary-foreground">
-              <Sprout className="text-white" />
-              <span>A new flower has bloomed! 🌸</span>
-            </div>
-          ),
-          description: "Your garden is flourishing!",
-          duration: 10000,
-        });
-        setLastFlowerToast(flowerCount);
+      
+      if (flowerCount > lastFlowerToastCount) {
+        const newBloomedFlower = currentTargetFlower;
+
+        if (newBloomedFlower) {
+            const updatedBloomedFlowers = [...bloomedFlowers, newBloomedFlower.icon];
+            setBloomedFlowers(updatedBloomedFlowers);
+            localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(updatedBloomedFlowers));
+        
+            toast({
+              className: "bg-primary text-primary-foreground border-none",
+              title: (
+                <div className="flex items-center gap-2 font-bold text-primary-foreground">
+                  <span className="text-2xl">{newBloomedFlower.icon}</span>
+                  <span>A new {newBloomedFlower.name} has bloomed!</span>
+                </div>
+              ),
+              description: "Your garden is flourishing!",
+              duration: 10000,
+            });
+
+            const newTarget = getRandomFlower([newBloomedFlower]);
+            setCurrentTargetFlower(newTarget);
+            localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
+        }
+        setLastFlowerToastCount(flowerCount);
       }
     }
-  }, [dewdrops, isClient, toast, lastFlowerToast, flowerCount]);
+  }, [dewdrops, isClient, toast, flowerCount, lastFlowerToastCount, currentTargetFlower, bloomedFlowers]);
 
   useEffect(() => {
     if (isClient) {
@@ -163,8 +198,9 @@ export function WinBloomDashboard() {
             currentProgressSteps={currentProgressSteps}
             totalProgressSteps={totalProgressSteps}
             dewdropsForNextFlower={dewdropsForNextFlower}
-            flowerCount={flowerCount}
+            bloomedFlowers={bloomedFlowers}
             logCount={logs.length}
+            currentTargetFlower={currentTargetFlower}
           />
         </div>
         <div className="lg:col-span-2 space-y-6 hidden sm:block">
