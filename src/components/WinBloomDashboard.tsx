@@ -85,6 +85,7 @@ export function WinBloomDashboard() {
   
   const [bloomedFlowers, setBloomedFlowers] = useState<string[]>([]);
   const [currentTargetFlower, setCurrentTargetFlower] = useState<Flower | null>(null);
+  
   const [lastFlowerCount, setLastFlowerCount] = useState(0);
 
   const [showCelebration, setShowCelebration] = useState<Flower | null>(null);
@@ -92,20 +93,30 @@ export function WinBloomDashboard() {
 
   useEffect(() => {
     setIsClient(true);
-    // Reset all progress
-    localStorage.removeItem('winbloom-dewdrops');
-    localStorage.removeItem('winbloom-logs');
-    localStorage.removeItem('winbloom-bloomed-flowers');
-    localStorage.removeItem('winbloom-target-flower');
-
-    setDewdrops(0);
-    setLogs([]);
-    setBloomedFlowers([]);
-    setLastFlowerCount(0);
+    // On initial client load, read from localStorage
+    const savedDewdrops = localStorage.getItem('winbloom-dewdrops');
+    const savedLogs = localStorage.getItem('winbloom-logs');
+    const savedBloomedFlowers = localStorage.getItem('winbloom-bloomed-flowers');
+    const savedTargetFlower = localStorage.getItem('winbloom-target-flower');
     
-    const initialTarget = getRandomFlower();
-    setCurrentTargetFlower(initialTarget);
-    localStorage.setItem('winbloom-target-flower', JSON.stringify(initialTarget));
+    const initialDewdrops = savedDewdrops ? JSON.parse(savedDewdrops) : 0;
+    const initialLogs = savedLogs ? JSON.parse(savedLogs) : [];
+    const initialBloomedFlowers = savedBloomedFlowers ? JSON.parse(savedBloomedFlowers) : [];
+    
+    setDewdrops(initialDewdrops);
+    setLogs(initialLogs);
+    setBloomedFlowers(initialBloomedFlowers);
+
+    const growth = calculateFlowerGrowth(initialDewdrops);
+    setLastFlowerCount(growth.flowerCount);
+    
+    if (savedTargetFlower) {
+      setCurrentTargetFlower(JSON.parse(savedTargetFlower));
+    } else {
+      const initialTarget = getRandomFlower();
+      setCurrentTargetFlower(initialTarget);
+      localStorage.setItem('winbloom-target-flower', JSON.stringify(initialTarget));
+    }
   }, []);
 
   const {
@@ -119,15 +130,13 @@ export function WinBloomDashboard() {
 
   useEffect(() => {
     if (isClient) {
-      localStorage.setItem('winbloom-dewdrops', JSON.stringify(dewdrops));
-      
       if (flowerCount > lastFlowerCount) {
         if (currentTargetFlower) {
             setShowCelebration(currentTargetFlower);
         }
       }
     }
-  }, [dewdrops, isClient, flowerCount, lastFlowerCount, currentTargetFlower]);
+  }, [flowerCount, lastFlowerCount, isClient, currentTargetFlower]);
 
   const handleCelebrationComplete = () => {
     if (currentTargetFlower) {
@@ -144,12 +153,6 @@ export function WinBloomDashboard() {
     setLastFlowerCount(flowerCount);
     setShowCelebration(null);
   };
-
-  useEffect(() => {
-    if (isClient) {
-      localStorage.setItem('winbloom-logs', JSON.stringify(logs));
-    }
-  }, [logs, isClient]);
   
   const handleWinLog = (win: string, gratitude: string) => {
     const newLog: WinLog = {
@@ -158,8 +161,14 @@ export function WinBloomDashboard() {
       gratitude,
       date: new Date().toISOString(),
     };
-    setLogs(prevLogs => [newLog, ...prevLogs]);
-    setDewdrops(prevDewdrops => prevDewdrops + 10);
+
+    const updatedLogs = [newLog, ...logs];
+    setLogs(updatedLogs);
+    localStorage.setItem('winbloom-logs', JSON.stringify(updatedLogs));
+
+    const updatedDewdrops = dewdrops + 10;
+    setDewdrops(updatedDewdrops);
+    localStorage.setItem('winbloom-dewdrops', JSON.stringify(updatedDewdrops));
     
     const randomHeadline = wittyHeadlines[Math.floor(Math.random() * wittyHeadlines.length)];
 
