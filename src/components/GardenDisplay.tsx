@@ -80,7 +80,7 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                                 backgroundColor: isFilled ? '#6AC394' : '#dddddd',
                              }}
                         >
-                            <Droplets className={cn("size-7 text-white")} />
+                            <Droplets className={cn("size-3.5 text-white")} />
                         </div>
                     );
                 })}
@@ -127,7 +127,7 @@ export function GardenDisplay({
                             <CardDescription>Earn 10 Dewdrops for every win you log!</CardDescription>
                         </div>
                         <div className="flex items-center gap-2 text-4xl font-bold text-primary dark:text-accent">
-                            <Droplets className="size-8" />
+                            <Droplets className="size-7" style={{ color: '#6AC394' }} />
                             <span>{dewdrops}</span>
                         </div>
                     </CardHeader>
