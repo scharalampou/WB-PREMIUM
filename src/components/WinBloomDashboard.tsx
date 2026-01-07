@@ -94,12 +94,11 @@ export function WinBloomDashboard() {
     setIsClient(true);
     try {
       const savedDewdrops = localStorage.getItem('winbloom-dewdrops');
-      if (savedDewdrops) {
-        const loadedDewdrops = JSON.parse(savedDewdrops);
-        setDewdrops(loadedDewdrops);
-        const { flowerCount } = calculateFlowerGrowth(loadedDewdrops);
-        setLastFlowerCount(flowerCount);
-      }
+      const initialDewdrops = savedDewdrops ? JSON.parse(savedDewdrops) : 0;
+      setDewdrops(initialDewdrops);
+      
+      const { flowerCount } = calculateFlowerGrowth(initialDewdrops);
+      setLastFlowerCount(flowerCount);
       
       const savedLogs = localStorage.getItem('winbloom-logs');
       if (savedLogs) setLogs(JSON.parse(savedLogs));
@@ -135,11 +134,9 @@ export function WinBloomDashboard() {
       localStorage.setItem('winbloom-dewdrops', JSON.stringify(dewdrops));
       
       if (flowerCount > lastFlowerCount) {
-        const newBloomedFlower = currentTargetFlower;
-        if (newBloomedFlower) {
-            setShowCelebration(newBloomedFlower);
+        if (currentTargetFlower) {
+            setShowCelebration(currentTargetFlower);
         }
-        setLastFlowerCount(flowerCount);
       }
     }
   }, [dewdrops, isClient, flowerCount, lastFlowerCount, currentTargetFlower]);
@@ -150,13 +147,13 @@ export function WinBloomDashboard() {
       setBloomedFlowers(updatedBloomedFlowers);
       localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(updatedBloomedFlowers));
 
-      // Select a new target flower, excluding the one that just bloomed and any already in the garden
       const existingFlowers = [currentTargetFlower, ...bloomedFlowers.map(icon => FLOWERS.find(f => f.icon === icon)).filter(Boolean) as Flower[]]
       const newTarget = getRandomFlower(existingFlowers);
       
       setCurrentTargetFlower(newTarget);
       localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
     }
+    setLastFlowerCount(flowerCount);
     setShowCelebration(null);
   };
 
