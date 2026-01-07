@@ -140,7 +140,7 @@ export function GardenDisplay({
                         </div>
                     </CardHeader>
                     <CardContent>
-                        {logCount > 0 && totalProgressSteps > 0 && (
+                        {totalProgressSteps > 0 && (
                             <DewdropProgressBar currentSteps={currentProgressSteps} totalSteps={totalProgressSteps} />
                         )}
                     </CardContent>
@@ -153,18 +153,12 @@ export function GardenDisplay({
                     <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-card">
                         <div className="w-full flex flex-col items-center flex-grow">
                             <div className="flex flex-col items-center justify-center gap-4 text-center flex-grow">
-                                {logCount === 0 ? (
-                                    <div className="relative flex items-center justify-center h-[160px] w-[160px]">
-                                        <Sprout className="text-accent" size={64} />
+                                <div className="relative flex items-center justify-center">
+                                    <CircularProgressBar progress={progressToNextFlower} />
+                                    <div className="absolute">
+                                        <Sprout className="text-accent" size={80} />
                                     </div>
-                                ) : (
-                                    <div className="relative flex items-center justify-center">
-                                        <CircularProgressBar progress={progressToNextFlower} />
-                                        <div className="absolute">
-                                            <Sprout className="text-accent" size={80} />
-                                        </div>
-                                    </div>
-                                )}
+                                </div>
                                 <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
                                     {logCount === 0
                                         ? "Existing is a full-time job. Rest is productive, too."
