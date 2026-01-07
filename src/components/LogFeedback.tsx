@@ -18,12 +18,12 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
 
     return (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="transform -rotate-90">
-            <circle cx={center} cy={center} r={radius} className="stroke-border" strokeWidth={strokeWidth} fill="transparent" />
+            <circle cx={center} cy={center} r={radius} stroke="#D6D8D5" strokeWidth={strokeWidth} fill="transparent" />
             <circle
                 cx={center}
                 cy={center}
                 r={radius}
-                className="stroke-primary"
+                stroke="#129263"
                 strokeWidth={strokeWidth}
                 fill="transparent"
                 strokeDasharray={circumference}
