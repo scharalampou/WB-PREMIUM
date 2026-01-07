@@ -3,16 +3,52 @@
 
 import { Droplets, Sprout } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from './ui/progress';
 import { cn } from '@/lib/utils';
-import { useTheme } from 'next-themes';
 import { useWindowSize } from '@react-hook/window-size';
 import { ConfettiBurst } from './Confetti';
+
+// A new component for the circular progress bar
+const CircularProgressBar = ({ progress }: { progress: number }) => {
+    const size = 160; // SVG canvas size
+    const strokeWidth = 12;
+    const center = size / 2;
+    const radius = center - strokeWidth;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (progress / 100) * circumference;
+
+    return (
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="transform -rotate-90">
+            {/* Background track */}
+            <circle
+                cx={center}
+                cy={center}
+                r={radius}
+                stroke="#E5E7EB" // A light grey color for the track
+                strokeWidth={strokeWidth}
+                fill="transparent"
+            />
+            {/* Progress stroke */}
+            <circle
+                cx={center}
+                cy={center}
+                r={radius}
+                stroke="#3D8E73" // Growth Green color
+                strokeWidth={strokeWidth}
+                fill="transparent"
+                strokeDasharray={circumference}
+                strokeDashoffset={offset}
+                strokeLinecap="round"
+                style={{
+                    transition: 'stroke-dashoffset 0.5s ease-out',
+                }}
+            />
+        </svg>
+    );
+};
 
 interface GardenDisplayProps {
     dewdrops: number;
     progressToNextFlower: number;
-    currentProgressSteps: number;
     dewdropsForNextFlower: number;
     flowerCount: number;
     logCount: number;
@@ -21,12 +57,10 @@ interface GardenDisplayProps {
 export function GardenDisplay({
     dewdrops,
     progressToNextFlower,
-    currentProgressSteps,
     dewdropsForNextFlower,
     flowerCount,
     logCount,
 }: GardenDisplayProps) {
-    const { theme } = useTheme();
     const { width = 0, height = 0 } = useWindowSize();
     const showConfetti = dewdrops > 0 && dewdrops % 70 === 0 && logCount > 0;
 
@@ -45,38 +79,6 @@ export function GardenDisplay({
                             <span>{dewdrops}</span>
                         </div>
                     </CardHeader>
-                    <CardContent>
-                        <div className="space-y-2 pt-2">
-                            <div className="relative w-full h-8 flex items-center">
-                                <Progress value={progressToNextFlower} className="h-2" indicatorClassName={theme === 'light' ? 'bg-[#3D8E73]' : ''} />
-                                <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between">
-                                    {Array.from({ length: 7 }).map((_, i) => (
-                                        <div
-                                            key={i}
-                                            className={cn(
-                                                "h-8 w-8 rounded-full flex items-center justify-center transition-colors duration-500",
-                                                i < currentProgressSteps ? (theme === 'light' ? 'bg-[#3D8E73]' : 'bg-primary') : '',
-                                            )}
-                                            style={
-                                                i >= currentProgressSteps
-                                                    ? (i === 6 ? { backgroundColor: '#121212' } : { backgroundColor: '#AAAAAA' })
-                                                    : {}
-                                            }
-                                        >
-                                            {i < 6 ? (
-                                                <Droplets className={cn("size-5", i < currentProgressSteps ? 'text-primary-foreground' : 'text-white')} />
-                                            ) : (
-                                                <span className={cn("text-2xl", i < currentProgressSteps ? '' : '')}>🌸</span>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <p className="text-sm font-medium text-muted-foreground pt-2 text-center">
-                                Your progress to the next flower!
-                            </p>
-                        </div>
-                    </CardContent>
                 </Card>
                 <Card className="flex flex-col">
                     <CardHeader>
@@ -87,20 +89,22 @@ export function GardenDisplay({
                         <div className="w-full flex flex-col items-center flex-grow">
                             <div className="flex flex-col items-center justify-center gap-4 text-center flex-grow">
                                 {logCount === 0 ? (
-                                    <>
+                                    <div className="relative flex items-center justify-center h-[160px] w-[160px]">
                                         <Sprout className="text-accent" size={64} />
-                                        <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs">
-                                            Existing is a full-time job. Rest is productive, too.
-                                        </p>
-                                    </>
+                                    </div>
                                 ) : (
-                                    <>
-                                        <Sprout className="text-accent" size={80} />
-                                        <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
-                                            Just {dewdropsForNextFlower} more Dewdrops to go until your next flower!
-                                        </p>
-                                    </>
+                                    <div className="relative flex items-center justify-center">
+                                        <CircularProgressBar progress={progressToNextFlower} />
+                                        <div className="absolute">
+                                            <Sprout className="text-accent" size={80} />
+                                        </div>
+                                    </div>
                                 )}
+                                <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
+                                    {logCount === 0
+                                        ? "Existing is a full-time job. Rest is productive, too."
+                                        : `Just ${dewdropsForNextFlower} more Dewdrops to go until your next flower!`}
+                                </p>
                             </div>
                             {flowerCount > 0 && (
                                 <>
