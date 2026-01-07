@@ -95,7 +95,7 @@ export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) =
           className={cn(
             "font-bold text-lg w-full max-w-xs",
             {
-              "bg-[#129263] hover:bg-[#129263]/90": !didBloom,
+                "bg-[#129263] hover:bg-[#129263]/90 dark:bg-accent dark:hover:bg-accent/90 dark:text-accent-foreground": !didBloom,
             }
           )}
         >
