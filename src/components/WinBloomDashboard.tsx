@@ -85,7 +85,7 @@ export function WinBloomDashboard() {
   
   const [bloomedFlowers, setBloomedFlowers] = useState<string[]>([]);
   const [currentTargetFlower, setCurrentTargetFlower] = useState<Flower | null>(null);
-  const [lastFlowerToastCount, setLastFlowerToastCount] = useState(0);
+  const [lastFlowerCount, setLastFlowerCount] = useState(0);
 
   const [showCelebration, setShowCelebration] = useState<Flower | null>(null);
 
@@ -94,7 +94,12 @@ export function WinBloomDashboard() {
     setIsClient(true);
     try {
       const savedDewdrops = localStorage.getItem('winbloom-dewdrops');
-      if (savedDewdrops) setDewdrops(JSON.parse(savedDewdrops));
+      if (savedDewdrops) {
+        const loadedDewdrops = JSON.parse(savedDewdrops);
+        setDewdrops(loadedDewdrops);
+        const { flowerCount } = calculateFlowerGrowth(loadedDewdrops);
+        setLastFlowerCount(flowerCount);
+      }
       
       const savedLogs = localStorage.getItem('winbloom-logs');
       if (savedLogs) setLogs(JSON.parse(savedLogs));
@@ -102,7 +107,6 @@ export function WinBloomDashboard() {
       const savedBloomed = localStorage.getItem('winbloom-bloomed-flowers');
       const initialBloomed = savedBloomed ? JSON.parse(savedBloomed) : [];
       setBloomedFlowers(initialBloomed);
-      setLastFlowerToastCount(initialBloomed.length);
 
       const savedTarget = localStorage.getItem('winbloom-target-flower');
       if (savedTarget) {
@@ -130,15 +134,15 @@ export function WinBloomDashboard() {
     if (isClient) {
       localStorage.setItem('winbloom-dewdrops', JSON.stringify(dewdrops));
       
-      if (flowerCount > lastFlowerToastCount) {
+      if (flowerCount > lastFlowerCount) {
         const newBloomedFlower = currentTargetFlower;
         if (newBloomedFlower) {
             setShowCelebration(newBloomedFlower);
         }
-        setLastFlowerToastCount(flowerCount);
+        setLastFlowerCount(flowerCount);
       }
     }
-  }, [dewdrops, isClient, toast, flowerCount, lastFlowerToastCount, currentTargetFlower, bloomedFlowers]);
+  }, [dewdrops, isClient, flowerCount, lastFlowerCount, currentTargetFlower]);
 
   const handleCelebrationComplete = () => {
     if (currentTargetFlower) {
@@ -146,7 +150,10 @@ export function WinBloomDashboard() {
       setBloomedFlowers(updatedBloomedFlowers);
       localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(updatedBloomedFlowers));
 
-      const newTarget = getRandomFlower([currentTargetFlower]);
+      // Select a new target flower, excluding the one that just bloomed and any already in the garden
+      const existingFlowers = [currentTargetFlower, ...bloomedFlowers.map(icon => FLOWERS.find(f => f.icon === icon)).filter(Boolean) as Flower[]]
+      const newTarget = getRandomFlower(existingFlowers);
+      
       setCurrentTargetFlower(newTarget);
       localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
     }
