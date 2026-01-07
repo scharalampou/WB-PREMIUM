@@ -74,10 +74,10 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                     return (
                         <div
                             key={`step-${i}`}
-                            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background flex items-center justify-center"
+                            className={cn("absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center", isFilled ? 'bg-[#6AC394]' : 'bg-background')}
                             style={{ left: stepPosition }}
                         >
-                            <Droplets className={cn("size-7", isFilled ? 'text-[#6AC394]' : 'text-muted-foreground/50')} />
+                            <Droplets className={cn("size-7", isFilled ? 'text-white' : 'text-muted-foreground/50')} />
                         </div>
                     );
                 })}
