@@ -90,19 +90,37 @@ export function WinBloomDashboard() {
 
   useEffect(() => {
     setIsClient(true);
-    // On initial client load, read from localStorage
     const savedDewdrops = localStorage.getItem('winbloom-dewdrops');
     const savedLogs = localStorage.getItem('winbloom-logs');
     const savedBloomedFlowers = localStorage.getItem('winbloom-bloomed-flowers');
     const savedTargetFlower = localStorage.getItem('winbloom-target-flower');
-    
-    const initialDewdrops = savedDewdrops ? JSON.parse(savedDewdrops) : 0;
-    setDewdrops(initialDewdrops);
-    setLogs(savedLogs ? JSON.parse(savedLogs) : []);
-    setBloomedFlowers(savedBloomedFlowers ? JSON.parse(savedBloomedFlowers) : []);
 
+    const initialDewdrops = savedDewdrops ? JSON.parse(savedDewdrops) : 0;
+    const initialLogs = savedLogs ? JSON.parse(savedLogs) : [];
+    
     const growth = calculateFlowerGrowth(initialDewdrops);
-    setLastFlowerCount(growth.flowerCount);
+    const initialFlowerCount = growth.flowerCount;
+    setLastFlowerCount(initialFlowerCount);
+    
+    setDewdrops(initialDewdrops);
+    setLogs(initialLogs);
+
+    // Sync bloomed flowers on load
+    const initialBloomedFlowers = savedBloomedFlowers ? JSON.parse(savedBloomedFlowers) : [];
+    if (initialBloomedFlowers.length < initialFlowerCount) {
+        const flowersToAdd = initialFlowerCount - initialBloomedFlowers.length;
+        const newBlooms = [...initialBloomedFlowers];
+        for (let i = 0; i < flowersToAdd; i++) {
+            // This is a simplification; we don't know *which* flowers bloomed.
+            // We'll just add random ones to fill the gap.
+            // A more robust solution would store the actual sequence of bloomed flowers.
+            newBlooms.push(FLOWERS[newBlooms.length % FLOWERS.length].icon);
+        }
+        setBloomedFlowers(newBlooms);
+        localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(newBlooms));
+    } else {
+        setBloomedFlowers(initialBloomedFlowers);
+    }
     
     if (savedTargetFlower) {
       setCurrentTargetFlower(JSON.parse(savedTargetFlower));
@@ -126,8 +144,10 @@ export function WinBloomDashboard() {
         if (currentTargetFlower) {
             setShowCelebration(currentTargetFlower);
         }
+        setLastFlowerCount(flowerCount); // Update last count immediately to prevent re-triggering
     }
-  }, [flowerCount, lastFlowerCount, isClient, currentTargetFlower]);
+  }, [flowerCount, isClient, currentTargetFlower, lastFlowerCount]);
+
 
   const handleCelebrationComplete = () => {
     if (currentTargetFlower) {
@@ -141,7 +161,6 @@ export function WinBloomDashboard() {
       setCurrentTargetFlower(newTarget);
       localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
     }
-    setLastFlowerCount(flowerCount);
     setShowCelebration(null);
   };
   
