@@ -8,7 +8,6 @@ import { Sprout } from 'lucide-react';
 
 import type { Flower } from '@/app/lib/flowers';
 import { Button } from './ui/button';
-import { cn } from '@/lib/utils';
 
 // Custom shapes for react-confetti
 const petalColors = ['#f4a2b8', '#fff0f5', '#dda0dd']; // Pinks and purples

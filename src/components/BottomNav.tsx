@@ -29,6 +29,8 @@ export function BottomNav() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const { toast } = useToast();
 
+  // This function needs to be kept in sync with the one in WinBloomDashboard.
+  // In a real app, this logic would be in a shared state management solution.
   const handleWinLog = (win: string, gratitude: string) => {
     try {
       const savedLogs = localStorage.getItem('winbloom-logs') || '[]';
@@ -42,20 +44,16 @@ export function BottomNav() {
       const newDewdrops = dewdrops + 10;
       localStorage.setItem('winbloom-dewdrops', JSON.stringify(newDewdrops));
 
-      const randomHeadline = wittyHeadlines[Math.floor(Math.random() * wittyHeadlines.length)];
-      toast({
-        className: "bg-primary text-primary-foreground border-none",
-        title: <span className="font-bold">{randomHeadline}</span>,
-        description: "Success! +10 Dewdrops added. Refresh to see your garden grow!",
-        duration: 10000,
-      });
+      // Close the form and reload to trigger the feedback overlay on the dashboard
+      setIsFormOpen(false);
+      window.location.reload();
+
 
     } catch (error) {
        console.error("Failed to save to localStorage", error);
        toast({ variant: 'destructive', title: 'Oh no!', description: 'Could not save your win.' });
+       setIsFormOpen(false);
     }
-    
-    setIsFormOpen(false);
   };
 
 

@@ -8,7 +8,7 @@ import { WinForm } from './WinForm';
 import { GardenDisplay } from './GardenDisplay';
 import { useToast } from '@/hooks/use-toast';
 import { FLOWERS, type Flower } from '@/app/lib/flowers';
-import { BloomCelebration } from './BloomCelebration';
+import { LogFeedback } from './LogFeedback';
 
 
 const wittyHeadlines = [
@@ -74,6 +74,17 @@ const getRandomFlower = (exclude: Flower[] = []): Flower => {
   return pool[Math.floor(Math.random() * pool.length)];
 };
 
+type FeedbackState = {
+  isOpen: boolean;
+  didBloom: boolean;
+  flower?: Flower;
+  progress?: {
+    dewdropsForNextFlower: number;
+    progressToNextFlower: number;
+    currentTargetFlower: Flower | null;
+  }
+}
+
 export function WinBloomDashboard() {
   const [dewdrops, setDewdrops] = useState<number>(0);
   const [logs, setLogs] = useState<WinLog[]>([]);
@@ -82,38 +93,29 @@ export function WinBloomDashboard() {
   
   const [bloomedFlowers, setBloomedFlowers] = useState<string[]>([]);
   const [currentTargetFlower, setCurrentTargetFlower] = useState<Flower | null>(null);
-  
-  const [lastFlowerCount, setLastFlowerCount] = useState(0);
 
-  const [showCelebration, setShowCelebration] = useState<Flower | null>(null);
-
+  const [feedbackData, setFeedbackData] = useState<FeedbackState>({ isOpen: false, didBloom: false });
 
   useEffect(() => {
     setIsClient(true);
-    const savedDewdrops = localStorage.getItem('winbloom-dewdrops');
-    const savedLogs = localStorage.getItem('winbloom-logs');
-    const savedBloomedFlowers = localStorage.getItem('winbloom-bloomed-flowers');
+    const savedDewdrops = localStorage.getItem('winbloom-dewdrops') || '0';
+    const savedLogs = localStorage.getItem('winbloom-logs') || '[]';
+    const savedBloomedFlowers = localStorage.getItem('winbloom-bloomed-flowers') || '[]';
     const savedTargetFlower = localStorage.getItem('winbloom-target-flower');
 
-    const initialDewdrops = savedDewdrops ? JSON.parse(savedDewdrops) : 0;
-    const initialLogs = savedLogs ? JSON.parse(savedLogs) : [];
+    const initialDewdrops = JSON.parse(savedDewdrops);
+    const initialLogs = JSON.parse(savedLogs);
     
-    const growth = calculateFlowerGrowth(initialDewdrops);
-    const initialFlowerCount = growth.flowerCount;
-    setLastFlowerCount(initialFlowerCount);
-    
+    const { flowerCount } = calculateFlowerGrowth(initialDewdrops);
+    const initialBloomedFlowers = JSON.parse(savedBloomedFlowers);
+
     setDewdrops(initialDewdrops);
     setLogs(initialLogs);
 
-    // Sync bloomed flowers on load
-    const initialBloomedFlowers = savedBloomedFlowers ? JSON.parse(savedBloomedFlowers) : [];
-    if (initialBloomedFlowers.length < initialFlowerCount) {
-        const flowersToAdd = initialFlowerCount - initialBloomedFlowers.length;
+    if (initialBloomedFlowers.length < flowerCount) {
+        const flowersToAdd = flowerCount - initialBloomedFlowers.length;
         const newBlooms = [...initialBloomedFlowers];
         for (let i = 0; i < flowersToAdd; i++) {
-            // This is a simplification; we don't know *which* flowers bloomed.
-            // We'll just add random ones to fill the gap.
-            // A more robust solution would store the actual sequence of bloomed flowers.
             newBlooms.push(FLOWERS[newBlooms.length % FLOWERS.length].icon);
         }
         setBloomedFlowers(newBlooms);
@@ -139,29 +141,19 @@ export function WinBloomDashboard() {
       currentProgressSteps,
   } = useMemo(() => calculateFlowerGrowth(dewdrops), [dewdrops]);
 
-  useEffect(() => {
-    if (isClient && flowerCount > lastFlowerCount) {
-        if (currentTargetFlower) {
-            setShowCelebration(currentTargetFlower);
-        }
-        setLastFlowerCount(flowerCount); // Update last count immediately to prevent re-triggering
-    }
-  }, [flowerCount, isClient, currentTargetFlower, lastFlowerCount]);
-
-
-  const handleCelebrationComplete = () => {
-    if (currentTargetFlower) {
-      const updatedBloomedFlowers = [...bloomedFlowers, currentTargetFlower.icon];
+  const handleFeedbackClose = () => {
+    if (feedbackData.didBloom && feedbackData.flower) {
+      const updatedBloomedFlowers = [...bloomedFlowers, feedbackData.flower.icon];
       setBloomedFlowers(updatedBloomedFlowers);
       localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(updatedBloomedFlowers));
 
-      const existingFlowers = [currentTargetFlower, ...bloomedFlowers.map(icon => FLOWERS.find(f => f.icon === icon)).filter(Boolean) as Flower[]]
-      const newTarget = getRandomFlower(existingFlowers);
+      const existingFlowerIcons = updatedBloomedFlowers.map(icon => FLOWERS.find(f => f.icon === icon)).filter(Boolean) as Flower[];
+      const newTarget = getRandomFlower(existingFlowerIcons);
       
       setCurrentTargetFlower(newTarget);
       localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
     }
-    setShowCelebration(null);
+    setFeedbackData({ isOpen: false, didBloom: false });
   };
   
   const handleWinLog = (win: string, gratitude: string) => {
@@ -176,18 +168,45 @@ export function WinBloomDashboard() {
     setLogs(updatedLogs);
     localStorage.setItem('winbloom-logs', JSON.stringify(updatedLogs));
 
-    const updatedDewdrops = dewdrops + 10;
+    const previousDewdrops = dewdrops;
+    const updatedDewdrops = previousDewdrops + 10;
     setDewdrops(updatedDewdrops);
     localStorage.setItem('winbloom-dewdrops', JSON.stringify(updatedDewdrops));
     
-    const randomHeadline = wittyHeadlines[Math.floor(Math.random() * wittyHeadlines.length)];
+    const { flowerCount: prevFlowerCount } = calculateFlowerGrowth(previousDewdrops);
+    const { flowerCount: newFlowerCount, dewdropsForNextFlower: nextDewdrops, progressToNextFlower: nextProgress } = calculateFlowerGrowth(updatedDewdrops);
 
-    toast({
-      className: "bg-primary text-primary-foreground border-none",
-      title: <span className="font-bold">{randomHeadline}</span>,
-      description: "Success! +10 Dewdrops added to your balance.",
-      duration: 5000,
-    });
+    if (newFlowerCount > prevFlowerCount) {
+      setFeedbackData({
+        isOpen: true,
+        didBloom: true,
+        flower: currentTargetFlower || getRandomFlower(),
+      });
+      toast({
+        className: "bg-primary text-primary-foreground border-none",
+        title: "A new flower bloomed!",
+        description: `You grew a beautiful ${currentTargetFlower?.name || 'flower'}.`,
+        duration: 5000,
+      });
+
+    } else {
+      setFeedbackData({
+        isOpen: true,
+        didBloom: false,
+        progress: {
+          dewdropsForNextFlower: nextDewdrops,
+          progressToNextFlower: nextProgress,
+          currentTargetFlower: currentTargetFlower
+        }
+      });
+      const randomHeadline = wittyHeadlines[Math.floor(Math.random() * wittyHeadlines.length)];
+      toast({
+        className: "bg-primary text-primary-foreground border-none",
+        title: <span className="font-bold">{randomHeadline}</span>,
+        description: "Success! +10 Dewdrops added to your balance.",
+        duration: 5000,
+      });
+    }
   };
 
   if (!isClient) {
@@ -200,10 +219,10 @@ export function WinBloomDashboard() {
 
   return (
     <>
-      {showCelebration && (
-        <BloomCelebration
-          flower={showCelebration}
-          onClose={handleCelebrationComplete}
+      {feedbackData.isOpen && (
+        <LogFeedback
+          feedback={feedbackData}
+          onClose={handleFeedbackClose}
         />
       )}
       <div className="space-y-6">
