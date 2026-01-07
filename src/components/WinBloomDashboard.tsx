@@ -8,20 +8,17 @@ import { WinForm } from './WinForm';
 import { GardenDisplay } from './GardenDisplay';
 import { useToast } from '@/hooks/use-toast';
 import { FLOWERS, type Flower } from '@/app/lib/flowers';
-import { LogFeedback } from './LogFeedback';
 
-
-const wittyHeadlines = [
-  "Adulting level: Expert. 🏆",
-  "You’re winning at life today! ✨",
-  "Basically an Olympic Legend now. 🥇",
-  "Making moves and taking names! 🪴",
-  "Achievement unlocked: Absolute Legend. 🙌",
-  "Not saying you're a hero, but... 🦸‍♂️",
-  "That win was elite. Seriously. 🔥",
-  "You're doing the thing! Keep going. 🚀",
-];
-
+type FeedbackState = {
+  isOpen: boolean;
+  didBloom: boolean;
+  flower?: Flower;
+  progress?: {
+    dewdropsForNextFlower: number;
+    progressToNextFlower: number;
+    currentTargetFlower: Flower | null;
+  }
+}
 
 const FLOWER_COST_TIERS = [
     { from: 0, to: 3, cost: 30 },
@@ -74,18 +71,20 @@ const getRandomFlower = (exclude: Flower[] = []): Flower => {
   return pool[Math.floor(Math.random() * pool.length)];
 };
 
-type FeedbackState = {
-  isOpen: boolean;
-  didBloom: boolean;
-  flower?: Flower;
-  progress?: {
-    dewdropsForNextFlower: number;
-    progressToNextFlower: number;
-    currentTargetFlower: Flower | null;
-  }
+
+type WinBloomDashboardProps = {
+  onShowFeedback: (feedback: {
+    didBloom: boolean;
+    flower?: Flower;
+    progress?: {
+      dewdropsForNextFlower: number;
+      progressToNextFlower: number;
+      currentTargetFlower: Flower | null;
+    }
+  }) => void;
 }
 
-export function WinBloomDashboard() {
+export function WinBloomDashboard({ onShowFeedback }: WinBloomDashboardProps) {
   const [dewdrops, setDewdrops] = useState<number>(0);
   const [logs, setLogs] = useState<WinLog[]>([]);
   const [isClient, setIsClient] = useState(false);
@@ -93,8 +92,6 @@ export function WinBloomDashboard() {
   
   const [bloomedFlowers, setBloomedFlowers] = useState<string[]>([]);
   const [currentTargetFlower, setCurrentTargetFlower] = useState<Flower | null>(null);
-
-  const [feedbackData, setFeedbackData] = useState<FeedbackState>({ isOpen: false, didBloom: false });
 
   useEffect(() => {
     setIsClient(true);
@@ -141,20 +138,6 @@ export function WinBloomDashboard() {
       currentProgressSteps,
   } = useMemo(() => calculateFlowerGrowth(dewdrops), [dewdrops]);
 
-  const handleFeedbackClose = () => {
-    if (feedbackData.didBloom && feedbackData.flower) {
-      const updatedBloomedFlowers = [...bloomedFlowers, feedbackData.flower.icon];
-      setBloomedFlowers(updatedBloomedFlowers);
-      localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(updatedBloomedFlowers));
-
-      const existingFlowerIcons = updatedBloomedFlowers.map(icon => FLOWERS.find(f => f.icon === icon)).filter(Boolean) as Flower[];
-      const newTarget = getRandomFlower(existingFlowerIcons);
-      
-      setCurrentTargetFlower(newTarget);
-      localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
-    }
-    setFeedbackData({ isOpen: false, didBloom: false });
-  };
   
   const handleWinLog = (win: string, gratitude: string) => {
     const newLog: WinLog = {
@@ -177,14 +160,22 @@ export function WinBloomDashboard() {
     const { flowerCount: newFlowerCount, dewdropsForNextFlower: nextDewdrops, progressToNextFlower: nextProgress } = calculateFlowerGrowth(updatedDewdrops);
 
     if (newFlowerCount > prevFlowerCount) {
-      setFeedbackData({
-        isOpen: true,
+      const flowerToBloom = currentTargetFlower || getRandomFlower();
+      
+      const updatedBloomedFlowers = [...bloomedFlowers, flowerToBloom.icon];
+      setBloomedFlowers(updatedBloomedFlowers);
+      localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(updatedBloomedFlowers));
+
+      const newTarget = getRandomFlower(updatedBloomedFlowers.map(icon => FLOWERS.find(f => f.icon === icon)).filter(Boolean) as Flower[]);
+      setCurrentTargetFlower(newTarget);
+      localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
+
+      onShowFeedback({
         didBloom: true,
-        flower: currentTargetFlower || getRandomFlower(),
+        flower: flowerToBloom,
       });
     } else {
-      setFeedbackData({
-        isOpen: true,
+      onShowFeedback({
         didBloom: false,
         progress: {
           dewdropsForNextFlower: nextDewdrops,
@@ -205,12 +196,6 @@ export function WinBloomDashboard() {
 
   return (
     <>
-      {feedbackData.isOpen && (
-        <LogFeedback
-          feedback={feedbackData}
-          onClose={handleFeedbackClose}
-        />
-      )}
       <div className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="lg:col-span-3">

@@ -15,44 +15,131 @@ import {
 import { WinForm } from './WinForm';
 import { useToast } from '@/hooks/use-toast';
 import type { WinLog } from '@/app/lib/types';
+import type { Flower } from '@/app/lib/flowers';
+import { FLOWERS } from '@/app/lib/flowers';
 
 
-const wittyHeadlines = [
-  "Adulting level: Expert. 🏆",
-  "You’re winning at life today! ✨",
-  "Basically an Olympic Legend now. 🥇",
-  "Making moves and taking names! 🪴",
-  "Achievement unlocked: Absolute Legend. 🙌",
+const FLOWER_COST_TIERS = [
+    { from: 0, to: 3, cost: 30 },
+    { from: 4, to: 6, cost: 40 },
+    { from: 7, to: 9, cost: 50 },
+    { from: 10, to: 12, cost: 60 },
+    { from: 13, to: Infinity, cost: 70 },
 ];
 
-export function BottomNav() {
+const calculateFlowerGrowth = (dewdrops: number) => {
+    let flowerCount = 0;
+    let remainingDewdrops = dewdrops;
+    let costForNext = FLOWER_COST_TIERS[0].cost;
+
+    for (const tier of FLOWER_COST_TIERS) {
+        const flowersInTier = tier.to - (tier.from > 0 ? tier.from -1 : 0);
+        const dewdropsForTier = flowersInTier * tier.cost;
+
+        if (remainingDewdrops >= dewdropsForTier && tier.to !== Infinity) {
+            remainingDewdrops -= dewdropsForTier;
+            flowerCount += flowersInTier;
+        } else {
+            const flowersInThisTier = Math.floor(remainingDewdrops / tier.cost);
+            flowerCount += flowersInThisTier;
+            remainingDewdrops -= flowersInThisTier * tier.cost;
+            costForNext = tier.cost;
+            break;
+        }
+    }
+    
+    const dewdropsForNextFlower = costForNext - remainingDewdrops;
+    const progressToNextFlower = (remainingDewdrops / costForNext) * 100;
+
+    return {
+        flowerCount,
+        dewdropsForNextFlower,
+        progressToNextFlower,
+    };
+};
+
+const getRandomFlower = (exclude: Flower[] = []): Flower => {
+  const availableFlowers = FLOWERS.filter(
+    (f) => !exclude.some((e) => e.name === f.name)
+  );
+  const pool = availableFlowers.length > 0 ? availableFlowers : FLOWERS;
+  return pool[Math.floor(Math.random() * pool.length)];
+};
+
+
+type BottomNavProps = {
+  onShowFeedback: (feedback: {
+    didBloom: boolean;
+    flower?: Flower;
+    progress?: {
+      dewdropsForNextFlower: number;
+      progressToNextFlower: number;
+      currentTargetFlower: Flower | null;
+    }
+  }) => void;
+}
+
+
+export function BottomNav({ onShowFeedback }: BottomNavProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const { toast } = useToast();
 
-  // This function needs to be kept in sync with the one in WinBloomDashboard.
-  // In a real app, this logic would be in a shared state management solution.
   const handleWinLog = (win: string, gratitude: string) => {
+    setIsFormOpen(false);
+    
     try {
+      // --- Read current state from localStorage ---
       const savedLogs = localStorage.getItem('winbloom-logs') || '[]';
       const logs: WinLog[] = JSON.parse(savedLogs);
+      const savedDewdrops = localStorage.getItem('winbloom-dewdrops') || '0';
+      const previousDewdrops = JSON.parse(savedDewdrops);
+      const savedBloomedFlowers = localStorage.getItem('winbloom-bloomed-flowers') || '[]';
+      const bloomedFlowers: string[] = JSON.parse(savedBloomedFlowers);
+      const savedTargetFlower = localStorage.getItem('winbloom-target-flower');
+      const currentTargetFlower: Flower | null = savedTargetFlower ? JSON.parse(savedTargetFlower) : null;
+      
+      // --- Update state ---
       const newLog: WinLog = { id: new Date().toISOString(), win, gratitude, date: new Date().toISOString() };
       const updatedLogs = [newLog, ...logs];
+      const updatedDewdrops = previousDewdrops + 10;
+      
+      // --- Save updated state ---
       localStorage.setItem('winbloom-logs', JSON.stringify(updatedLogs));
+      localStorage.setItem('winbloom-dewdrops', JSON.stringify(updatedDewdrops));
 
-      const savedDewdrops = localStorage.getItem('winbloom-dewdrops') || '0';
-      const dewdrops = JSON.parse(savedDewdrops);
-      const newDewdrops = dewdrops + 10;
-      localStorage.setItem('winbloom-dewdrops', JSON.stringify(newDewdrops));
+      // --- Determine if a flower bloomed ---
+      const { flowerCount: prevFlowerCount } = calculateFlowerGrowth(previousDewdrops);
+      const { flowerCount: newFlowerCount, dewdropsForNextFlower, progressToNextFlower } = calculateFlowerGrowth(updatedDewdrops);
 
-      // Close the form and reload to trigger the feedback overlay on the dashboard
-      setIsFormOpen(false);
-      window.location.reload();
+      if (newFlowerCount > prevFlowerCount) {
+        const flowerToBloom = currentTargetFlower || getRandomFlower();
+        
+        // Update bloomed flowers list and set new target
+        const updatedBloomedFlowers = [...bloomedFlowers, flowerToBloom.icon];
+        localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(updatedBloomedFlowers));
+        
+        const newTarget = getRandomFlower(updatedBloomedFlowers.map(icon => FLOWERS.find(f => f.icon === icon)).filter(Boolean) as Flower[]);
+        localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
 
+        onShowFeedback({
+          didBloom: true,
+          flower: flowerToBloom,
+        });
+
+      } else {
+        onShowFeedback({
+          didBloom: false,
+          progress: {
+            dewdropsForNextFlower,
+            progressToNextFlower,
+            currentTargetFlower,
+          },
+        });
+      }
 
     } catch (error) {
        console.error("Failed to save to localStorage", error);
        toast({ variant: 'destructive', title: 'Oh no!', description: 'Could not save your win.' });
-       setIsFormOpen(false);
     }
   };
 
