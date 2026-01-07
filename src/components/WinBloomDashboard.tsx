@@ -92,32 +92,20 @@ export function WinBloomDashboard() {
 
   useEffect(() => {
     setIsClient(true);
-    try {
-      const savedDewdrops = localStorage.getItem('winbloom-dewdrops');
-      const initialDewdrops = savedDewdrops ? JSON.parse(savedDewdrops) : 0;
-      setDewdrops(initialDewdrops);
-      
-      const { flowerCount } = calculateFlowerGrowth(initialDewdrops);
-      setLastFlowerCount(flowerCount);
-      
-      const savedLogs = localStorage.getItem('winbloom-logs');
-      if (savedLogs) setLogs(JSON.parse(savedLogs));
+    // Reset all progress
+    localStorage.removeItem('winbloom-dewdrops');
+    localStorage.removeItem('winbloom-logs');
+    localStorage.removeItem('winbloom-bloomed-flowers');
+    localStorage.removeItem('winbloom-target-flower');
 
-      const savedBloomed = localStorage.getItem('winbloom-bloomed-flowers');
-      const initialBloomed = savedBloomed ? JSON.parse(savedBloomed) : [];
-      setBloomedFlowers(initialBloomed);
-
-      const savedTarget = localStorage.getItem('winbloom-target-flower');
-      if (savedTarget) {
-        setCurrentTargetFlower(JSON.parse(savedTarget));
-      } else {
-        const initialTarget = getRandomFlower();
-        setCurrentTargetFlower(initialTarget);
-        localStorage.setItem('winbloom-target-flower', JSON.stringify(initialTarget));
-      }
-    } catch (error) {
-      console.error("Failed to parse from localStorage", error);
-    }
+    setDewdrops(0);
+    setLogs([]);
+    setBloomedFlowers([]);
+    setLastFlowerCount(0);
+    
+    const initialTarget = getRandomFlower();
+    setCurrentTargetFlower(initialTarget);
+    localStorage.setItem('winbloom-target-flower', JSON.stringify(initialTarget));
   }, []);
 
   const {
@@ -221,5 +209,3 @@ export function WinBloomDashboard() {
     </>
   );
 }
-
-    
