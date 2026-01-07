@@ -69,7 +69,7 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
 
                 {/* Starting Seedling Icon */}
                 <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center" style={{ left: '0%' }}>
-                     <span className="text-4xl">🌱</span>
+                     <span className="text-4xl">🪴</span>
                 </div>
 
                 {/* Intermediate Dewdrop Steps */}
@@ -85,7 +85,7 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                                 backgroundColor: isFilled ? '#6AC394' : '#D6D8D5',
                              }}
                         >
-                            <Droplets className={cn("size-5 text-white")} />
+                            <Droplets className={cn("size-5", isFilled ? 'text-white' : 'text-white')} />
                         </div>
                     );
                 })}
