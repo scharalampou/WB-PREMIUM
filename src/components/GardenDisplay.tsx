@@ -4,7 +4,6 @@
 import { Droplets, Sprout } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { useWindowSize } from '@react-hook/window-size';
 import { ConfettiBurst } from './Confetti';
 
 // A new component for the circular progress bar
@@ -23,7 +22,7 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke="#E5E7EB" // A light grey color for the track
+                stroke="hsl(var(--muted))"
                 strokeWidth={strokeWidth}
                 fill="transparent"
             />
@@ -32,7 +31,7 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke="#3D8E73" // Growth Green color
+                stroke="hsl(var(--primary))"
                 strokeWidth={strokeWidth}
                 fill="transparent"
                 strokeDasharray={circumference}
@@ -46,12 +45,56 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
     );
 };
 
+interface DewdropProgressBarProps {
+    currentSteps: number;
+    totalSteps: number;
+}
+
+const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProps) => {
+    const progressPercentage = (currentSteps / totalSteps) * 100;
+    const intermediateStepCount = Math.max(0, totalSteps / 1 - 1);
+    
+    return (
+        <div className="w-full mt-4">
+            <div className="relative w-full h-2 bg-muted rounded-full">
+                <div
+                    className="absolute h-2 rounded-full bg-primary"
+                    style={{ width: `${progressPercentage}%`, transition: 'width 0.5s ease-out' }}
+                ></div>
+
+                {/* Intermediate Dewdrop Steps */}
+                {Array.from({ length: intermediateStepCount }).map((_, i) => {
+                    const stepPosition = `${((i + 1) / totalSteps) * 100}%`;
+                    const isFilled = (i + 1) <= currentSteps;
+                    return (
+                        <div
+                            key={`step-${i}`}
+                            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-background flex items-center justify-center"
+                            style={{ left: stepPosition }}
+                        >
+                            <Droplets className={cn("size-4", isFilled ? 'text-primary' : 'text-muted-foreground/50')} />
+                        </div>
+                    );
+                })}
+
+                {/* Final Flower Step */}
+                <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black flex items-center justify-center" style={{ left: '100%' }}>
+                     <span className="text-xl">🌸</span>
+                </div>
+            </div>
+            <p className="text-center text-sm text-muted-foreground mt-8">Your progress to the next flower!</p>
+        </div>
+    );
+};
+
 interface GardenDisplayProps {
     dewdrops: number;
     progressToNextFlower: number;
     dewdropsForNextFlower: number;
     flowerCount: number;
     logCount: number;
+    currentProgressSteps: number;
+    totalProgressSteps: number;
 }
 
 export function GardenDisplay({
@@ -60,16 +103,17 @@ export function GardenDisplay({
     dewdropsForNextFlower,
     flowerCount,
     logCount,
+    currentProgressSteps,
+    totalProgressSteps,
 }: GardenDisplayProps) {
-    const { width = 0, height = 0 } = useWindowSize();
-    const showConfetti = dewdrops > 0 && dewdrops % 70 === 0 && logCount > 0;
+    const showConfetti = dewdrops > 0 && dewdrops > 0 && dewdrops % (totalProgressSteps * 10) === 0 && logCount > 0;
 
     return (
         <>
             {showConfetti && <ConfettiBurst />}
             <div className="space-y-6">
                 <Card>
-                    <CardHeader className="flex-row items-center justify-between pb-4">
+                    <CardHeader className="flex-row items-center justify-between pb-2">
                         <div className="space-y-1.5">
                             <CardTitle className="font-headline">Dewdrop Balance</CardTitle>
                             <CardDescription>Earn 10 Dewdrops for every win you log!</CardDescription>
@@ -79,6 +123,11 @@ export function GardenDisplay({
                             <span>{dewdrops}</span>
                         </div>
                     </CardHeader>
+                    <CardContent>
+                        {logCount > 0 && (
+                            <DewdropProgressBar currentSteps={currentProgressSteps} totalSteps={totalProgressSteps} />
+                        )}
+                    </CardContent>
                 </Card>
                 <Card className="flex flex-col">
                     <CardHeader>
