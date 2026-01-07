@@ -80,7 +80,7 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                                 backgroundColor: isFilled ? '#6AC394' : '#dddddd',
                              }}
                         >
-                            <Droplets className={cn("size-3.5 text-white")} />
+                            <Droplets className={cn("size-5 text-white")} />
                         </div>
                     );
                 })}
