@@ -7,7 +7,6 @@ import type { WinLog } from '@/app/lib/types';
 import { WinForm } from './WinForm';
 import { GardenDisplay } from './GardenDisplay';
 import { useToast } from '@/hooks/use-toast';
-import { Sprout } from 'lucide-react';
 import { FLOWERS, type Flower } from '@/app/lib/flowers';
 import { BloomCelebration } from './BloomCelebration';
 
@@ -35,7 +34,6 @@ const FLOWER_COST_TIERS = [
 const calculateFlowerGrowth = (dewdrops: number) => {
     let flowerCount = 0;
     let remainingDewdrops = dewdrops;
-    let dewdropsForNextFlower = 0;
     let costForNext = FLOWER_COST_TIERS[0].cost;
 
     for (const tier of FLOWER_COST_TIERS) {
@@ -54,7 +52,7 @@ const calculateFlowerGrowth = (dewdrops: number) => {
         }
     }
     
-    dewdropsForNextFlower = costForNext - remainingDewdrops;
+    const dewdropsForNextFlower = costForNext - remainingDewdrops;
     const progressToNextFlower = (remainingDewdrops / costForNext) * 100;
     const totalProgressSteps = costForNext / 10;
     const currentProgressSteps = Math.floor(remainingDewdrops / 10);
@@ -65,7 +63,6 @@ const calculateFlowerGrowth = (dewdrops: number) => {
         progressToNextFlower,
         totalProgressSteps,
         currentProgressSteps,
-        costForNext,
     };
 };
 
@@ -100,12 +97,9 @@ export function WinBloomDashboard() {
     const savedTargetFlower = localStorage.getItem('winbloom-target-flower');
     
     const initialDewdrops = savedDewdrops ? JSON.parse(savedDewdrops) : 0;
-    const initialLogs = savedLogs ? JSON.parse(savedLogs) : [];
-    const initialBloomedFlowers = savedBloomedFlowers ? JSON.parse(savedBloomedFlowers) : [];
-    
     setDewdrops(initialDewdrops);
-    setLogs(initialLogs);
-    setBloomedFlowers(initialBloomedFlowers);
+    setLogs(savedLogs ? JSON.parse(savedLogs) : []);
+    setBloomedFlowers(savedBloomedFlowers ? JSON.parse(savedBloomedFlowers) : []);
 
     const growth = calculateFlowerGrowth(initialDewdrops);
     setLastFlowerCount(growth.flowerCount);
@@ -125,16 +119,13 @@ export function WinBloomDashboard() {
       progressToNextFlower,
       totalProgressSteps,
       currentProgressSteps,
-      costForNext,
   } = useMemo(() => calculateFlowerGrowth(dewdrops), [dewdrops]);
 
   useEffect(() => {
-    if (isClient) {
-      if (flowerCount > lastFlowerCount) {
+    if (isClient && flowerCount > lastFlowerCount) {
         if (currentTargetFlower) {
             setShowCelebration(currentTargetFlower);
         }
-      }
     }
   }, [flowerCount, lastFlowerCount, isClient, currentTargetFlower]);
 
@@ -176,7 +167,7 @@ export function WinBloomDashboard() {
       className: "bg-primary text-primary-foreground border-none",
       title: <span className="font-bold">{randomHeadline}</span>,
       description: "Success! +10 Dewdrops added to your balance.",
-      duration: 10000,
+      duration: 5000,
     });
   };
 
