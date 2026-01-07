@@ -31,7 +31,7 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke="#6AC394"
+                stroke="#129263"
                 strokeWidth={strokeWidth}
                 fill="transparent"
                 strokeDasharray={circumference}
@@ -63,7 +63,7 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                     style={{ 
                         width: `${progressPercentage}%`, 
                         transition: 'width 0.5s ease-out',
-                        backgroundColor: '#6AC394' 
+                        backgroundColor: '#129263' 
                     }}
                 ></div>
 
@@ -82,10 +82,10 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                             className={cn("absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center")}
                             style={{ 
                                 left: stepPosition,
-                                backgroundColor: isFilled ? '#6AC394' : '#D6D8D5',
+                                backgroundColor: isFilled ? '#129263' : '#dddddd',
                              }}
                         >
-                            <Droplets className={cn("size-5", isFilled ? 'text-white' : 'text-white')} />
+                            <Droplets className={cn("size-5 text-white")} />
                         </div>
                     );
                 })}
@@ -132,7 +132,7 @@ export function GardenDisplay({
                             <CardDescription>Earn 10 Dewdrops for every win you log!</CardDescription>
                         </div>
                         <div className="flex items-center gap-2 text-4xl font-bold text-primary dark:text-accent">
-                            <Droplets className="size-7" style={{ color: '#6AC394' }} />
+                            <Droplets className="size-7" style={{ color: '#129263' }} />
                             <span>{dewdrops}</span>
                         </div>
                     </CardHeader>
