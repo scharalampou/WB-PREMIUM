@@ -68,7 +68,7 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                 ></div>
 
                 {/* Starting Seedling Icon */}
-                <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center" style={{ left: '0%' }}>
+                <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center" style={{ left: '0%', backgroundColor: '#FFF0C2' }}>
                      <span className="text-4xl">🪴</span>
                 </div>
 
