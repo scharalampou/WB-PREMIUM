@@ -51,8 +51,9 @@ interface DewdropProgressBarProps {
 }
 
 const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProps) => {
-    const progressPercentage = (currentSteps / totalSteps) * 100;
-    const intermediateStepCount = Math.max(0, totalSteps / 1 - 1);
+    const progressPercentage = totalSteps > 0 ? (currentSteps / totalSteps) * 100 : 0;
+    // We want to show a dewdrop for each 10-dewdrop increment, excluding the final flower.
+    const intermediateStepCount = Math.max(0, totalSteps - 1);
     
     return (
         <div className="w-full mt-4">
@@ -106,7 +107,7 @@ export function GardenDisplay({
     currentProgressSteps,
     totalProgressSteps,
 }: GardenDisplayProps) {
-    const showConfetti = dewdrops > 0 && dewdrops > 0 && dewdrops % (totalProgressSteps * 10) === 0 && logCount > 0;
+    const showConfetti = dewdrops > 0 && totalProgressSteps > 0 && dewdrops % (totalProgressSteps * 10) === 0 && logCount > 0;
 
     return (
         <>
@@ -124,7 +125,7 @@ export function GardenDisplay({
                         </div>
                     </CardHeader>
                     <CardContent>
-                        {logCount > 0 && (
+                        {logCount > 0 && totalProgressSteps > 0 && (
                             <DewdropProgressBar currentSteps={currentProgressSteps} totalSteps={totalProgressSteps} />
                         )}
                     </CardContent>
