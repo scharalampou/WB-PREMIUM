@@ -4,7 +4,7 @@
 import React from 'react';
 import type { Flower } from '@/app/lib/flowers';
 import { Button } from './ui/button';
-import { Sprout } from 'lucide-react';
+import { Sprout, Leaf } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 
@@ -59,6 +59,12 @@ export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) =
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background p-4 text-center">
+        <div className="absolute top-8 flex items-center gap-2">
+            <Leaf className="text-primary size-7" />
+            <h1 className="text-2xl font-headline font-bold text-[#121212] dark:text-primary">
+                WinBloom
+            </h1>
+        </div>
       <div className="relative z-10 flex flex-col items-center space-y-6 max-w-md mx-auto">
         <h2 className="text-4xl font-headline font-bold text-primary dark:text-accent">Well Done!</h2>
 
