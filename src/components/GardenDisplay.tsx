@@ -22,7 +22,7 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke="hsl(var(--muted))"
+                stroke="#DDDDDD"
                 strokeWidth={strokeWidth}
                 fill="transparent"
             />
@@ -57,7 +57,7 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
     
     return (
         <div className="w-full mt-4">
-            <div className="relative w-full h-2 bg-muted rounded-full">
+            <div className="relative w-full h-2 rounded-full" style={{ backgroundColor: '#DDDDDD' }}>
                 <div
                     className="absolute h-2 rounded-full"
                     style={{ 
@@ -77,14 +77,14 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                             className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background flex items-center justify-center"
                             style={{ left: stepPosition }}
                         >
-                            <Droplets className={cn("size-6", isFilled ? 'text-[#6AC394]' : 'text-muted-foreground/50')} />
+                            <Droplets className={cn("size-8", isFilled ? 'text-[#6AC394]' : 'text-muted-foreground/50')} />
                         </div>
                     );
                 })}
 
                 {/* Final Flower Step */}
                 <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background flex items-center justify-center" style={{ left: '100%' }}>
-                     <span className="text-3xl">🌸</span>
+                     <span className="text-4xl">🌸</span>
                 </div>
             </div>
             <p className="text-center text-sm text-muted-foreground mt-8">Your progress to the next flower!</p>
