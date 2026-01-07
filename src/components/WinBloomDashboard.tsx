@@ -182,13 +182,6 @@ export function WinBloomDashboard() {
         didBloom: true,
         flower: currentTargetFlower || getRandomFlower(),
       });
-      toast({
-        className: "bg-primary text-primary-foreground border-none",
-        title: "A new flower bloomed!",
-        description: `You grew a beautiful ${currentTargetFlower?.name || 'flower'}.`,
-        duration: 5000,
-      });
-
     } else {
       setFeedbackData({
         isOpen: true,
@@ -198,13 +191,6 @@ export function WinBloomDashboard() {
           progressToNextFlower: nextProgress,
           currentTargetFlower: currentTargetFlower
         }
-      });
-      const randomHeadline = wittyHeadlines[Math.floor(Math.random() * wittyHeadlines.length)];
-      toast({
-        className: "bg-primary text-primary-foreground border-none",
-        title: <span className="font-bold">{randomHeadline}</span>,
-        description: "Success! +10 Dewdrops added to your balance.",
-        duration: 5000,
       });
     }
   };
