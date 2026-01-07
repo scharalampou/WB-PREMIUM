@@ -31,7 +31,7 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke="hsl(var(--accent))"
+                stroke="#6AC394"
                 strokeWidth={strokeWidth}
                 fill="transparent"
                 strokeDasharray={circumference}
@@ -59,8 +59,12 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
         <div className="w-full mt-4">
             <div className="relative w-full h-2 bg-muted rounded-full">
                 <div
-                    className="absolute h-2 rounded-full bg-accent"
-                    style={{ width: `${progressPercentage}%`, transition: 'width 0.5s ease-out' }}
+                    className="absolute h-2 rounded-full"
+                    style={{ 
+                        width: `${progressPercentage}%`, 
+                        transition: 'width 0.5s ease-out',
+                        backgroundColor: '#6AC394' 
+                    }}
                 ></div>
 
                 {/* Intermediate Dewdrop Steps */}
@@ -73,14 +77,14 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                             className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background flex items-center justify-center"
                             style={{ left: stepPosition }}
                         >
-                            <Droplets className={cn("size-5", isFilled ? 'text-accent' : 'text-muted-foreground/50')} />
+                            <Droplets className={cn("size-6", isFilled ? 'text-[#6AC394]' : 'text-muted-foreground/50')} />
                         </div>
                     );
                 })}
 
                 {/* Final Flower Step */}
                 <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background flex items-center justify-center" style={{ left: '100%' }}>
-                     <span className="text-2xl">🌸</span>
+                     <span className="text-3xl">🌸</span>
                 </div>
             </div>
             <p className="text-center text-sm text-muted-foreground mt-8">Your progress to the next flower!</p>
