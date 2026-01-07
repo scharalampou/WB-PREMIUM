@@ -92,7 +92,12 @@ export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) =
         <Button 
           onClick={onClose} 
           size="lg" 
-          className="font-bold text-lg w-full max-w-xs"
+          className={cn(
+            "font-bold text-lg w-full max-w-xs",
+            {
+              "bg-[#129263] hover:bg-[#129263]/90": !didBloom,
+            }
+          )}
         >
           {didBloom ? "See My Garden" : "Continue"}
         </Button>
