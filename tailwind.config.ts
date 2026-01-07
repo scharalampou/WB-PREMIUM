@@ -109,12 +109,17 @@ export default {
           '0%': { transform: 'scale(0)', opacity: '0' },
           '70%': { transform: 'scale(1.1)', opacity: '1' },
           '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        'pulse-grow': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'bloom': 'bloom 0.5s ease-out forwards',
+        'pulse-grow': 'pulse-grow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },

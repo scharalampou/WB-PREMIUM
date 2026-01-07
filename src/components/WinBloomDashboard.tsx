@@ -9,6 +9,8 @@ import { GardenDisplay } from './GardenDisplay';
 import { useToast } from '@/hooks/use-toast';
 import { Sprout } from 'lucide-react';
 import { FLOWERS, type Flower } from '@/app/lib/flowers';
+import { BloomCelebration } from './BloomCelebration';
+
 
 const wittyHeadlines = [
   "Adulting level: Expert. 🏆",
@@ -85,6 +87,9 @@ export function WinBloomDashboard() {
   const [currentTargetFlower, setCurrentTargetFlower] = useState<Flower | null>(null);
   const [lastFlowerToastCount, setLastFlowerToastCount] = useState(0);
 
+  const [showCelebration, setShowCelebration] = useState<Flower | null>(null);
+
+
   useEffect(() => {
     setIsClient(true);
     try {
@@ -127,32 +132,26 @@ export function WinBloomDashboard() {
       
       if (flowerCount > lastFlowerToastCount) {
         const newBloomedFlower = currentTargetFlower;
-
         if (newBloomedFlower) {
-            const updatedBloomedFlowers = [...bloomedFlowers, newBloomedFlower.icon];
-            setBloomedFlowers(updatedBloomedFlowers);
-            localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(updatedBloomedFlowers));
-        
-            toast({
-              className: "bg-primary text-primary-foreground border-none",
-              title: (
-                <div className="flex items-center gap-2 font-bold text-primary-foreground">
-                  <span className="text-2xl">{newBloomedFlower.icon}</span>
-                  <span>A new {newBloomedFlower.name} has bloomed!</span>
-                </div>
-              ),
-              description: "Your garden is flourishing!",
-              duration: 10000,
-            });
-
-            const newTarget = getRandomFlower([newBloomedFlower]);
-            setCurrentTargetFlower(newTarget);
-            localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
+            setShowCelebration(newBloomedFlower);
         }
         setLastFlowerToastCount(flowerCount);
       }
     }
   }, [dewdrops, isClient, toast, flowerCount, lastFlowerToastCount, currentTargetFlower, bloomedFlowers]);
+
+  const handleCelebrationComplete = () => {
+    if (currentTargetFlower) {
+      const updatedBloomedFlowers = [...bloomedFlowers, currentTargetFlower.icon];
+      setBloomedFlowers(updatedBloomedFlowers);
+      localStorage.setItem('winbloom-bloomed-flowers', JSON.stringify(updatedBloomedFlowers));
+
+      const newTarget = getRandomFlower([currentTargetFlower]);
+      setCurrentTargetFlower(newTarget);
+      localStorage.setItem('winbloom-target-flower', JSON.stringify(newTarget));
+    }
+    setShowCelebration(null);
+  };
 
   useEffect(() => {
     if (isClient) {
@@ -189,24 +188,32 @@ export function WinBloomDashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        <div className="lg:col-span-3">
-          <GardenDisplay 
-            dewdrops={dewdrops}
-            progressToNextFlower={progressToNextFlower}
-            currentProgressSteps={currentProgressSteps}
-            totalProgressSteps={totalProgressSteps}
-            dewdropsForNextFlower={dewdropsForNextFlower}
-            bloomedFlowers={bloomedFlowers}
-            logCount={logs.length}
-            currentTargetFlower={currentTargetFlower}
-          />
-        </div>
-        <div className="lg:col-span-2 space-y-6 hidden sm:block">
-           <WinForm onWinLog={handleWinLog} />
+    <>
+      {showCelebration && (
+        <BloomCelebration
+          flower={showCelebration}
+          onClose={handleCelebrationComplete}
+        />
+      )}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <div className="lg:col-span-3">
+            <GardenDisplay 
+              dewdrops={dewdrops}
+              progressToNextFlower={progressToNextFlower}
+              currentProgressSteps={currentProgressSteps}
+              totalProgressSteps={totalProgressSteps}
+              dewdropsForNextFlower={dewdropsForNextFlower}
+              bloomedFlowers={bloomedFlowers}
+              logCount={logs.length}
+              currentTargetFlower={currentTargetFlower}
+            />
+          </div>
+          <div className="lg:col-span-2 space-y-6 hidden sm:block">
+            <WinForm onWinLog={handleWinLog} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
