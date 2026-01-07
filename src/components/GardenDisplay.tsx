@@ -31,7 +31,7 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke="hsl(var(--primary))"
+                stroke="hsl(var(--accent))"
                 strokeWidth={strokeWidth}
                 fill="transparent"
                 strokeDasharray={circumference}
@@ -53,13 +53,13 @@ interface DewdropProgressBarProps {
 const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProps) => {
     const progressPercentage = totalSteps > 0 ? (currentSteps / totalSteps) * 100 : 0;
     // We want to show a dewdrop for each 10-dewdrop increment, excluding the final flower.
-    const intermediateStepCount = Math.max(0, totalSteps - 1);
+    const intermediateStepCount = Math.max(0, totalSteps > 0 ? totalSteps -1 : 0);
     
     return (
         <div className="w-full mt-4">
             <div className="relative w-full h-2 bg-muted rounded-full">
                 <div
-                    className="absolute h-2 rounded-full bg-primary"
+                    className="absolute h-2 rounded-full bg-accent"
                     style={{ width: `${progressPercentage}%`, transition: 'width 0.5s ease-out' }}
                 ></div>
 
@@ -70,17 +70,17 @@ const DewdropProgressBar = ({ currentSteps, totalSteps }: DewdropProgressBarProp
                     return (
                         <div
                             key={`step-${i}`}
-                            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-background flex items-center justify-center"
+                            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background flex items-center justify-center"
                             style={{ left: stepPosition }}
                         >
-                            <Droplets className={cn("size-4", isFilled ? 'text-primary' : 'text-muted-foreground/50')} />
+                            <Droplets className={cn("size-5", isFilled ? 'text-accent' : 'text-muted-foreground/50')} />
                         </div>
                     );
                 })}
 
                 {/* Final Flower Step */}
-                <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black flex items-center justify-center" style={{ left: '100%' }}>
-                     <span className="text-xl">🌸</span>
+                <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background flex items-center justify-center" style={{ left: '100%' }}>
+                     <span className="text-2xl">🌸</span>
                 </div>
             </div>
             <p className="text-center text-sm text-muted-foreground mt-8">Your progress to the next flower!</p>
