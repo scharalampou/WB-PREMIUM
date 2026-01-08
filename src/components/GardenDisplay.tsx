@@ -160,7 +160,7 @@ export function GardenDisplay({
                                         {bloomedFlowers.map((icon, i) => (
                                             <div key={i} className="flex justify-center">
                                                 <span
-                                                    className="text-4xl animate-bloom"
+                                                    className="text-5xl animate-bloom"
                                                     style={{ animationDelay: `${i * 100}ms` }}
                                                 >
                                                     {icon}
