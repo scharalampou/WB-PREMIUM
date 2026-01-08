@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Sprout, History, Users, Plus } from 'lucide-react';
+import { Sprout, History, Globe, Plus } from 'lucide-react';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import {
@@ -29,14 +29,17 @@ const calculateFlowerGrowth = (dewdrops: number) => {
     let flowerCount = 0;
     let remainingDewdrops = dewdrops;
     let costForNext = FLOWER_COST_TIERS[0].cost;
+    let currentTierIndex = 0;
 
-    for (const tier of FLOWER_COST_TIERS) {
+    while (currentTierIndex < FLOWER_COST_TIERS.length) {
+        const tier = FLOWER_COST_TIERS[currentTierIndex];
         const flowersInTier = tier.to - (tier.from > 0 ? tier.from -1 : 0);
         const dewdropsForTier = flowersInTier * tier.cost;
 
-        if (remainingDewdrops >= dewdropsForTier && tier.to !== Infinity) {
+        if (tier.to !== Infinity && remainingDewdrops >= dewdropsForTier) {
             remainingDewdrops -= dewdropsForTier;
             flowerCount += flowersInTier;
+            currentTierIndex++;
         } else {
             const flowersInThisTier = Math.floor(remainingDewdrops / tier.cost);
             flowerCount += flowersInThisTier;
@@ -159,8 +162,8 @@ export function BottomNav({ onShowFeedback }: BottomNavProps) {
           <span className="text-xs font-semibold">My Growth</span>
         </TabsTrigger>
         <TabsTrigger value="global" className="flex-col h-full gap-1 data-[state=active]:text-white dark:data-[state=active]:text-[#121212] bg-transparent shadow-none border-none data-[state=active]:shadow-none data-[state=active]:rounded-none">
-          <Users className="size-6" />
-          <span className="text-xs font-semibold">Feed</span>
+          <Globe className="size-6" />
+          <span className="text-xs font-semibold">Bloom Feed</span>
         </TabsTrigger>
 
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>

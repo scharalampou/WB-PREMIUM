@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Menu, Sprout, History, Users } from 'lucide-react';
+import { Menu, Sprout, History, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { TabsList, TabsTrigger } from './ui/tabs';
@@ -32,8 +32,8 @@ export function MobileNav() {
                     My Growth
                 </TabsTrigger>
                 <TabsTrigger value="global" onClick={() => setIsOpen(false)}>
-                    <Users className="mr-2 h-4 w-4" />
-                    Community
+                    <Globe className="mr-2 h-4 w-4" />
+                    Bloom Feed
                 </TabsTrigger>
             </TabsList>
         </div>

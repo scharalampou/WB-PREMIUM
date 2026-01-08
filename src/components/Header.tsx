@@ -1,4 +1,4 @@
-import { Leaf, Menu, Sprout, Users, History } from 'lucide-react';
+import { Leaf, Menu, Globe, History, Sprout } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { TabsList, TabsTrigger } from './ui/tabs';
 import { MobileNav } from './MobileNav';
@@ -46,8 +46,8 @@ export function Header() {
                     My Growth
                     </TabsTrigger>
                     <TabsTrigger value="global">
-                    <Users className="mr-2 h-4 w-4" />
-                    Community
+                    <Globe className="mr-2 h-4 w-4" />
+                    Bloom Feed
                     </TabsTrigger>
                 </TabsList>
             </div>

@@ -4,7 +4,7 @@
 import { exampleWins, type ExampleWin } from '@/app/lib/mock-data';
 import { quotes, type Quote } from '@/app/lib/quotes';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Sprout } from 'lucide-react';
+import { Globe, Sprout } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -56,7 +56,7 @@ export function GlobalFeed() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2 max-w-2xl mx-auto">
-        <h2 className="text-3xl font-headline text-primary font-bold dark:text-accent">Community Feed</h2>
+        <h2 className="text-3xl font-headline text-primary font-bold dark:text-accent">Bloom Feed</h2>
         <p className="text-muted-foreground">
           Get inspired by small and big wins from the WinBloom community around the world.
         </p>
