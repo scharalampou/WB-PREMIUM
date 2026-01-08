@@ -110,7 +110,7 @@ export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) =
                   <Sprout className="text-accent" size={80} />
                 </div>
               </div>
-              <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
+              <p className="text-center text-base italic font-medium text-muted-foreground max-w-xs mt-2">
                 Just {progress.dewdropsForNextFlower} more Dewdrops until your {progress.currentTargetFlower?.name || 'next flower'}{' '}
                 <span className="text-2xl not-italic">{progress.currentTargetFlower?.icon}</span> blooms!
               </p>
@@ -125,7 +125,7 @@ export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) =
             "font-bold text-lg w-full max-w-xs",
             {
                 "bg-[#129263] hover:bg-[#129263]/90 dark:bg-accent dark:hover:bg-accent/90 dark:text-accent-foreground": !didBloom,
-                "bg-[#EA3E7D] hover:bg-[#EA3E7D]/90 text-white": didBloom,
+                "bg-[#EA3E7D] hover:bg-[#EA3E7D]/90 text-white dark:bg-accent dark:hover:bg-accent/90 dark:text-accent-foreground": didBloom,
             }
           )}
         >
