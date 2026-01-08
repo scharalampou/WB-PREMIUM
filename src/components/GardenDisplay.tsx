@@ -185,7 +185,7 @@ export function GardenDisplay({
                                     ) : (
                                         <>
                                             Just {dewdropsForNextFlower} more Dewdrops until your {currentTargetFlower?.name || 'next flower'}{' '}
-                                            <span className="text-2xl">{currentTargetFlower?.icon}</span> blooms!
+                                            <span className="text-2xl not-italic">{currentTargetFlower?.icon}</span> blooms!
                                         </>
                                     )}
                                 </p>
