@@ -180,7 +180,7 @@ export function GardenDisplay({
                                             <Sprout className="text-accent" size={80} />
                                         </div>
                                     </div>
-                                    <p className="text-center text-base italic font-medium text-muted-foreground max-w-xs mt-2 pb-6">
+                                    <p className="text-center text-base italic font-medium text-muted-foreground max-w-xs pb-6">
                                         {logCount === 0 ? (
                                             "Existing is a full-time job. Rest is productive, too."
                                         ) : (
