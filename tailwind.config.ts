@@ -21,6 +21,9 @@ export default {
       },
     },
     extend: {
+      backgroundImage: {
+        'grass': "url('/grass.png')",
+      },
       lineHeight: {
         'relaxed': '1.6',
       },

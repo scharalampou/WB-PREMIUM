@@ -150,7 +150,7 @@ export function GardenDisplay({
                         <CardTitle className="font-headline">Your Digital Garden</CardTitle>
                         <CardDescription>Watch your garden grow with every win you log.</CardDescription>
                     </CardHeader>
-                    <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-card">
+                    <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-card bg-grass bg-repeat-x bg-bottom pb-16">
                         <div className="w-full flex flex-col items-center flex-grow">
                             
                             {flowerCount > 0 && (
