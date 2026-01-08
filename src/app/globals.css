@@ -78,15 +78,15 @@
     --primary-foreground: 45 93% 10%;
     --secondary: 45 93% 22%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 252 14% 22%;
+    --muted: 222 24% 17%;
     --muted-foreground: 240 5% 64.9%;
     --accent: 45 93% 68%;
     --accent-foreground: 240 10% 3.9%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 215 30% 34%;
-    --header-border: hsl(215, 30%, 24%);
-    --input: 215 30% 34%;
+    --border: 217 24% 20%;
+    --header-border: hsl(217, 24%, 20%);
+    --input: 217 24% 20%;
     --ring: 45 93% 68%;
 
     --inspiration-1: 200 50% 20%;
