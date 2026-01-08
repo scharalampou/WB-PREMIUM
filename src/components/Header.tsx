@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 export function Header() {
   return (
-    <header className="border-b sticky top-0 bg-background z-10 border-border">
+    <header className="border-b sticky top-0 bg-background z-10 border-header-border">
       <div className={cn("container mx-auto px-4 flex items-center justify-between", "py-6")}>
         
         {/* Left Aligned Items */}
