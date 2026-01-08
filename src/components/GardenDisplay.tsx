@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { cn } from '@/lib/utils';
 import { ConfettiBurst } from './Confetti';
 import type { Flower } from '@/app/lib/flowers';
+import { useTheme } from 'next-themes';
 
 // A new component for the circular progress bar
 const CircularProgressBar = ({ progress }: { progress: number }) => {
@@ -121,6 +122,7 @@ export function GardenDisplay({
     totalProgressSteps,
     currentTargetFlower,
 }: GardenDisplayProps) {
+    const { theme } = useTheme();
     const showConfetti = dewdrops > 0 && totalProgressSteps > 0 && dewdrops % (totalProgressSteps * 10) === 0 && logCount > 0;
     const flowerCount = bloomedFlowers.length;
 
@@ -150,7 +152,10 @@ export function GardenDisplay({
                         <CardTitle className="font-headline">Your Digital Garden</CardTitle>
                         <CardDescription>Watch your garden grow with every win you log.</CardDescription>
                     </CardHeader>
-                    <CardContent className="flex-grow flex flex-col p-0 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-card/70">
+                    <CardContent 
+                        className="flex-grow flex flex-col p-0 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-card/70"
+                        style={{ borderColor: theme === 'dark' ? '#2C364E' : '' }}
+                    >
                          <div className="bg-grass bg-bottom bg-contain bg-no-repeat flex-grow flex flex-col items-center justify-center p-4 md:p-6 pb-16">
                             <div className="w-full flex flex-col items-center flex-grow">
                                 
@@ -201,3 +206,5 @@ export function GardenDisplay({
         </>
     );
 }
+
+    
