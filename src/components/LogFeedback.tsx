@@ -125,6 +125,7 @@ export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) =
             "font-bold text-lg w-full max-w-xs",
             {
                 "bg-[#129263] hover:bg-[#129263]/90 dark:bg-accent dark:hover:bg-accent/90 dark:text-accent-foreground": !didBloom,
+                "bg-[#EA3E7D] hover:bg-[#EA3E7D]/90 text-white": didBloom,
             }
           )}
         >
