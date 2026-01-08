@@ -173,14 +173,14 @@ export function GardenDisplay({
                                     </>
                                 )}
 
-                                <div className="flex flex-col items-center justify-center gap-4 text-center flex-grow">
+                                <div className="flex flex-col items-center justify-center gap-2 text-center flex-grow">
                                     <div className="relative flex items-center justify-center">
                                         <CircularProgressBar progress={progressToNextFlower} />
                                         <div className="absolute">
                                             <Sprout className="text-accent" size={80} />
                                         </div>
                                     </div>
-                                    <p className="text-center text-base italic font-medium text-muted-foreground max-w-xs pb-6">
+                                    <p className="text-center text-base italic font-medium text-muted-foreground max-w-xs pb-8">
                                         {logCount === 0 ? (
                                             "Existing is a full-time job. Rest is productive, too."
                                         ) : (
