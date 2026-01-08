@@ -1,12 +1,24 @@
 
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Flower } from '@/app/lib/flowers';
 import { Button } from './ui/button';
 import { Sprout, Leaf } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+
+const punchlines = [
+  "Another win for the books! Your garden is practically glowing.",
+  "Look at you go! That’s 10 more dewdrops of pure momentum.",
+  "Small wins are the roots of big dreams. You're doing the work!",
+  "Garden update: Your seedling just did a little happy dance! 💃",
+  "You’re on fire! (The good kind, the kind that helps flowers grow).",
+  "Consistency looks good on you! Your future self is cheering.",
+  "Hydration station! You just gave your garden exactly what it needed.",
+  "Boom! Another win logged. You’re becoming a master gardener!",
+  "Take a second to feel that pride! You earned these dewdrops."
+];
 
 const CircularProgressBar = ({ progress }: { progress: number }) => {
     const size = 160;
@@ -18,12 +30,12 @@ const CircularProgressBar = ({ progress }: { progress: number }) => {
 
     return (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="transform -rotate-90">
-            <circle cx={center} cy={center} r={radius} stroke="#D6D8D5" strokeWidth={strokeWidth} fill="transparent" />
+            <circle cx={center} cy={center} r={radius} stroke="hsl(var(--border))" strokeWidth={strokeWidth} fill="transparent" />
             <circle
                 cx={center}
                 cy={center}
                 r={radius}
-                stroke="#129263"
+                stroke="hsl(var(--primary))"
                 strokeWidth={strokeWidth}
                 fill="transparent"
                 strokeDasharray={circumference}
@@ -56,6 +68,12 @@ type LogFeedbackProps = {
 
 export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) => {
   const { didBloom, flower, progress } = feedback;
+  const [punchline, setPunchline] = useState('');
+
+  useEffect(() => {
+    // Select a random punchline only on the client-side to avoid hydration mismatch
+    setPunchline(punchlines[Math.floor(Math.random() * punchlines.length)]);
+  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background p-4 text-center">
@@ -67,6 +85,7 @@ export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) =
         </div>
       <div className="relative z-10 flex flex-col items-center space-y-6 max-w-md mx-auto">
         <h2 className="text-4xl font-headline font-bold text-primary dark:text-accent">Well Done!</h2>
+        <h3 className="h3 text-xl text-muted-foreground font-medium max-w-sm">{punchline}</h3>
 
         {didBloom && flower ? (
           <div className="flex flex-col items-center space-y-4">
