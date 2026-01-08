@@ -22,9 +22,7 @@ import { FLOWERS } from '@/app/lib/flowers';
 const FLOWER_COST_TIERS = [
     { from: 0, to: 3, cost: 30 },
     { from: 4, to: 6, cost: 40 },
-    { from: 7, to: 9, cost: 50 },
-    { from: 10, to: 12, cost: 60 },
-    { from: 13, to: Infinity, cost: 70 },
+    { from: 7, to: Infinity, cost: 50 },
 ];
 
 const calculateFlowerGrowth = (dewdrops: number) => {
