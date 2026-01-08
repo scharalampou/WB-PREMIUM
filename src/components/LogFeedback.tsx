@@ -83,7 +83,8 @@ export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) =
                 </div>
               </div>
               <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
-                Just {progress.dewdropsForNextFlower} more Dewdrops until your {progress.currentTargetFlower?.name || 'next flower'} blooms!
+                Just {progress.dewdropsForNextFlower} more Dewdrops until your {progress.currentTargetFlower?.name || 'next flower'}{' '}
+                <span className="text-2xl not-italic">{progress.currentTargetFlower?.icon}</span> blooms!
               </p>
             </div>
           )
