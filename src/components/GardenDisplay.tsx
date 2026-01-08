@@ -140,7 +140,7 @@ export function GardenDisplay({
                         </div>
                     </CardHeader>
                     <CardContent>
-                        {totalProgressSteps > 0 && (
+                        {totalProgressSteps >= 0 && (
                             <DewdropProgressBar currentSteps={currentProgressSteps} totalSteps={totalProgressSteps} />
                         )}
                     </CardContent>
@@ -152,22 +152,9 @@ export function GardenDisplay({
                     </CardHeader>
                     <CardContent className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-card">
                         <div className="w-full flex flex-col items-center flex-grow">
-                            <div className="flex flex-col items-center justify-center gap-4 text-center flex-grow">
-                                <div className="relative flex items-center justify-center">
-                                    <CircularProgressBar progress={progressToNextFlower} />
-                                    <div className="absolute">
-                                        <Sprout className="text-accent" size={80} />
-                                    </div>
-                                </div>
-                                <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
-                                    {logCount === 0
-                                        ? "Existing is a full-time job. Rest is productive, too."
-                                        : `Just ${dewdropsForNextFlower} more Dewdrops until your ${currentTargetFlower?.name || 'next flower'} blooms!`}
-                                </p>
-                            </div>
+                            
                             {flowerCount > 0 && (
                                 <>
-                                    <div className="w-full border-t border-border my-4"></div>
                                     <p className="text-muted-foreground mb-4 font-headline text-lg">Your bloomed flowers</p>
                                     <div className="w-full flex flex-wrap justify-center gap-x-2 gap-y-4">
                                         {bloomedFlowers.map((icon, i) => (
@@ -181,8 +168,24 @@ export function GardenDisplay({
                                             </div>
                                         ))}
                                     </div>
+                                    <div className="w-full border-t border-border my-4"></div>
                                 </>
                             )}
+
+                            <div className="flex flex-col items-center justify-center gap-4 text-center flex-grow">
+                                <div className="relative flex items-center justify-center">
+                                    <CircularProgressBar progress={progressToNextFlower} />
+                                    <div className="absolute">
+                                        <Sprout className="text-accent" size={80} />
+                                    </div>
+                                </div>
+                                <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
+                                    {logCount === 0
+                                        ? "Existing is a full-time job. Rest is productive, too."
+                                        : `Just ${dewdropsForNextFlower} more Dewdrops until your ${currentTargetFlower?.name || 'next flower'} blooms!`}
+                                </p>
+                            </div>
+
                         </div>
                     </CardContent>
                 </Card>
