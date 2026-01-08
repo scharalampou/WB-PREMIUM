@@ -180,9 +180,14 @@ export function GardenDisplay({
                                     </div>
                                 </div>
                                 <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
-                                    {logCount === 0
-                                        ? "Existing is a full-time job. Rest is productive, too."
-                                        : `Just ${dewdropsForNextFlower} more Dewdrops until your ${currentTargetFlower?.name || 'next flower'} blooms!`}
+                                    {logCount === 0 ? (
+                                        "Existing is a full-time job. Rest is productive, too."
+                                    ) : (
+                                        <>
+                                            Just {dewdropsForNextFlower} more Dewdrops until your {currentTargetFlower?.name || 'next flower'}{' '}
+                                            <span className="text-2xl">{currentTargetFlower?.icon}</span> blooms!
+                                        </>
+                                    )}
                                 </p>
                             </div>
 
