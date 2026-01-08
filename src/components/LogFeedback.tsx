@@ -94,7 +94,7 @@ export const LogFeedback: React.FC<LogFeedbackProps> = ({ feedback, onClose }) =
         </div>
       <div className="relative z-10 flex flex-col items-center space-y-6 max-w-md mx-auto">
         <h2 className="text-4xl font-headline font-bold text-primary dark:text-accent">Well Done!</h2>
-        <h4 className="text-[20px] text-muted-foreground font-medium max-w-sm">{punchline}</h4>
+        <h4 className="text-lg text-muted-foreground font-medium max-w-sm">{punchline}</h4>
 
         {didBloom && flower ? (
           <div className="flex flex-col items-center space-y-4">
