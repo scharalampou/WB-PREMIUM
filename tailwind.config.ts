@@ -22,7 +22,7 @@ export default {
     },
     extend: {
       backgroundImage: {
-        'grass': "url('/grass.png')",
+        'grass': "url('https://heyitssofia.com/grass.png')",
       },
       lineHeight: {
         'relaxed': '1.6',
