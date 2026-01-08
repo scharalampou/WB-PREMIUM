@@ -180,12 +180,13 @@ export function GardenDisplay({
                                             <Sprout className="text-accent" size={80} />
                                         </div>
                                     </div>
-                                    <p className="text-center text-lg italic font-medium text-muted-foreground max-w-xs mt-2">
+                                    <p className="text-center text-base italic font-medium text-muted-foreground max-w-xs mt-2">
                                         {logCount === 0 ? (
                                             "Existing is a full-time job. Rest is productive, too."
                                         ) : (
                                             <>
-                                                Just {dewdropsForNextFlower} more Dewdrops until your {currentTargetFlower?.name || 'next flower'}{' '}
+                                                Just {dewdropsForNextFlower} more Dewdrops until your{' '}
+                                                <span className="font-bold not-italic">{currentTargetFlower?.name || 'next flower'}</span>{' '}
                                                 <span className="text-2xl not-italic">{currentTargetFlower?.icon}</span> blooms!
                                             </>
                                         )}
