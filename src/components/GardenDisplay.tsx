@@ -151,7 +151,7 @@ export function GardenDisplay({
                         <CardDescription>Watch your garden grow with every win you log.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-grow flex flex-col p-0 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-card/70">
-                         <div className="bg-grass bg-bottom bg-no-repeat bg-contain flex-grow flex flex-col items-center justify-center p-4 md:p-6 pb-16">
+                         <div className="bg-grass bg-bottom bg-contain flex-grow flex flex-col items-center justify-center p-4 md:p-6 pb-16">
                             <div className="w-full flex flex-col items-center flex-grow">
                                 
                                 {flowerCount > 0 && (
@@ -180,7 +180,7 @@ export function GardenDisplay({
                                             <Sprout className="text-accent" size={80} />
                                         </div>
                                     </div>
-                                    <p className="text-center text-base italic font-medium text-muted-foreground max-w-xs mt-2 pb-4">
+                                    <p className="text-center text-base italic font-medium text-muted-foreground max-w-xs mt-2 pb-6">
                                         {logCount === 0 ? (
                                             "Existing is a full-time job. Rest is productive, too."
                                         ) : (
