@@ -151,7 +151,7 @@ export function GardenDisplay({
                         <CardDescription>Watch your garden grow with every win you log.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-grow flex flex-col p-0 bg-accent/10 rounded-b-lg border-2 border-dashed border-accent/30 dark:bg-card/70">
-                         <div className="bg-grass bg-no-repeat bg-center bg-cover flex-grow flex flex-col items-center justify-center p-4 md:p-6 pb-16">
+                         <div className="bg-grass bg-no-repeat bg-center [background-size:100%_auto] flex-grow flex flex-col items-center justify-center p-4 md:p-6 pb-16">
                             <div className="w-full flex flex-col items-center flex-grow">
                                 
                                 {flowerCount > 0 && (
