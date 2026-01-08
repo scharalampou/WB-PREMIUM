@@ -56,7 +56,7 @@ export function GlobalFeed() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2 max-w-2xl mx-auto">
-        <h2 className="text-3xl font-headline text-primary font-bold dark:text-accent">Bloom Feed</h2>
+        <h2 className="text-3xl font-headline text-primary font-bold dark:text-accent">Our Community is Blooming</h2>
         <p className="text-muted-foreground">
           Get inspired by small and big wins from the WinBloom community around the world.
         </p>
